@@ -1,0 +1,26 @@
+
+/* /////////////////////////////////////////// */
+.section
+{
+    display:flex; 
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+#childa
+{
+    color: rgb(255, 255, 255);
+    background-color: rgba(184, 165, 123, 0.747);
+    border-radius:18px ;
+    width: 18rem;
+    height:32rem ;
+    font-size: 100px;
+    text-align: center;
+}
+#childa img{
+    border-radius:18px ;
+    height: 50%;
+}
+#childa h5{
+    color: rgb(246, 230, 240) ;
+}
+
