@@ -1,0 +1,18 @@
+
+.btn, span,a{
+    color:white;
+}
+.active-link {
+    color: rgb(255, 99, 185);
+    font-weight: bold;
+}
+.navbar{
+    background-image: linear-gradient(to right, #39354e, #201E2C, #39354e);
+}
+span{
+    background-color: rgba(255, 255, 255, 0.329); 
+    height:50%;
+    width:20px;
+    border-radius:60px;
+    padding:3px;
+}
