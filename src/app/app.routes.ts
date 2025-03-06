@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { ReviewsComponent } from './pages/reviews/reviews.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 export const routes: Routes = [
     {
@@ -32,6 +33,11 @@ export const routes: Routes = [
         path: 'cart',
         component: CartComponent,
         title: 'Cart'
+    },
+    {
+        path: 'payment',
+        component: PaymentComponent,
+        title: 'Payment'
     },
     {
         path: 'review',
