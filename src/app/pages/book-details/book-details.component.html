@@ -1,1 +1,31 @@
-<p>book-details works!</p>
+<div class="book-details-container container-fluid ">
+  <div class="book-list row g-4 m-auto d-flex align-items-center justify-content-center">
+    <div *ngFor="let book of books" class="book-card col-12 col-md-6  position-relative">
+      <!-- In Stock Label -->
+      <div *ngIf="book.stock > 0" class="in-stock-label position-absolute">In Stock</div>
+
+      <!-- Book Title -->
+      <h2 class="book-title">{{ book.title }}</h2>
+
+      <!-- Book Image -->
+      <img class="book-image img-fluid rounded-circle" [src]="book.image" alt="{{ book.title }}" />
+
+      <!-- Book Price -->
+      <div class="book-price">
+        <span class="amount">${{ book.price }}</span>
+      </div>
+
+      <!-- Book Details List -->
+      <ul class="book-details-list list-unstyled">
+        <li><strong>Author:</strong> {{ book.author }}</li>
+        <li><strong>Category:</strong> {{ book.category }}</li>
+        <li><strong>Stock:</strong> {{ book.stock }}</li>
+        <li><strong>Description:</strong> {{ book.description }}</li>
+      </ul>
+
+      <!-- Action Button -->
+      <a class="book-action-button btn d-block mx-auto">Review Now</a>
+    </div>
+  </div>
+  <div class="label">Most Popular</div>
+</div>
