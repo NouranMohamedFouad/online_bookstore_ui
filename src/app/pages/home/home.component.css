@@ -9,8 +9,7 @@
 #childa
 {
     color: rgb(255, 255, 255);
-    background-color: rgba(184, 165, 123, 0.747);
-    border-radius:18px ;
+    background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);    border-radius:18px ;
     width: 18rem;
     height:32rem ;
     font-size: 100px;
