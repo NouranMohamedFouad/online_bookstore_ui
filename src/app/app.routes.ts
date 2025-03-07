@@ -7,6 +7,8 @@ import { CartComponent } from './pages/cart/cart.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { ReviewsComponent } from './pages/reviews/reviews.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { OrderHistoryComponent } from './pages/order-history/order-history.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 export const routes: Routes = [
     {
@@ -30,6 +32,11 @@ export const routes: Routes = [
         title: 'Login'
     },
     {
+        path: 'user-profile',
+        component: UserProfileComponent,
+        title: 'User Profile'
+    },
+    {
         path: 'cart',
         component: CartComponent,
         title: 'Cart'
@@ -43,6 +50,11 @@ export const routes: Routes = [
         path: 'review',
         component: ReviewsComponent,
         title: 'Review'
+    },
+    {
+        path: 'orders',
+        component: OrderHistoryComponent,
+        title: 'Orders History'
     },
     {
         path: '**',
