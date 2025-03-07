@@ -3,12 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Book } from '../../interfaces/book';
 import { CommonModule } from '@angular/common';
 import { CeilPipe } from '../../pipe/ceil.pipe';
-import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CeilPipe,CardModule],
+  imports: [CommonModule, CeilPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
