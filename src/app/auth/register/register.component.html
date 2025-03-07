@@ -1,1 +1,227 @@
-<p>register works!</p>
+<div class="center-container">
+  <h2>
+    Welcome To Our Book Store
+  </h2>
+</div>
+<div class="container my-5 form-container">
+  <form [formGroup]="registerForm" (ngSubmit)="handleSignup()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+        aria-describedby="nameError"
+      />
+      @if (registerForm.controls['name'].invalid && registerForm.controls['name'].touched) {
+        @if (registerForm.controls['name'].hasError('required')) {
+          <div id="nameError" class="form-text text-danger">Name is required</div>
+        }
+        @if (registerForm.controls['name'].hasError('minlength')) {
+          <div id="nameError" class="form-text text-danger">Name must be at least 3 characters</div>
+        }
+        @if (registerForm.controls['name'].hasError('maxlength')) {
+          <div id="nameError" class="form-text text-danger">Name cannot exceed 50 characters</div>
+        }
+        @if (registerForm.controls['name'].hasError('pattern')) {
+          <div id="nameError" class="form-text text-danger">Name should contain only letters and spaces</div>
+        }
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        aria-describedby="emailError"
+      />
+      @if (registerForm.controls['email'].invalid && registerForm.controls['email'].touched) {
+        @if (registerForm.controls['email'].hasError('required')) {
+          <div id="emailError" class="form-text text-danger">Email is required</div>
+        }
+        @if (registerForm.controls['email'].hasError('email') || registerForm.controls['email'].hasError('pattern')) {
+          <div id="emailError" class="form-text text-danger">Email is invalid. Please enter a valid email</div>
+        }
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        aria-describedby="passwordError"
+      />
+      @if (registerForm.controls['password'].invalid && registerForm.controls['password'].touched) {
+        @if (registerForm.controls['password'].hasError('required')) {
+          <div id="passwordError" class="form-text text-danger">Password is required</div>
+        }
+        @if (registerForm.controls['password'].hasError('minlength')) {
+          <div id="passwordError" class="form-text text-danger">Password must be at least 8 characters</div>
+        }
+        @if (registerForm.controls['password'].hasError('pattern')) {
+          <div id="passwordError" class="form-text text-danger">
+            Password must have at least one uppercase letter, one lowercase letter, one number, and one special character
+          </div>
+        }
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirm Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        aria-describedby="confirmPasswordError"
+      />
+      @if (registerForm.controls['confirmPassword'].invalid && (registerForm.controls['confirmPassword'].touched || registerForm.controls['confirmPassword'].dirty)) {
+        @if (registerForm.controls['confirmPassword'].hasError('required')) {
+          <div id="confirmPasswordError" class="form-text text-danger">Confirm password is required</div>
+        }
+      }
+      @if (registerForm.hasError('passwordMismatch') && (registerForm.controls['confirmPassword'].touched || registerForm.controls['confirmPassword'].dirty)) {
+        <div id="confirmPasswordError" class="form-text text-danger">Passwords do not match</div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone</label>
+      <input
+        type="text"
+        class="form-control"
+        id="phone"
+        formControlName="phone"
+        aria-describedby="phoneError"
+      />
+      @if (registerForm.controls['phone'].invalid && registerForm.controls['phone'].touched) {
+        @if (registerForm.controls['phone'].hasError('required')) {
+          <div id="phoneError" class="form-text text-danger">Phone is required</div>
+        }
+        @if (registerForm.controls['phone'].hasError('pattern')) {
+          <div id="phoneError" class="form-text text-danger">Invalid phone number format</div>
+        }
+      }
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="street" class="form-label">Street</label>
+        <input
+          type="text"
+          class="form-control"
+          id="street"
+          formControlName="street"
+          aria-describedby="streetError"
+        />
+        @if (registerForm.controls['street'].invalid && registerForm.controls['street'].touched) {
+          @if (registerForm.controls['street'].hasError('minlength')) {
+            <div id="streetError" class="form-text text-danger">Street must be at least 3 characters long</div>
+          }
+        }
+        @if (registerForm.hasError('addressIncomplete') && (registerForm.controls['street'].touched || registerForm.controls['street'].dirty)) {
+          <div id="streetError" class="form-text text-danger">Address is incomplete. Please fill all address fields.</div>
+        }
+      </div>
+
+      <div class="col-md-6">
+      <label for="city" class="form-label">City</label>
+      <input
+        type="text"
+        class="form-control"
+        id="city"
+        formControlName="city"
+        aria-describedby="cityError"
+      />
+      @if (registerForm.controls['city'].invalid && (registerForm.controls['city'].touched || registerForm.controls['city'].dirty)) {
+        @if (registerForm.controls['city'].hasError('pattern')) {
+          <div id="cityError" class="form-text text-danger">City should contain only letters and spaces</div>
+        }
+      }
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-4">
+      <label for="buildingNo" class="form-label">Building Number</label>
+      <input
+        type="text"
+        class="form-control"
+        id="buildingNo"
+        formControlName="buildingNo"
+        aria-describedby="buildingNoError"
+      />
+      @if (registerForm.controls['buildingNo'].invalid && (registerForm.controls['buildingNo'].touched || registerForm.controls['buildingNo'].dirty)) {
+        @if (registerForm.hasError('addressIncomplete') && (registerForm.controls['buildingNo'].touched || registerForm.controls['buildingNo'].dirty)) {
+          <div id="buildingNoError" class="form-text text-danger">Address is incomplete. Please fill all address fields.</div>
+        }
+        @if (registerForm.controls['buildingNo'].hasError('pattern')) {
+          <div id="buildingNoError" class="form-text text-danger">Building Number must contain only numbers</div>
+        }
+      }
+    </div>
+
+    <div class="col-md-4">
+      <label for="floorNo" class="form-label">Floor Number</label>
+      <input
+        type="text"
+        class="form-control"
+        id="floorNo"
+        formControlName="floorNo"
+        aria-describedby="floorNoError"
+      />
+      @if (registerForm.controls['floorNo'].invalid && (registerForm.controls['floorNo'].touched || registerForm.controls['floorNo'].dirty)) {
+        @if (registerForm.hasError('addressIncomplete') && (registerForm.controls['floorNo'].touched || registerForm.controls['floorNo'].dirty)) {
+          <div id="floorNoError" class="form-text text-danger">Address is incomplete. Please fill all address fields.</div>
+        }
+        @if (registerForm.controls['floorNo'].hasError('pattern')) {
+          <div id="floorNoError" class="form-text text-danger">Floor Number must contain only numbers</div>
+        }
+      }
+    </div>
+
+    <div class="col-md-4">
+      <label for="flatNo" class="form-label">Flat Number</label>
+      <input
+        type="text"
+        class="form-control"
+        id="flatNo"
+        formControlName="flatNo"
+        aria-describedby="flatNoError"
+      />
+      @if (registerForm.controls['flatNo'].invalid && (registerForm.controls['flatNo'].touched || registerForm.controls['flatNo'].dirty)) {
+        @if (registerForm.hasError('addressIncomplete') && (registerForm.controls['flatNo'].touched || registerForm.controls['flatNo'].dirty)) {
+          <div id="flatNoError" class="form-text text-danger">Address is incomplete. Please fill all address fields.</div>
+        }
+        @if (registerForm.controls['flatNo'].hasError('pattern')) {
+          <div id="flatNoError" class="form-text text-danger">Flat Number must contain only numbers</div>
+        }
+      }
+    </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="registerForm.invalid"
+    >
+      Signup
+    </button>
+
+    <div class="center-container">
+    <h4>
+      Already have an account?
+      <a
+        routerLink="/login"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Login</a
+      >
+    </h4>
+    </div>
+  </form>
+</div>
