@@ -1,6 +1,7 @@
 <div class="book-details-container container-fluid ">
   <div class="book-list row g-4 m-auto d-flex align-items-center justify-content-center">
     <div *ngFor="let book of books" class="book-card col-12 col-md-6  position-relative">
+      <div class="label  ">Most Popular</div>
       <!-- In Stock Label -->
       <div *ngIf="book.stock > 0" class="in-stock-label position-absolute">In Stock</div>
 
@@ -21,11 +22,22 @@
         <li><strong>Category:</strong> {{ book.category }}</li>
         <li><strong>Stock:</strong> {{ book.stock }}</li>
         <li><strong>Description:</strong> {{ book.description }}</li>
+        <li>
+          <strong>Average Rating:</strong> 
+          {{book.average_rating}}
+        </li>
+        
       </ul>
+      
 
       <!-- Action Button -->
-      <a class="book-action-button btn d-block mx-auto">Review Now</a>
+      <div class="d-flex justify-content-end gap-3">
+        <a class="book-action-button btn btn-primary px-4 py-2 shadow-sm rounded-pill">Review Now</a>
+        <a class="book-action-button btn btn-success px-4 py-2 shadow-sm rounded-pill">Add to Cart</a>
+      </div>
+      
+    
     </div>
   </div>
-  <div class="label">Most Popular</div>
+ 
 </div>

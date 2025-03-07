@@ -118,6 +118,8 @@
   border-top: 1px solid rgba(217, 217, 217, 0.2);
   color: #ccc;
   list-style-type: none;
+  text-transform: capitalize;
+  font-size: 20px;
 }
 
 .book-details-list li::before {
@@ -174,13 +176,17 @@
 .book-card .label {
   position: absolute;
   writing-mode: vertical-rl;
-  background-color: var(--main-color);
   color: white;
-  font-weight: bold;
+
   padding: 10px 10px 35px 10px;
   font-size: 18px;
   right: 20px;
   width: 40px;
+  background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);
+  font-weight: bold;
+
+  z-index: 2;
+ 
 }
 
 .book-card .label::before {
@@ -191,4 +197,12 @@
   border-style: solid;
   border-color: transparent transparent white;
   border-width: 20px;
+}
+.stars {
+  display: inline-block;
+  font-size: 18px;
+}
+
+.stars i {
+  margin-right: 3px; /* Adjust spacing between stars */
 }

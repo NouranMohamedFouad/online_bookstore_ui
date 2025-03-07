@@ -12,14 +12,14 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 
 export const routes: Routes = [
     {
-        path: '', 
+        path: '',
         component: HomeComponent,
         title: 'Books Home Page'
     },
     {
         path: 'book-details',
         component:BookDetailsComponent,
-        title: 'Book Details'
+        title: 'BookDetails'
     },
     {
         path: 'register',
