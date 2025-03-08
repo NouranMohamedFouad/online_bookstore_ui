@@ -21,6 +21,7 @@ export const routes: Routes = [
         component:BookDetailsComponent,
         title: 'BookDetails'
     },
+     { path: 'books/:id/reviews', component: ReviewsComponent },
     {
         path: 'register',
         component: RegisterComponent,

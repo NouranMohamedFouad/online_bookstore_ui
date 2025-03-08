@@ -1,4 +1,6 @@
 export interface Book {
+    reviews: any;
+    id: any;
     _id: string;
     title: string;
     author: string;
