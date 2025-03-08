@@ -26,6 +26,10 @@
   padding: 20px;
   border-radius: 8px;
   overflow: hidden;
+  -webkit-transition: var(--main-transition);
+  -moz-transition: var(--main-transition);
+  -ms-transition: var(--main-transition);
+  -o-transition: var(--main-transition);
 }
 
 .book-card::before,
