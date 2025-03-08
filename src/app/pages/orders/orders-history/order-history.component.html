@@ -1,0 +1,30 @@
+@for(order of orders; track order.orderId)
+{
+  <div class="card mb-3 wow animate__animated animate__fadeInDown" >
+    <div class="row g-0">
+      <div class="card-header">
+        <div class="order-info">
+          <span class="order-label">Order</span>
+          <a href="#" class="order-id">#{{ order.orderId }}</a>
+        </div>
+      <span class="order-price">Total Price : {{ order.totalPrice }}</span>
+      <span class="order-date">Order Placed: {{ order.createdAt }}</span>
+      </div>
+      <div class="col-md-2 book">
+        <img src="../../../../assets/images/404.png" class="img-fluid rounded" alt="...">
+      </div>
+      <div class="col-md-5">
+        <div class="card-body">
+          <h5 class="card-title"> Book id: </h5>
+          <p class="card-text">{{ order.books[0].bookId}}</p>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card-body">
+          <h5 class="card-title"> Quantity: </h5>
+          <p class="card-text"> {{ order.books[0].quantity}} </p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

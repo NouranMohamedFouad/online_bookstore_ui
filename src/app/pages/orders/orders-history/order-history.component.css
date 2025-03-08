@@ -1,0 +1,57 @@
+ .card{
+    background-color: rgba(25, 20, 43, 0.644);
+    color: beige;
+    border: none;
+    border-radius: 10px;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5%;
+    padding: 1%;
+}
+
+.card-header{
+    background-color: #868686;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content:space-between;
+}
+.order-info {
+    display: flex;
+    align-items: center;
+    background: #ebebeb;
+    border-radius: 15px;
+    padding: 2px 8px;
+    display: inline;
+}
+
+.order-label {
+    padding: 5px 10px;
+    font-weight: bold;
+    color: black;
+  }
+  
+.order-id {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+.order-date {
+    color: rgb(190, 189, 189);
+    font-size: 14px;
+  }
+/* ***************************************************************** */
+
+
+
+.bookImg{
+    max-width:2px;
+    height: 50px;
+} 
+
+.book{
+    display: flex;
+    justify-content:space-between;
+
+}
+  

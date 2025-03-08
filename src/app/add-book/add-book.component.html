@@ -1,0 +1,60 @@
+<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Title:</label>
+      <input id="title" formControlName="title" type="text">
+      @if (addBookForm.get('title')?.invalid && addBookForm.get('title')?.touched) {
+        <div>Title is required.</div>
+      }
+    </div>
+  
+    <div>
+      <label for="author">Author:</label>
+      <input id="author" formControlName="author" type="text">
+      @if (addBookForm.get('author')?.invalid && addBookForm.get('author')?.touched) {
+        <div>Author is required and must be at least 3 characters long.</div>
+      }
+    </div>
+  
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+  
+    <div>
+      <label for="price">Price:</label>
+      <input id="price" formControlName="price" type="number">
+      @if (addBookForm.get('price')?.invalid && addBookForm.get('price')?.touched) {
+        <div>Price is required and must be a positive number.</div>
+      }
+    </div>
+  
+    <div>
+      <label for="stock">Stock:</label>
+      <input id="stock" formControlName="stock" type="number">
+      @if (addBookForm.get('stock')?.invalid && addBookForm.get('stock')?.touched) {
+        <div>Stock is required and cannot be negative.</div>
+      }
+    </div>
+  
+    <div>
+      <label for="image">Image:</label>
+      <input id="image" type="file" (change)="onFileChange($event)">
+      @if (addBookForm.get('image')?.invalid && addBookForm.get('image')?.touched) {
+        <div>Image is required and must be a valid file (jpg, jpeg, png, gif).</div>
+      }
+    </div>
+  
+    <div>
+      <label for="category">Category:</label>
+      <select id="category" formControlName="category">
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+      @if (addBookForm.get('category')?.invalid && addBookForm.get('category')?.touched) {
+        <div>Category is required.</div>
+      }
+    </div>
+  
+    <button type="submit" [disabled]="addBookForm.invalid">Add Book</button>
+  </form>
