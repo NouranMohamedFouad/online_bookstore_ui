@@ -6,6 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { LoginService } from './login.service';
+import { LoginRequest } from '../../interfaces/user';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +22,12 @@ export class LoginComponent {
   errorMessage: string = '';
   isSubmitting: boolean = false;
 
-  constructor() {
+  constructor(private loginService: LoginService, private router: Router) {
+    // Redirect if already logged in
+    if (this.loginService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
+
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -37,22 +45,38 @@ export class LoginComponent {
   get email() {
     return this.loginForm.get('email');
   }
+
   get password() {
     return this.loginForm.get('password');
   }
 
   handleLogin() {
-    this.isSubmitting = true;
-
-    if (this.loginForm.valid) {
-      console.log('Form valid!', this.loginForm.value);
-      // Here you would typically call your auth service
-      // to handle the login process
-
-      this.isSubmitting = false;
-    } else {
+    if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.isSubmitting = false;
+      return;
     }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+
+    const loginData: LoginRequest = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+      rememberMe: this.loginForm.value.rememberMe,
+    };
+
+    this.loginService.login(loginData).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+
+        // Navigate to home page or intended destination
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.errorMessage =
+          error.message || 'Login failed. Please check your credentials.';
+      },
+    });
   }
 }
