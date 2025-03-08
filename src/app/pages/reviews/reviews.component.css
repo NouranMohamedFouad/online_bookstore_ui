@@ -1,5 +1,10 @@
+
 .reviews-container {
   padding: 20px;
+  background: rgba(26, 42, 57, 1);
+  color: white;
+  width: 80%;
+  margin: auto;
 }
 
 .form-group {

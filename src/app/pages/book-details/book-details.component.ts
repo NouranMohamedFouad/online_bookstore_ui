@@ -5,8 +5,7 @@ import { of } from 'rxjs';
 import { Book } from '../../interfaces/book';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router'; // Import Router
-
+import { Router } from '@angular/router'; 
 @Component({
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
@@ -45,6 +44,7 @@ export class BookDetailsComponent implements OnInit {
   }
 
   navigateToReviews(book: Book): void {
+    console.log(book)
     this.router.navigate(['/books', book._id, 'reviews']); 
   }
 }
