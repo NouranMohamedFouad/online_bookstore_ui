@@ -93,3 +93,29 @@ input:focus {
 .forgot-password {
   font-size: 0.9rem;
 }
+
+.is-invalid {
+  border-color: #d92550 !important;
+  box-shadow: 0 0 0 0.2rem rgba(217, 37, 80, 0.25);
+}
+
+.form-text.text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: rgba(217, 37, 80, 0.1);
+  border-color: rgba(217, 37, 80, 0.3);
+  color: #d92550;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
