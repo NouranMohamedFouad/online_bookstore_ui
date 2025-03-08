@@ -1,1 +1,49 @@
-<p>login works!</p>
+<div class="center-container">
+  <h2>Welcome Back</h2>
+</div>
+<div class="container my-5 form-container">
+  <form>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        aria-describedby="emailError"
+      />
+      <div id="emailError" class="form-text text-danger d-none">
+        Email is required
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        aria-describedby="passwordError"
+      />
+      <div id="passwordError" class="form-text text-danger d-none">
+        Password is required
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="rememberMe" />
+        <label class="form-check-label" for="rememberMe"> Remember me </label>
+      </div>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+
+    <div class="center-container mt-4">
+      <h4>
+        Don't have an account?
+        <a href="/register" class="sign-up-link">Sign Up</a>
+      </h4>
+    </div>
+  </form>
+</div>
