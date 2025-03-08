@@ -1,1 +1,90 @@
-<p>login works!</p>
+<div class="center-container">
+  <h2>Welcome Back</h2>
+</div>
+<div class="container my-5 form-container">
+  <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        aria-describedby="emailError"
+        [class.is-invalid]="email?.invalid && (email?.touched || email?.dirty)"
+      />
+      @if (email?.invalid && (email?.touched || email?.dirty)) { @if
+      (email?.errors?.['required']) {
+      <div id="emailError" class="form-text text-danger">Email is required</div>
+      } @if (email?.errors?.['email'] || email?.errors?.['pattern']) {
+      <div id="emailError" class="form-text text-danger">
+        Please enter a valid email address
+      </div>
+      } }
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        aria-describedby="passwordError"
+        [class.is-invalid]="
+          password?.invalid && (password?.touched || password?.dirty)
+        "
+      />
+      @if (password?.invalid && (password?.touched || password?.dirty)) { @if
+      (password?.errors?.['required']) {
+      <div id="passwordError" class="form-text text-danger">
+        Password is required
+      </div>
+      } @if (password?.errors?.['minlength']) {
+      <div id="passwordError" class="form-text text-danger">
+        Password must be at least 6 characters
+      </div>
+      } }
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="rememberMe"
+          formControlName="rememberMe"
+        />
+        <label class="form-check-label" for="rememberMe">Remember me</label>
+      </div>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+    </div>
+
+    @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+    }
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="loginForm.invalid || isSubmitting"
+    >
+      @if (isSubmitting) {
+      <span
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Logging in... } @else { Login }
+    </button>
+
+    <div class="center-container mt-4">
+      <h4>
+        Don't have an account?
+        <a href="/register" class="sign-up-link">Sign Up</a>
+      </h4>
+    </div>
+  </form>
+</div>

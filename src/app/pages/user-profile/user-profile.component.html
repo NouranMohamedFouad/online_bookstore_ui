@@ -1,1 +1,121 @@
-<p>user-profile works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 sidebar">
+      <h5 class="text-muted">MY ACCOUNT</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" [ngClass]="{'active': selectedSection === 'profile'}" (click)="switchSection('profile')">
+          <a class="text-light text-decoration-none">Profile</a>
+        </li>
+        <li class="list-group-item" [ngClass]="{'active': selectedSection === 'addresses'}" (click)="switchSection('addresses')">
+          <a class="text-light text-decoration-none">Addresses</a>
+        </li>
+        <li class="list-group-item" [ngClass]="{'active': selectedSection === 'password'}" (click)="switchSection('password')">
+          <a class="text-light text-decoration-none">Password</a>
+        </li>
+        <li class="list-group-item" [ngClass]="{'active': selectedSection === 'orders'}" (click)="switchSection('orders')">
+          <a class="text-light text-decoration-none">Orders</a>
+        </li>
+        <li class="list-group-item" [ngClass]="{'active': selectedSection === 'payments'}" (click)="switchSection('payments')">
+          <a class="text-light text-decoration-none">Payments</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      @if (selectedSection === 'profile') {
+        <div class="profile-container">
+          <h4 class="personal">Personal Information</h4>
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" value="Rahma">
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" value="rah@gmail.com" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" value="232332323">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-update mt-4">UPDATE PROFILE</button>
+          </form>
+        </div>
+      }
+
+      <!-- Addresses Section -->
+      @if (selectedSection === 'addresses') {
+        <div class="profile-container">
+          <h4 class="personal">Addresses</h4>
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="street" class="form-label">Street</label>
+                <input type="text" class="form-control" id="street" value="123 main street">
+              </div>
+              <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" value="Egypt">
+              </div>
+              <div class="col-md-6">
+                <label for="buildingNo" class="form-label">Building Number</label>
+                <input type="number" class="form-control" id="buildingNo" value="23">
+              </div>
+              <div class="col-md-6">
+                <label for="floorNo" class="form-label">Floor Number</label>
+                <input type="number" class="form-control" id="floorNo" value="3">
+              </div>
+              <div class="col-md-6">
+                <label for="flatNo" class="form-label">Flat Number</label>
+                <input type="number" class="form-control" id="flatNo" value="3">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-update mt-4">UPDATE Address</button>
+          </form>
+        </div>
+      }
+
+      @if (selectedSection === 'password') {
+        <div class="profile-container">
+          <h4 class="personal">Change Password</h4>
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="oldPassword" class="form-label">Old Password</label>
+                <input type="password" class="form-control" id="oldPassword">
+              </div>
+              <div class="col-md-6">
+                <label for="newPassword" class="form-label">New Password</label>
+                <input type="password" class="form-control" id="newPassword">
+              </div>
+              <div class="col-md-6">
+                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirmPassword">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-update mt-4">UPDATE Password</button>
+          </form>
+        </div>
+      }
+
+      <!-- Orders Section -->
+      @if (selectedSection === 'orders') {
+        <div class="profile-container">
+          <h4 class="personal">Orders</h4>
+          <p>Your orders will be displayed here.</p>
+        </div>
+      }
+
+      <!-- Payments Section -->
+      @if (selectedSection === 'payments') {
+        <div class="profile-container">
+          <h4 class="personal">Payments</h4>
+          <p>Your payment methods will be displayed here.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

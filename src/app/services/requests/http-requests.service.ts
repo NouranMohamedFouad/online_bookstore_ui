@@ -22,4 +22,7 @@ export class HttpRequestsService {
   addBook(bookData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/books`, bookData);
   }
+  signup(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/signup`, userData);
+  }
 }
