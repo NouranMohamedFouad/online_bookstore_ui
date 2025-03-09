@@ -11,6 +11,7 @@ import { OrderHistoryComponent } from './pages/orders/orders-history/order-histo
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { AddBookComponent } from './add-book/add-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -52,7 +53,8 @@ export const routes: Routes = [
     {
         path: 'cart',
         component: CartComponent,
-        title: 'Cart'
+        title: 'Cart',
+        canActivate: [authGuard]
     },
     {
         path: 'payment',
