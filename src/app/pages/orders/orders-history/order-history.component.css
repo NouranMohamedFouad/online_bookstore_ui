@@ -41,17 +41,3 @@
     font-size: 14px;
   }
 /* ***************************************************************** */
-
-
-
-.bookImg{
-    max-width:2px;
-    height: 50px;
-} 
-
-.book{
-    display: flex;
-    justify-content:space-between;
-
-}
-  

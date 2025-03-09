@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Order } from '../../../interfaces/order';
 
 @Component({
   selector: 'app-order-item',
@@ -7,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './order-item.component.css'
 })
 export class OrderItemComponent {
+
+  @Input() orderItem!:any;
+  
 
 }
