@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   phone?: string;
-  role?: 'user' | 'admin';
+  role?: 'admin' | 'customer';
   address?: {
     street: string;
     city: string;
@@ -14,8 +14,11 @@ export interface User {
 }
 
 export interface AuthResponse {
-  user: User;
+  status: string;
   token: string;
+  data: {
+    user: User;
+  };
   message?: string;
 }
 

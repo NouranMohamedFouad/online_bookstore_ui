@@ -20,6 +20,7 @@
     "@angular/router": "^19.1.0-next.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "animate.css": "^4.1.1",
+    "book-store-mean": "file:",
     "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
     "ngx-wow": "^2.0.1",

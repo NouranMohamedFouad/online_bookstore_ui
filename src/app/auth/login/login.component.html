@@ -42,7 +42,12 @@
       </div>
       } @if (password?.errors?.['minlength']) {
       <div id="passwordError" class="form-text text-danger">
-        Password must be at least 6 characters
+        Password must be at least 8 characters
+      </div>
+      } @if (password?.errors?.['pattern']) {
+      <div id="passwordError" class="form-text text-danger">
+        Password must include at least one uppercase letter, one lowercase
+        letter, one number, and one special character
       </div>
       } }
     </div>

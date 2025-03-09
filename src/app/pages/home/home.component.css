@@ -1,3 +1,35 @@
+
+/* Button Container */
+.button-container {
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-around; 
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Add Book and Delete All Books Buttons */
+.add-book, .delete-all-books {
+  background: linear-gradient(135deg, #D61F6F, #8A2BE2);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.add-book:hover, .delete-all-books:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.add-book:active, .delete-all-books:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 /* Base Card Styles */
 .card {
   height: 450px;
@@ -166,6 +198,47 @@
 
 .pagination button:hover:not(:disabled) {
   transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+/* Button Group */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.card:hover .button-group {
+  opacity: 1;
+}
+
+/* Buttons */
+.view-details, .update-book, .delete-book {
+  background: linear-gradient(135deg, #D61F6F, #8A2BE2);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 60%;
+  text-align: center;
+  align-self: center;
+}
+
+.view-details:hover, .update-book:hover, .delete-book:hover {
+  transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
