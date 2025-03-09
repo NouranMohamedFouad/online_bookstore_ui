@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpRequestsService } from '../services/requests/http-requests.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-book',
@@ -22,7 +23,7 @@ export class AddBookComponent {
     'Other'
   ];
 
-  constructor(private fb: FormBuilder, private httpRequestsService: HttpRequestsService) {
+  constructor(private router: Router, private fb: FormBuilder, private httpRequestsService: HttpRequestsService) {
     this.addBookForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(1)]],
       author: ['', [Validators.required, Validators.minLength(3)]],
@@ -63,5 +64,6 @@ export class AddBookComponent {
     }, error => {
       console.error('Error adding book', error);
     });
+    this.router.navigate(['/'])
   }
 }

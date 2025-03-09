@@ -1,0 +1,65 @@
+
+  <div class="center-container">
+    <h2>Update Book</h2>
+  </div>
+  <div class="container my-5 form-container">
+    <form [formGroup]="updateBookForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <input class="form-control" id="title" formControlName="title" type="text">
+        <div *ngIf="updateBookForm.get('title')?.invalid && updateBookForm.get('title')?.touched">
+          Title is required.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="author" class="form-label">Author:</label>
+        <input class="form-control" id="author" formControlName="author" type="text">
+        <div *ngIf="updateBookForm.get('author')?.invalid && updateBookForm.get('author')?.touched">
+          Author is required and must be at least 3 characters long.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea id="description" formControlName="description"></textarea>
+      </div>
+  
+      <div class="mb-3">
+        <label for="price" class="form-label">Price:</label>
+        <input class="form-control" id="price" formControlName="price" type="number">
+        <div *ngIf="updateBookForm.get('price')?.invalid && updateBookForm.get('price')?.touched">
+          Price is required and must be a positive number.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock:</label>
+        <input class="form-control" id="stock" formControlName="stock" type="number">
+        <div *ngIf="updateBookForm.get('stock')?.invalid && updateBookForm.get('stock')?.touched">
+          Stock is required and cannot be negative.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="image" class="form-label">Image:</label>
+        <input class="form-control" id="image" type="file" (change)="onFileChange($event)">
+        <div *ngIf="updateBookForm.get('image')?.invalid && updateBookForm.get('image')?.touched">
+          Image is required and must be a valid file (jpg, jpeg, png, gif).
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="category" class="form-label">Category:</label>
+        <select class="form-control" id="category" formControlName="category">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <div *ngIf="updateBookForm.get('category')?.invalid && updateBookForm.get('category')?.touched">
+          Category is required.
+        </div>
+      </div>
+  
+      <button class="btn btn-primary" type="submit" [disabled]="updateBookForm.invalid">Update Book</button>
+    </form>
+  </div> 
+  

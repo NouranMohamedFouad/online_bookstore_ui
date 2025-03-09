@@ -1,54 +1,60 @@
+<div class="center-container">
+  <h2>
+    Add Book
+  </h2>
+</div>
+<div class="container my-5 form-container">
 <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="title">Title:</label>
-      <input id="title" formControlName="title" type="text">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title:</label>
+      <input class="form-control" id="title" formControlName="title" type="text">
       @if (addBookForm.get('title')?.invalid && addBookForm.get('title')?.touched) {
         <div>Title is required.</div>
       }
     </div>
   
-    <div>
-      <label for="author">Author:</label>
-      <input id="author" formControlName="author" type="text">
+    <div class="mb-3">
+      <label for="author" class="form-label" >Author:</label>
+      <input class="form-control" id="author" formControlName="author" type="text">
       @if (addBookForm.get('author')?.invalid && addBookForm.get('author')?.touched) {
         <div>Author is required and must be at least 3 characters long.</div>
       }
     </div>
   
-    <div>
-      <label for="description">Description:</label>
+    <div  class="mb-3">
+      <label for="description" class="form-label">Description:</label>
       <textarea id="description" formControlName="description"></textarea>
     </div>
   
-    <div>
-      <label for="price">Price:</label>
-      <input id="price" formControlName="price" type="number">
+    <div class="mb-3">
+      <label for="price"  class="form-label">Price:</label>
+      <input class="form-control" id="price" formControlName="price" type="number">
       @if (addBookForm.get('price')?.invalid && addBookForm.get('price')?.touched) {
         <div>Price is required and must be a positive number.</div>
       }
     </div>
   
-    <div>
-      <label for="stock">Stock:</label>
-      <input id="stock" formControlName="stock" type="number">
+    <div class="mb-3" >
+      <label for="stock" class="form-label">Stock:</label>
+      <input class="form-control" id="stock" formControlName="stock" type="number">
       @if (addBookForm.get('stock')?.invalid && addBookForm.get('stock')?.touched) {
         <div>Stock is required and cannot be negative.</div>
       }
     </div>
   
-    <div>
-      <label for="image">Image:</label>
-      <input id="image" type="file" (change)="onFileChange($event)">
+    <div class="mb-3">
+      <label for="image" class="form-label">Image:</label>
+      <input class="form-control" id="image" type="file" (change)="onFileChange($event)">
       @if (addBookForm.get('image')?.invalid && addBookForm.get('image')?.touched) {
         <div>Image is required and must be a valid file (jpg, jpeg, png, gif).</div>
       }
     </div>
   
-    <div>
-      <label for="category">Category:</label>
-      <select id="category" formControlName="category">
+    <div class="mb-3">
+      <label for="category"  class="form-label">Category:</label>
+      <select class="form-control" id="category" formControlName="category">
         @for (category of categories; track category) {
-          <option [value]="category">{{ category }}</option>
+          <option  [value]="category">{{ category }}</option>
         }
       </select>
       @if (addBookForm.get('category')?.invalid && addBookForm.get('category')?.touched) {
@@ -56,5 +62,6 @@
       }
     </div>
   
-    <button type="submit" [disabled]="addBookForm.invalid">Add Book</button>
+    <button class="btn btn-primary" type="submit" [disabled]="addBookForm.invalid">Add Book</button>
   </form>
+</div>

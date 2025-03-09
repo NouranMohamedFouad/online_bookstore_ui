@@ -1,33 +1,37 @@
-<div class="row container m-auto">
-  <div class="col-lg-4 col-md-6 col-sm-12 mb-4 g-5" *ngFor="let book of books">
-    <div class="card box">
-      <!-- Image Wrapper -->
-      <div class="img-holder">
-        <img
-          [src]="book.image"
-          [alt]="book.title"
-          class="card-img-top img-fluid"
-        />
-        <div class="card-overlay"></div>
-        <div class="card-badge">{{ book.category }}</div>
-      </div>
-      <!-- Card Body -->
-      <div class="card-body">
-        <h5 class="card-title">{{ book.title }}</h5>
-       
-        <button class="btn view-details">View Details</button>
+<div class="container m-auto">
+  <div  class="button-container">
+    <button class="btn add-book" (click)="addBook()">Add Book</button>
+    <button class="btn delete-all-books" (click)="deleteAllBooks()">Delete All Books</button>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4 g-5" *ngFor="let book of books">
+      <div class="card box">
+        <div class="img-holder">
+          <img [src]="book.image" [alt]="book.title" class="card-img-top img-fluid" />
+          <div class="card-overlay"></div>
+          <div class="card-badge">{{ book.category }}</div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <div class="button-group">
+            <button class="btn update-book"  (click)="updateBook(book.bookId)">Update Book</button>
+            <button class="btn view-details" (click)="viewBookDetails(book.bookId)">View Details</button>
+            <button class="btn delete-book"  (click)="deleteBook(book.bookId)">Delete Book</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Pagination -->
-<div class="pagination text-center mt-5">
-  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="btn btn-secondary">
-    Previous
-  </button>
-  <span class="mx-3">Page {{ currentPage }} of {{ totalPages | ceil }}</span>
-  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages" class="btn btn-secondary">
-    Next
-  </button>
+  <!-- Pagination -->
+  <div class="pagination text-center mt-5">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="btn btn-secondary">
+      Previous
+    </button>
+    <span class="mx-3">Page {{ currentPage }} of {{ totalPages | ceil }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages" class="btn btn-secondary">
+      Next
+    </button>
+  </div>
 </div>
