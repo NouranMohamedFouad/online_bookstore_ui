@@ -1,18 +1,93 @@
-
-.btn, span,a{
-    color:white;
+.btn,
+span,
+a {
+  color: white;
 }
 .active-link {
-    color: rgb(255, 99, 185);
-    font-weight: bold;
+  color: rgb(255, 99, 185) !important;
+  font-weight: 600;
 }
-.navbar{
-    background-image: linear-gradient(to right, #39354e, #201E2C, #39354e);
+.navbar {
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to right, #39354e, #201E2C, #39354e);
 }
-span{
-    background-color: rgba(255, 255, 255, 0.329); 
-    height:50%;
-    width:20px;
-    border-radius:60px;
-    padding:3px;
+span {
+  background-color: rgba(255, 255, 255, 0.329);
+  height: 50%;
+  width: 20px;
+  border-radius: 60px;
+  padding: 3px;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.btn {
+  margin-left: 10px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  color: rgb(255, 99, 185);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-greeting {
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  color: rgb(255, 220, 255);
+}
+
+svg path {
+  fill: white;
+}
+
+/* Center section for username */
+.center-section {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+/* Make sure all items in the header align properly */
+.d-flex.align-items-center {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center !important;
+  justify-content: flex-end;
+}
+
+/* Container adjustments */
+.container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .center-section {
+    display: none; /* Hide username on mobile */
+  }
+  
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .btn {
+    padding: 4px 8px;
+    margin-left: 5px;
+    font-size: 0.9rem;
+  }
 }
