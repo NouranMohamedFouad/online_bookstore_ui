@@ -29,7 +29,7 @@ export const routes: Routes = [
         title:'Add Book'
     },
     {
-        path: 'book-details',
+        path: 'book-details/:id',
         component:BookDetailsComponent,
         title: 'BookDetails'
     },

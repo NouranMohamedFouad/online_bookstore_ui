@@ -12,7 +12,7 @@ import { NgIf, NgFor, CommonModule } from '@angular/common';
   imports: [FormsModule, NgIf, NgFor, CommonModule],
 })
 export class ReviewsComponent implements OnInit {
-  book: Book|null = null;
+  book: Book | null = null;
   reviews: any[] = [];
   editingReview: any = null;
   rating: number = 0;
@@ -27,10 +27,9 @@ export class ReviewsComponent implements OnInit {
   ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('bookId');
     console.log('Book ID from route:', bookId);
-    console.log(this.book)
 
     if (bookId) {
-      this.fetchBookDetails(bookId); // Ensure book details are fetched
+      this.fetchBookDetails(bookId);
       this.fetchReviews(bookId);
     } else {
       console.error('Book ID is null or undefined.');
@@ -39,25 +38,22 @@ export class ReviewsComponent implements OnInit {
 
   fetchBookDetails(bookId: string): void {
     console.log('Fetching book details for bookId:', bookId);
-  
+
     this.http.get<Book>(`http://localhost:3000/books/${bookId}`).subscribe({
       next: (response) => {
-        console.log('API Response:', response); // Debugging
+        console.log('API Response:', response);
         if (!response) {
           console.error('No book data returned from API.');
           return;
         }
         this.book = response;
         console.log('Book assigned:', this.book);
-        this.fetchReviews(this.book._id);
       },
       error: (err) => {
         console.error('Error fetching book details:', err);
       },
     });
   }
-  
-  
 
   fetchReviews(bookId: string): void {
     console.log('Fetching reviews for bookId:', bookId);
@@ -79,9 +75,8 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    console.log('Submitting review for book:', this.book._id);
     const newReview = {
-      bookId: this.book.bookId, 
+      bookId: this.book._id, // Use the correct book ID
       rating: this.rating,
       comment: this.comment,
     };
@@ -91,7 +86,7 @@ export class ReviewsComponent implements OnInit {
         console.log('Review submitted successfully');
         this.rating = 0;
         this.comment = '';
-        
+        this.fetchReviews(this.book!._id); // Refresh the reviews list
       },
       error: (err) => {
         console.error('Error submitting review:', err);
@@ -108,21 +103,23 @@ export class ReviewsComponent implements OnInit {
 
   updateReview(): void {
     if (this.editingReview) {
-      console.log('Updating review:', this.editingReview._id);
       const updatedReview = {
         rating: this.rating,
         comment: this.comment,
       };
 
       this.http
-        .put(`http://localhost:3000/reviews/${this.editingReview._id}`, updatedReview)
+        .put(
+          `http://localhost:3000/reviews/${this.editingReview._id}`,
+          updatedReview
+        )
         .subscribe({
           next: () => {
             console.log('Review updated successfully');
             this.editingReview = null;
             this.rating = 0;
             this.comment = '';
-            this.fetchReviews(this.book!._id);
+            this.fetchReviews(this.book!._id); // Refresh the reviews list
           },
           error: (err) => {
             console.error('Error updating review:', err);
@@ -135,17 +132,17 @@ export class ReviewsComponent implements OnInit {
 
   deleteReview(reviewId: string): void {
     if (confirm('Are you sure you want to delete this review?')) {
-      console.log('Deleting review:', reviewId);
-
-      this.http.delete(`http://localhost:3000/reviews/${reviewId}`).subscribe({
-        next: () => {
-          console.log('Review deleted successfully');
-          this.fetchReviews(this.book!._id);
-        },
-        error: (err) => {
-          console.error('Error deleting review:', err);
-        },
-      });
+      this.http
+        .delete(`http://localhost:3000/reviews/${reviewId}`)
+        .subscribe({
+          next: () => {
+            console.log('Review deleted successfully');
+            this.fetchReviews(this.book!._id); // Refresh the reviews list
+          },
+          error: (err) => {
+            console.error('Error deleting review:', err);
+          },
+        });
     }
   }
 
