@@ -21,7 +21,7 @@ export const routes: Routes = [
         component:BookDetailsComponent,
         title: 'BookDetails'
     },
-     { path: 'books/:id/reviews', component: ReviewsComponent },
+
     {
         path: 'register',
         component: RegisterComponent,
@@ -48,10 +48,11 @@ export const routes: Routes = [
         title: 'Payment'
     },
     {
-        path: 'review',
+        path: 'reviews/:bookId',
         component: ReviewsComponent,
         title: 'Review'
     },
+    { path: 'books/:bookId', component: ReviewsComponent },
     {
         path: 'orders',
         component: OrderHistoryComponent,

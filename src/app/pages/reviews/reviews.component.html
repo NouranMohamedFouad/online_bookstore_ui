@@ -2,31 +2,35 @@
   <h2>Reviews for {{ book?.title }}</h2>
   <button (click)="goBack()" class="btn btn-secondary">Back to Book Details</button>
 
-  <div *ngIf="book">
-    <h3>Add a Review</h3>
-    <form (ngSubmit)="submitReview()">
-      <div class="form-group">
-        <label for="rating">Rating:</label>
-        <input type="number" id="rating" [(ngModel)]="rating" name="rating" min="1" max="5" required />
-      </div>
-      <div class="form-group">
-        <label for="comment">Comment:</label>
-        <textarea id="comment" [(ngModel)]="comment" name="comment" required></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit Review</button>
-    </form>
+  <div *ngFor="let review of reviews; else loading">
+    <div class="add-review-section">
+      <h3>Add a Review</h3>
+      <form (ngSubmit)="submitReview()">
+        <div class="form-group">
+          <label for="rating">Rating:</label>
+          <input type="number" id="rating" [(ngModel)]="rating" name="rating" min="1" max="5" required />
+        </div>
+        <div class="form-group">
+          <label for="comment">Comment:</label>
+          <textarea id="comment" [(ngModel)]="comment" name="comment" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </form>
+    </div>
 
-    <h3>Existing Reviews</h3>
-    <ul>
-      <li *ngFor="let review of book.reviews">
-        <p><strong>Rating:</strong> {{ review.rating }}</p>
-        <p><strong>Comment:</strong> {{ review.comment }}</p>
-        <button (click)="editReview(review)" class="btn btn-warning">Edit</button>
-        <button (click)="deleteReview(review)" class="btn btn-danger">Delete</button>
-      </li>
-    </ul>
+    <div class="existing-reviews-section">
+      <h3>Existing Reviews</h3>
+      <ul>
+        <li *ngFor="let review of reviews">
+          <p><strong>Rating:</strong> {{ review.rating }}</p>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+          <button (click)="editReview(review)" class="btn btn-warning">Edit</button>
+          <button (click)="deleteReview(review._id)" class="btn btn-danger">Delete</button>
+        </li>
+      </ul>
+    </div>
 
-    <div *ngIf="editingReview">
+    <div *ngIf="editingReview" class="edit-review-section">
       <h3>Edit Review</h3>
       <form (ngSubmit)="updateReview()">
         <div class="form-group">
@@ -42,4 +46,8 @@
       </form>
     </div>
   </div>
+
+  <ng-template #loading>
+    <p class="loading">Loading book details...</p>
+  </ng-template>
 </div>
