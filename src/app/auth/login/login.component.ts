@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -17,17 +17,12 @@ import { LoginRequest } from '../../interfaces/user';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   isSubmitting: boolean = false;
 
   constructor(private loginService: LoginService, private router: Router) {
-    // Redirect if already logged in
-    if (this.loginService.isAuthenticated()) {
-      this.router.navigate(['/']);
-    }
-
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -36,10 +31,20 @@ export class LoginComponent {
       ]),
       password: new FormControl('', [
         Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(8),
+        Validators.pattern(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/
+        ),
       ]),
       rememberMe: new FormControl(false),
     });
+  }
+
+  ngOnInit(): void {
+    // Redirect if already logged in
+    if (this.loginService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
   }
 
   get email() {
@@ -68,7 +73,7 @@ export class LoginComponent {
     this.loginService.login(loginData).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-
+        console.log('Login successful', response);
         // Navigate to home page or intended destination
         this.router.navigate(['/']);
       },
@@ -76,6 +81,7 @@ export class LoginComponent {
         this.isSubmitting = false;
         this.errorMessage =
           error.message || 'Login failed. Please check your credentials.';
+        console.error('Login error:', error);
       },
     });
   }

@@ -27,7 +27,10 @@ export class LoginService {
    */
   login(loginData: LoginRequest): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${this.baseUrl}/auth/login`, loginData)
+      .post<AuthResponse>(`${this.baseUrl}/auth/login`, {
+        email: loginData.email,
+        password: loginData.password,
+      })
       .pipe(
         tap((response) =>
           this.handleAuthentication(response, loginData.rememberMe)
@@ -40,8 +43,25 @@ export class LoginService {
    * End user session and clean up stored data
    */
   logout(): void {
+    // Call the backend logout endpoint
+    this.http.get(`${this.baseUrl}/auth/logout`).subscribe({
+      next: () => {
+        this.clearUserData();
+      },
+      error: () => {
+        // Even if the server-side logout fails, clear the local data
+        this.clearUserData();
+      },
+    });
+  }
+
+  /**
+   * Clear local user data and redirect to login
+   */
+  private clearUserData(): void {
     localStorage.removeItem('userData');
     localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpires');
 
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -56,7 +76,7 @@ export class LoginService {
    * Determine if a user is currently authenticated
    */
   isAuthenticated(): boolean {
-    return !!this.userSubject.value;
+    return !!this.userSubject.value && !!this.getToken();
   }
 
   /**
@@ -70,6 +90,13 @@ export class LoginService {
    * Get the current authentication token
    */
   getToken(): string | null {
+    // Check if token has expired
+    const expiresAt = localStorage.getItem('tokenExpires');
+    if (expiresAt && new Date(expiresAt) < new Date()) {
+      // Token has expired
+      this.clearUserData();
+      return null;
+    }
     return localStorage.getItem('token');
   }
 
@@ -85,7 +112,7 @@ export class LoginService {
    */
   private autoLogout(expirationDuration: number): void {
     this.tokenExpirationTimer = setTimeout(() => {
-      this.logout();
+      this.clearUserData();
     }, expirationDuration);
   }
 
@@ -95,20 +122,29 @@ export class LoginService {
   private loadUserFromStorage(): void {
     const userData = localStorage.getItem('userData');
     const token = localStorage.getItem('token');
+    const tokenExpires = localStorage.getItem('tokenExpires');
 
-    if (!userData || !token) {
+    if (!userData || !token || !tokenExpires) {
       return;
     }
 
     try {
+      // Check if token is expired
+      if (new Date(tokenExpires) < new Date()) {
+        this.clearUserData();
+        return;
+      }
+
       const user: User = JSON.parse(userData);
       this.userSubject.next(user);
 
-      // Check token expiration from JWT if needed
-      // For now we'll assume the token is valid
+      // Set up auto logout timer
+      const expirationDuration =
+        new Date(tokenExpires).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration);
     } catch (error) {
       console.error('Error parsing stored user data:', error);
-      this.logout();
+      this.clearUserData();
     }
   }
 
@@ -119,24 +155,24 @@ export class LoginService {
     response: AuthResponse,
     rememberMe?: boolean
   ): void {
-    const { user, token } = response;
+    const { token, data } = response as any; // Handle the actual backend response format
+    const user = data.user; // The backend response structure is { token, data: { user } }
+
+    // Calculate token expiration
+    // Default to 24 hours if not specified in the token
+    const expiresInMs = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const expirationDate = new Date(new Date().getTime() + expiresInMs);
 
     // Store user data and token
-    if (rememberMe) {
-      localStorage.setItem('userData', JSON.stringify(user));
-      localStorage.setItem('token', token);
-    } else {
-      // For session-only storage, you could use sessionStorage instead
-      localStorage.setItem('userData', JSON.stringify(user));
-      localStorage.setItem('token', token);
-    }
+    localStorage.setItem('userData', JSON.stringify(user));
+    localStorage.setItem('token', token);
+    localStorage.setItem('tokenExpires', expirationDate.toISOString());
 
     // Update the user subject
     this.userSubject.next(user);
 
-    // Set up auto-logout if needed (would need token expiration time)
-    // Assuming token is valid for 1 hour:
-    // this.autoLogout(3600 * 1000);
+    // Set up auto-logout based on token expiration
+    this.autoLogout(expiresInMs);
   }
 
   /**
@@ -151,7 +187,7 @@ export class LoginService {
     } else {
       // Server-side error
       if (error.status === 401) {
-        errorMessage = 'Invalid email or password';
+        errorMessage = 'Incorrect email or password';
       } else if (error.error && error.error.message) {
         errorMessage = error.error.message;
       }

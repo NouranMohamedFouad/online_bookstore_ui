@@ -7,7 +7,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { LoginService } from '../login/login.service';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,11 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     // Skip authentication for login and public endpoints
-    if (request.url.includes('/auth/login') || request.url.includes('/books')) {
+    if (
+      request.url.includes('/auth/login') ||
+      request.url.includes('/auth/signup') ||
+      (request.url.includes('/books') && request.method === 'GET')
+    ) {
       return next.handle(request);
     }
 
