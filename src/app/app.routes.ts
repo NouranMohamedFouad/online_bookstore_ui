@@ -9,7 +9,7 @@ import { ReviewsComponent } from './pages/reviews/reviews.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { OrderHistoryComponent } from './pages/orders/orders-history/order-history.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { AddBookComponent } from './add-book/add-book.component';
+import { AddBookComponent } from './pages/add-book/add-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';
 import { authGuard } from './guards/auth.guard';
 
@@ -30,7 +30,7 @@ export const routes: Routes = [
         title:'Add Book'
     },
     {
-        path: 'book-details',
+        path: 'book-details/:id',
         component:BookDetailsComponent,
         title: 'BookDetails'
     },

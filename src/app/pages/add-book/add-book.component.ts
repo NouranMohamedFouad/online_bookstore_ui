@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpRequestsService } from '../services/requests/http-requests.service';
+import { HttpRequestsService } from '../../services/requests/http-requests.service';
 import { Router } from '@angular/router';
 
 @Component({
