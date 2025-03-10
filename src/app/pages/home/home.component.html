@@ -1,4 +1,9 @@
 <div class="container m-auto">
+  <div class="search-container">
+    <input #searchInput type="text" class="search-bar" placeholder="Search books..." />
+    <button class="btn search-button" (click)="onSearch(searchInput.value)">Search</button>
+  </div>
+  
   <div  class="button-container">
     <button class="btn add-book" (click)="addBook()">Add Book</button>
     <button class="btn delete-all-books" (click)="deleteAllBooks()">Delete All Books</button>

@@ -62,4 +62,11 @@ export class HomeComponent implements OnInit {
   viewBookDetails(id: number) {
     this.router.navigate(['/book-details',id])
     }
+  onSearch(data: string) {
+    this.booksRequestsService.getBooksList(this.currentPage, this.pageSize, data).subscribe((response: any) => {
+      this.books = response.books;
+      this.totalPages = response.totalPages;
+      console.log(this.books);
+    });
+  }
 }
