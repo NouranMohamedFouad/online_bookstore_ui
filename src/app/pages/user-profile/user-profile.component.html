@@ -1,6 +1,5 @@
 <div class="container-fluid">
   <div class="row">
-    <!-- Sidebar -->
     <div class="col-md-3 sidebar">
       <h5 class="text-muted">MY ACCOUNT</h5>
       <ul class="list-group list-group-flush">
@@ -41,12 +40,15 @@
                 <input type="text" class="form-control" id="phone" value="232332323">
               </div>
             </div>
-            <button type="submit" class="btn btn-update mt-4">UPDATE PROFILE</button>
+            <!-- delete my account  after it print are you sure ? then sucessfully deleted and logout -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-update flex-grow-0.5">UPDATE PROFILE</button>
+              <a href="/login" class="delete-account">Delete my account</a>
+            </div>
           </form>
         </div>
       }
 
-      <!-- Addresses Section -->
       @if (selectedSection === 'addresses') {
         <div class="profile-container">
           <h4 class="personal">Addresses</h4>
@@ -101,7 +103,6 @@
         </div>
       }
 
-      <!-- Orders Section -->
       @if (selectedSection === 'orders') {
         <div class="profile-container">
           <h4 class="personal">Orders</h4>
@@ -109,7 +110,6 @@
         </div>
       }
 
-      <!-- Payments Section -->
       @if (selectedSection === 'payments') {
         <div class="profile-container">
           <h4 class="personal">Payments</h4>

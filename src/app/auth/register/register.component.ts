@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router,RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpRequestsService } from '../../services/requests/http-requests.service';
 @Component({
@@ -13,7 +13,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string | null = null;
 
-  constructor(private httpRequestsService: HttpRequestsService) {
+  constructor(private httpRequestsService: HttpRequestsService, private router: Router) {
 
     this.registerForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[A-Za-z]+(?:\s[A-Za-z]+)*$/)]),
@@ -75,13 +75,12 @@ export class RegisterComponent {
         next: (response: any) => {
           console.log('Registration successful:', response);
           this.registerForm.reset();
-          this.errorMessage = null; // Clear any previous error message
-          alert('Registration successful!');
+          this.errorMessage = null;
+          this.router.navigate(['/login']);
         },
         error: (error: any) => {
           console.error('Registration failed:', error);
 
-          // Handle 400 Bad Request error
           if (error.status === 400) {
             this.errorMessage = error.error?.message || 'Email already exists. Please use a different email.';
           } else {

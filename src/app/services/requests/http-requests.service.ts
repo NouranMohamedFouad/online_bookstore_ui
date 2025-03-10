@@ -25,4 +25,7 @@ export class HttpRequestsService {
   signup(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/signup`, userData);
   }
+  deleteAccount(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/users/${userId}`);
+  }
 }

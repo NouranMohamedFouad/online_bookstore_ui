@@ -203,11 +203,13 @@
       }
     </div>
     </div>
-    @if (errorMessage) {
-      <div class="alert alert-danger" role="alert">
-        {{ errorMessage }}
-      </div>
-    }
+      <div class="error">
+      @if (errorMessage) {
+        <div class="alert alert-danger mt-3" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-2"></i> {{ errorMessage }}
+        </div>
+      }
+    </div>
     <button
       type="submit"
       class="btn btn-primary"
