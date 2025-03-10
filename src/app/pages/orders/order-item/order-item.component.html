@@ -1,1 +1,20 @@
-<p>order-item works!</p>
+<div class="book parent">
+    <div class="child1">
+      <img [src]="orderItem.bookDetails.image" [alt]="orderItem.bookDetails.title " class="img-fluid rounded bookImg">
+    </div>
+    <div class="child2">
+      <div class="data">
+        <div>
+          <h4>{{ orderItem.bookDetails.title }}</h4>
+          <p>Quantity:{{ orderItem.quantity }}</p>
+        </div>
+        <div>
+          <img src="../../../../assets/images/delivered2.png" class="status">
+        </div>
+        <div>
+          <h5>Price: ${{ orderItem.bookDetails.price }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>

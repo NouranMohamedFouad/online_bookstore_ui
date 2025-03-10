@@ -14,4 +14,7 @@ export class OrdersRequestsService {
   getOrdersList(): Observable<any> {
     return this.http.get(`${this.baseUrl}/orders`);
   }
+  getBookbyId(bookId: string): Observable<any> {
+      return this.http.get(`${this.baseUrl}/books/objectId/${bookId}`);
+    }
 }
