@@ -1,10 +1,14 @@
 export interface User {
   _id?: string;
+  userId?:number;
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
+  oldPassword:string;
+  newPassword: string;
+  confirmPassword: string;
   role?: 'admin' | 'customer';
-  address?: {
+  address: {
     street: string;
     city: string;
     buildingNo: string;

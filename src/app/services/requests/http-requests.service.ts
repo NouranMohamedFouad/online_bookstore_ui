@@ -10,10 +10,10 @@ export class HttpRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  getBooksList(page: number, pageSize: number): Observable<any> {
-    let params = new HttpParams().set('page', page).set('pageSize', pageSize);
-    return this.http.get(`${this.baseUrl}/books`, { params });
-  }
+  // getBooksList(page: number, pageSize: number): Observable<any> {
+  //   let params = new HttpParams().set('page', page).set('pageSize', pageSize);
+  //   return this.http.get(`${this.baseUrl}/books`, { params });
+  // }
 
   getOrdersList(): Observable<any> {
     return this.http.get(`${this.baseUrl}/orders`);
@@ -27,5 +27,31 @@ export class HttpRequestsService {
   }
   deleteAccount(userId: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/users/${userId}`);
+  }
+
+  getUserData() {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      return JSON.parse(userData);
+    }
+    return {
+      name: '',
+      email: '',
+      phone: '',
+      address: {
+        street: '',
+        city: '',
+        buildingNo: '',
+        floorNo: '',
+        flatNo: ''
+      }
+    };
+}
+  getUserToken() {
+    const userToken = localStorage.getItem('token');
+    return userToken;
+  }
+  updateUserData(id: number, userData: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/users/${id}`, userData);
   }
 }
