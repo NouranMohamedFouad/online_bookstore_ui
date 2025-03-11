@@ -112,8 +112,16 @@ export class CartComponent implements OnInit {
   }
 
   updateQuantity(bookId: string, quantity: number): void {
-    if (quantity < 1) return;
-
+    // Ensure quantity is a valid number
+    quantity = parseInt(String(quantity), 10);
+    
+    if (isNaN(quantity) || quantity < 1) {
+      console.error('Invalid quantity value:', quantity);
+      // Reload the cart to restore the correct quantity
+      this.loadCart();
+      return;
+    }
+    
     this.loading = true;
     console.log(`Updating quantity for book ${bookId} to ${quantity}`);
     this.cartService.updateQuantity(bookId, quantity)

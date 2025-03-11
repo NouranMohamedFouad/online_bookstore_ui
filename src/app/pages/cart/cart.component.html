@@ -49,10 +49,11 @@
             <div class="col-md-6 d-flex align-items-center">
               <div class="me-3">
                 <img 
-                  [src]="item.book?.image || 'assets/images/book-placeholder.jpg'" 
+                  [src]="item.book?.image || 'https://via.placeholder.com/150x200?text=Book+Cover'" 
                   alt="Book cover" 
                   class="img-fluid" 
                   style="max-width: 80px; max-height: 120px;"
+                  onerror="this.src='https://via.placeholder.com/150x200?text=Book+Cover'; this.onerror=null;"
                 >
               </div>
               <div>
@@ -70,20 +71,16 @@
                   type="button"
                   [disabled]="item.quantity <= 1"
                   (click)="updateQuantity(item.bookId, item.quantity - 1)"
+                  aria-label="Decrease quantity"
                 >
                   <i class="bi bi-dash"></i>
                 </button>
-                <input 
-                  type="number" 
-                  class="form-control text-center" 
-                  [value]="item.quantity"
-                  min="1"
-                  (change)="updateQuantity(item.bookId, $any($event.target).value)"
-                >
+                <span class="quantity-display">{{ item.quantity }}</span>
                 <button 
                   class="btn" 
                   type="button"
                   (click)="updateQuantity(item.bookId, item.quantity + 1)"
+                  aria-label="Increase quantity"
                 >
                   <i class="bi bi-plus"></i>
                 </button>

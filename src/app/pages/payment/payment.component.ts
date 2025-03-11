@@ -36,6 +36,7 @@ export class PaymentComponent implements OnInit {
     
     this.cartService.getCart().subscribe({
       next: (cart: Cart) => {
+        console.log('Cart loaded in payment component with populated book details:', cart);
         this.cart = cart;
         this.loading = false;
       },
