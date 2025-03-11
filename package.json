@@ -23,6 +23,7 @@
     "book-store-mean": "file:",
     "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
+    "jwt-decode": "^4.0.0",
     "ngx-wow": "^2.0.1",
     "popper.js": "^1.16.1",
     "rxjs": "~7.8.0",

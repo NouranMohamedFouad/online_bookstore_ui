@@ -18,7 +18,30 @@
       <div class="d-flex justify-content-end gap-3">
         <button class="book-action-button btn btn-primary px-4 py-2 shadow-sm rounded-pill"
           (click)="navigateToReviews(book.bookId)">Add Review</button>
-        <button class="book-action-button btn btn-success px-4 py-2 shadow-sm rounded-pill">Add to Cart</button>
+        
+        <!-- Add to Cart Button -->
+        <button 
+          class="book-action-button btn btn-success px-4 py-2 shadow-sm rounded-pill"
+          (click)="addToCart(book._id)"
+          [disabled]="!canAddToCart(book)">
+          
+          <!-- Normal state -->
+          <span *ngIf="!isBookBeingAdded(book._id)">
+            <i class="bi bi-cart-plus me-1"></i>
+            Add to Cart
+          </span>
+          
+          <!-- Loading state -->
+          <span *ngIf="isBookBeingAdded(book._id)">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Adding...
+          </span>
+        </button>
+        
+        <!-- Out of stock message -->
+        <div *ngIf="book.stock <= 0" class="text-danger mt-2">
+          <small>Out of stock</small>
+        </div>
       </div>
     </div>
   </div>
