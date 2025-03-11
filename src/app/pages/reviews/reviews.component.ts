@@ -1,31 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Book } from '../../interfaces/book';
+import { ActivatedRoute } from '@angular/router';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, CommonModule } from '@angular/common';
+import { Book } from '../../interfaces/book';
 
 @Component({
   selector: 'app-reviews',
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
-  imports: [FormsModule, NgIf, NgFor, CommonModule],
+  imports: [NgIf, NgFor, FormsModule],
 })
 export class ReviewsComponent implements OnInit {
-  book: Book | null = null;
+  @Input() book!: Book;
   reviews: any[] = [];
-  editingReview: any = null;
   rating: number = 0;
   comment: string = '';
+  editingReview: any = null;
+  userId: string | null = localStorage.getItem('userId');
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const bookId = this.route.snapshot.paramMap.get('bookId');
+    const bookId = Number(this.route.snapshot.paramMap.get('bookId'));
     console.log('Book ID from route:', bookId);
 
     if (bookId) {
@@ -36,7 +33,7 @@ export class ReviewsComponent implements OnInit {
     }
   }
 
-  fetchBookDetails(bookId: string): void {
+  fetchBookDetails(bookId: number): void {
     console.log('Fetching book details for bookId:', bookId);
 
     this.http.get<Book>(`http://localhost:3000/books/${bookId}`).subscribe({
@@ -55,13 +52,13 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  fetchReviews(bookId: string): void {
+  fetchReviews(bookId: number): void {
     console.log('Fetching reviews for bookId:', bookId);
 
-    this.http.get<any[]>(`http://localhost:3000/reviews/${bookId}`).subscribe({
-      next: (reviews) => {
-        console.log('Fetched Reviews:', reviews);
-        this.reviews = reviews;
+    this.http.get<{ reviews: any[] }>(`http://localhost:3000/reviews?bookId=${bookId}`).subscribe({
+      next: (response) => {
+        console.log('Fetched Reviews:', response);
+        this.reviews = response.reviews || [];
       },
       error: (err) => {
         console.error('Error fetching reviews:', err);
@@ -70,87 +67,81 @@ export class ReviewsComponent implements OnInit {
   }
 
   submitReview(): void {
-    if (!this.book) {
-      console.error('Book is null. Cannot submit review.');
+    if (!this.book?.bookId) {
+      console.error('Book ID is missing');
       return;
     }
 
     const newReview = {
-      bookId: this.book._id, // Use the correct book ID
       rating: this.rating,
       comment: this.comment,
+      userId: this.userId,
     };
 
-    this.http.post(`http://localhost:3000/reviews`, newReview).subscribe({
+    this.http.post(`http://localhost:3000/reviews?bookId=${this.book.bookId}`, newReview).subscribe({
       next: () => {
-        console.log('Review submitted successfully');
-        this.rating = 0;
-        this.comment = '';
-        this.fetchReviews(this.book!._id); // Refresh the reviews list
+        console.log('Review added successfully');
+        this.resetForm();
+        this.fetchReviews(this.book.bookId);
       },
       error: (err) => {
-        console.error('Error submitting review:', err);
+        console.error('Error adding review:', err);
       },
     });
   }
 
   editReview(review: any): void {
-    console.log('Editing review:', review);
     this.editingReview = { ...review };
     this.rating = review.rating;
     this.comment = review.comment;
   }
 
   updateReview(): void {
-    if (this.editingReview) {
-      const updatedReview = {
-        rating: this.rating,
-        comment: this.comment,
-      };
-
-      this.http
-        .put(
-          `http://localhost:3000/reviews/${this.editingReview._id}`,
-          updatedReview
-        )
-        .subscribe({
-          next: () => {
-            console.log('Review updated successfully');
-            this.editingReview = null;
-            this.rating = 0;
-            this.comment = '';
-            this.fetchReviews(this.book!._id); // Refresh the reviews list
-          },
-          error: (err) => {
-            console.error('Error updating review:', err);
-          },
-        });
-    } else {
+    if (!this.editingReview) {
       console.error('No review is being edited.');
+      return;
     }
+
+    const updatedReview = {
+      rating: this.rating,
+      comment: this.comment,
+    };
+
+    this.http.patch(`http://localhost:3000/reviews/${this.editingReview._id}`, updatedReview).subscribe({
+      next: () => {
+        console.log('Review updated successfully');
+        this.cancelEditing();
+        this.fetchReviews(this.book.bookId);
+      },
+      error: (err) => {
+        console.error('Error updating review:', err);
+      },
+    });
   }
 
   deleteReview(reviewId: string): void {
-    if (confirm('Are you sure you want to delete this review?')) {
-      this.http
-        .delete(`http://localhost:3000/reviews/${reviewId}`)
-        .subscribe({
-          next: () => {
-            console.log('Review deleted successfully');
-            this.fetchReviews(this.book!._id); // Refresh the reviews list
-          },
-          error: (err) => {
-            console.error('Error deleting review:', err);
-          },
-        });
-    }
+    this.http.delete(`http://localhost:3000/reviews/${reviewId}`).subscribe({
+      next: () => {
+        console.log('Review deleted successfully');
+        this.fetchReviews(this.book.bookId);
+      },
+      error: (err) => {
+        console.error('Error deleting review:', err);
+      },
+    });
   }
 
-  goBack(): void {
-    if (this.book && this.book._id) {
-      this.router.navigate(['/book-details', this.book._id]);
-    } else {
-      console.error('Book ID is missing, cannot navigate back.');
-    }
+  isUserReview(review: any): boolean {
+    return this.userId === review.userId;
+  }
+
+  cancelEditing(): void {
+    this.editingReview = null;
+    this.resetForm();
+  }
+
+  resetForm(): void {
+    this.rating = 0;
+    this.comment = '';
   }
 }
