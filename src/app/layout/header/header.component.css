@@ -2,15 +2,23 @@
 span,
 a {
   color: white;
-}
+}   
 .active-link {
   color: rgb(255, 99, 185) !important;
   font-weight: 600;
 }
 .navbar {
   padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(to right, #39354e, #201E2C, #39354e);
+  border-radius: 0px 0px 10px 10px;
+ /* https://smoothshadows.com/#djEsMSw0LDAuMjgsMTA3LDM3LDMsI2E3YWNiOSwjZjNmNGY2LCNmZmZmZmYsMg%3D%3D */
+box-shadow: 0px 2px 7px rgba(167, 172, 185, 0.07),
+1px 9px 27px rgba(167, 172, 185, 0.14),
+2px 21px 60px rgba(167, 172, 185, 0.21),
+3px 37px 107px rgba(167, 172, 185, 0.28);
+
+
+
 }
 span {
   background-color: rgba(255, 255, 255, 0.329);
@@ -50,6 +58,42 @@ span {
 svg path {
   fill: white;
 }
+.offcanvas{
+  background-image: linear-gradient(to right, #302d3d, #201E2C);
+  border-radius: 20px 0px 20px 0px;
+  border:none;
+  color: aliceblue;
+  box-shadow: -41px 1px 44px rgba(167, 172, 185, 0.08),
+  -165px 4px 174px rgba(167, 172, 185, 0.17),
+  -371px 10px 392px rgba(167, 172, 185, 0.25);
+  
+}
+
+.offcanvas-body a{
+  font-weight: 900;
+  
+}
+
+
+.btn-close {
+  filter: invert(1);
+  box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.5); 
+  
+}
+
+.navbar-brand img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-brand img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+}
+
+
+
+
+
 
 /* Center section for username */
 .center-section {
@@ -91,3 +135,5 @@ svg path {
     font-size: 0.9rem;
   }
 }
+
+

@@ -90,14 +90,41 @@ export class LoginService {
    * Get the current authentication token
    */
   getToken(): string | null {
-    // Check if token has expired
-    const expiresAt = localStorage.getItem('tokenExpires');
-    if (expiresAt && new Date(expiresAt) < new Date()) {
-      // Token has expired
+    try {
+      // Check if token has expired
+      const expiresAt = localStorage.getItem('tokenExpires');
+      const token = localStorage.getItem('token');
+      
+      if (!token || !expiresAt) {
+        console.warn('No token or expiration found in localStorage');
+        return null;
+      }
+      
+      const expirationDate = new Date(expiresAt);
+      const now = new Date();
+      
+      // Add logging to help debug token expiration issues
+      console.log('Token expiration check:', {
+        expirationTimestamp: expirationDate.getTime(),
+        nowTimestamp: now.getTime(),
+        expiresIn: Math.floor((expirationDate.getTime() - now.getTime()) / 1000) + ' seconds',
+        isExpired: expirationDate < now
+      });
+      
+      if (expirationDate < now) {
+        // Token has expired
+        console.warn('Token has expired, clearing user data');
+        this.clearUserData();
+        return null;
+      }
+      
+      return token;
+    } catch (error) {
+      console.error('Error retrieving token:', error);
+      // Clear data if there's an error to be safe
       this.clearUserData();
       return null;
     }
-    return localStorage.getItem('token');
   }
 
   /**
@@ -167,6 +194,12 @@ export class LoginService {
     localStorage.setItem('userData', JSON.stringify(user));
     localStorage.setItem('token', token);
     localStorage.setItem('tokenExpires', expirationDate.toISOString());
+
+    console.log('Authentication successful, token stored', {
+      user: user.name,
+      token: token.substring(0, 10) + '...',
+      expires: expirationDate
+    });
 
     // Update the user subject
     this.userSubject.next(user);

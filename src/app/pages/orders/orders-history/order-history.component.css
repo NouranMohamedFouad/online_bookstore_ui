@@ -1,57 +1,47 @@
- .card{
-    background-color: rgba(25, 20, 43, 0.644);
-    color: beige;
-    border: none;
-    border-radius: 10px;
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 5%;
-    padding: 1%;
+.card{
+  background: linear-gradient(to right, #1a0d16, #1f00138a);
+  color: beige;
+  border: none;
+  border-radius: 10px;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 5%;
+  padding: 1%;
 }
 
 .card-header{
-    background-color: #868686;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content:space-between;
+  background-color: #b4b2b2cb;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content:space-between;
 }
 .order-info {
-    display: flex;
-    align-items: center;
-    background: #ebebeb;
-    border-radius: 15px;
-    padding: 2px 8px;
-    display: inline;
+  display: flex;
+  align-items: center;
+  background: #fffefeb2;
+  border-radius: 15px;
+  padding: 2px 8px;
+  display: inline;
 }
 
 .order-label {
-    padding: 5px 10px;
-    font-weight: bold;
-    color: black;
-  }
-  
+  padding: 5px 10px;
+  font-weight: bold;
+  color: black;
+}
+
+
 .order-id {
-    color: #007bff;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-.order-date {
-    color: rgb(190, 189, 189);
-    font-size: 14px;
-  }
-/* ***************************************************************** */
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+}
 
-
-
-.bookImg{
-    max-width:2px;
-    height: 50px;
-} 
-
-.book{
-    display: flex;
-    justify-content:space-between;
+.order-date , .order-price{
+  color: rgb(43, 43, 43);
+  font-size: 16px;
+  font-weight: bold;
+  /* color: linear-gradient(135deg, #D61F6F, #8A2BE2); */
 
 }
-  
+/* ***************************************************************** */

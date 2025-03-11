@@ -11,8 +11,13 @@ export class BooksRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  getBooksList(page: number, pageSize: number): Observable<any> {
+  getBooksList(page: number, pageSize: number, title?: string): Observable<any> {
     let params = new HttpParams().set('page', page).set('pageSize', pageSize);
+      if (title) {
+        params = new HttpParams().set('pageSize', pageSize).set('title',title);
+      }
+      console.log(params);
+      
     return this.http.get(`${this.baseUrl}/books`, { params });
   }
 

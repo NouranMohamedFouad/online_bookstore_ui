@@ -1,0 +1,34 @@
+.parent{
+    display: flex;
+    justify-content:space-evenly;
+}
+.child1{
+    width:10%;
+}
+
+.child2{
+    width:88%;
+}
+
+.data{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 5%;
+    margin-left: 2%;
+}
+
+.book {
+    margin-top:2%;
+    margin-bottom:2%;
+}
+
+hr{
+    margin-top:5%;
+    margin-bottom:3%;
+}
+.status{
+    margin-left: 18%;
+    width: 40%;
+    height: 50%;
+}

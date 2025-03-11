@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoginService } from './login.service';
 import { LoginRequest } from '../../interfaces/user';
 
@@ -21,8 +21,13 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   isSubmitting: boolean = false;
+  returnUrl: string = '/';
 
-  constructor(private loginService: LoginService, private router: Router) {
+  constructor(
+    private loginService: LoginService, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -41,9 +46,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Get return URL from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
+    // Check for error message passed in the URL
+    const errorMsg = this.route.snapshot.queryParams['errorMsg'];
+    if (errorMsg) {
+      this.errorMessage = errorMsg;
+    }
+    
     // Redirect if already logged in
     if (this.loginService.isAuthenticated()) {
-      this.router.navigate(['/']);
+      this.router.navigate([this.returnUrl]);
     }
   }
 
@@ -74,8 +88,8 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.isSubmitting = false;
         console.log('Login successful', response);
-        // Navigate to home page or intended destination
-        this.router.navigate(['/']);
+        // Navigate to the return URL or home page
+        this.router.navigate([this.returnUrl]);
       },
       error: (error) => {
         this.isSubmitting = false;

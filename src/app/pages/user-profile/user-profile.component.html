@@ -1,6 +1,5 @@
 <div class="container-fluid">
   <div class="row">
-    <!-- Sidebar -->
     <div class="col-md-3 sidebar">
       <h5 class="text-muted">MY ACCOUNT</h5>
       <ul class="list-group list-group-flush">
@@ -23,54 +22,57 @@
     </div>
 
     <div class="col-md-9">
+
       @if (selectedSection === 'profile') {
         <div class="profile-container">
           <h4 class="personal">Personal Information</h4>
-          <form>
+          <form (ngSubmit)="updateProfile()">
             <div class="row">
               <div class="col-md-6">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" value="Rahma">
+                <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name">
               </div>
               <div class="col-md-6">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" id="email" value="rah@gmail.com" readonly>
+                <input type="text" class="form-control" id="email" [(ngModel)]="user.email" name="email" readonly>
               </div>
               <div class="col-md-6">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" value="232332323">
+                <input type="text" class="form-control" id="phone" [(ngModel)]="user.phone" name="phone">
               </div>
             </div>
-            <button type="submit" class="btn btn-update mt-4">UPDATE PROFILE</button>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-update">UPDATE PROFILE</button>
+              <a href="/login" class="delete-account">Delete my account</a>
+            </div>
           </form>
         </div>
       }
 
-      <!-- Addresses Section -->
       @if (selectedSection === 'addresses') {
         <div class="profile-container">
           <h4 class="personal">Addresses</h4>
-          <form>
+          <form (ngSubmit)="updateProfile()">
             <div class="row">
               <div class="col-md-6">
                 <label for="street" class="form-label">Street</label>
-                <input type="text" class="form-control" id="street" value="123 main street">
+                <input type="text" class="form-control" id="street" [(ngModel)]="user.address.street" name="street">
               </div>
               <div class="col-md-6">
                 <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" value="Egypt">
+                <input type="text" class="form-control" id="city" [(ngModel)]="user.address.city" name="city">
               </div>
               <div class="col-md-6">
                 <label for="buildingNo" class="form-label">Building Number</label>
-                <input type="number" class="form-control" id="buildingNo" value="23">
+                <input type="number" class="form-control" id="buildingNo" [(ngModel)]="user.address.buildingNo" name="buildingNo">
               </div>
               <div class="col-md-6">
                 <label for="floorNo" class="form-label">Floor Number</label>
-                <input type="number" class="form-control" id="floorNo" value="3">
+                <input type="number" class="form-control" id="floorNo" [(ngModel)]="user.address.floorNo" name="floorNo">
               </div>
               <div class="col-md-6">
                 <label for="flatNo" class="form-label">Flat Number</label>
-                <input type="number" class="form-control" id="flatNo" value="3">
+                <input type="number" class="form-control" id="flatNo" [(ngModel)]="user.address.flatNo" name="flatNo">
               </div>
             </div>
             <button type="submit" class="btn btn-update mt-4">UPDATE Address</button>
@@ -81,19 +83,19 @@
       @if (selectedSection === 'password') {
         <div class="profile-container">
           <h4 class="personal">Change Password</h4>
-          <form>
+          <form (ngSubmit)="updatePassword()">
             <div class="row">
               <div class="col-md-6">
                 <label for="oldPassword" class="form-label">Old Password</label>
-                <input type="password" class="form-control" id="oldPassword">
+                <input type="password" class="form-control" id="oldPassword" [(ngModel)]="user.oldPassword" name="oldPassword">
               </div>
               <div class="col-md-6">
                 <label for="newPassword" class="form-label">New Password</label>
-                <input type="password" class="form-control" id="newPassword">
+                <input type="password" class="form-control" id="newPassword" [(ngModel)]="user.newPassword" name="newPassword">
               </div>
               <div class="col-md-6">
                 <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                <input type="password" class="form-control" id="confirmPassword">
+                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="user.confirmPassword" name="confirmPassword">
               </div>
             </div>
             <button type="submit" class="btn btn-update mt-4">UPDATE Password</button>
@@ -101,15 +103,13 @@
         </div>
       }
 
-      <!-- Orders Section -->
-      @if (selectedSection === 'orders') {
+      @if (selectedSection === 'Notifications') {
         <div class="profile-container">
-          <h4 class="personal">Orders</h4>
-          <p>Your orders will be displayed here.</p>
+          <h4 class="personal">Notifications</h4>
+          <p>Your Notifications will be displayed here.</p>
         </div>
       }
 
-      <!-- Payments Section -->
       @if (selectedSection === 'payments') {
         <div class="profile-container">
           <h4 class="personal">Payments</h4>
