@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap, throwError } from 'rxjs';
-import { Cart } from '../../../interfaces/cart';
+import { Observable, catchError, tap, throwError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Cart, CartItem } from '../../../interfaces/cart';
 import { LoginService } from '../../../auth/login/login.service';
 import { jwtDecode } from 'jwt-decode';
 
@@ -74,6 +74,34 @@ export class CartRequestsService {
           if (cart && !cart.userId && userId) {
             cart.userId = userId;
           }
+        }),
+        // Populate book details for each cart item
+        switchMap(cart => {
+          if (!cart || !cart.items || cart.items.length === 0) {
+            return of(cart);
+          }
+          
+          // Create an array of observables for each book fetch
+          const bookRequests = cart.items.map(item => {
+            return this.http.get(`${this.baseUrl}/books/${item.bookId}`)
+              .pipe(
+                map(bookData => {
+                  // Add book details to the cart item
+                  item.book = bookData;
+                  return item;
+                }),
+                catchError(err => {
+                  console.error(`Error fetching book details for ${item.bookId}:`, err);
+                  // Return the item without book details if fetch fails
+                  return of(item);
+                })
+              );
+          });
+          
+          // Wait for all book requests to complete and then return the cart
+          return forkJoin(bookRequests).pipe(
+            map(() => cart)
+          );
         }),
         catchError(this.handleError)
       );

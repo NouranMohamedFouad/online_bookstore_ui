@@ -59,7 +59,8 @@ export const routes: Routes = [
     {
         path: 'payment',
         component: PaymentComponent,
-        title: 'Payment'
+        title: 'Payment',
+        canActivate: [authGuard]
     },
     {
         path: 'reviews/:bookId',

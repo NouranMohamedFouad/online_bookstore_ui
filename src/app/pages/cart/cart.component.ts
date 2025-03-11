@@ -154,8 +154,8 @@ export class CartComponent implements OnInit {
   }
 
   checkout(): void {
-    // Navigate to checkout/order page
-    this.router.navigate(['/orders/new']);
+    // Navigate to payment page
+    this.router.navigate(['/payment']);
   }
 
   continueShopping(): void {

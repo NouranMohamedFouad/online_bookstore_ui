@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CartRequestsService } from '../../services/requests/cart/cart-requests.service';
+import { Cart } from '../../interfaces/cart';
 
 @Component({
   selector: 'app-payment',
@@ -15,15 +17,34 @@ export class PaymentComponent implements OnInit {
   loading: boolean = false;
   error: string | null = null;
   selectedCardType: string = 'visa';
+  cart: Cart | null = null;
   
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cartService: CartRequestsService
   ) {}
   
   ngOnInit(): void {
     this.initForm();
-    // You might want to get cart totals from a service here
+    this.loadCartData();
+  }
+  
+  loadCartData(): void {
+    this.loading = true;
+    this.error = null;
+    
+    this.cartService.getCart().subscribe({
+      next: (cart: Cart) => {
+        this.cart = cart;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Could not load cart data. Please try again.';
+        this.loading = false;
+        console.error('Error loading cart:', err);
+      }
+    });
   }
   
   initForm(): void {
@@ -83,25 +104,46 @@ export class PaymentComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    // Simulate payment processing
+    // Here you would call your payment processing API
+    // For now, we'll simulate a successful payment after a delay
     setTimeout(() => {
       this.loading = false;
       
-      // Successful payment
-      this.router.navigate(['/confirmation']);
-      
-      // Or simulate an error:
-      // this.error = 'Payment could not be processed. Please try again.';
+      // After successful payment, create an order
+      this.createOrder();
     }, 2000);
+  }
+  
+  createOrder(): void {
+    // Here you would call your order creation API
+    // For this example, we'll just simulate success and navigate to confirmation
+    this.router.navigate(['/orders/confirmation'], {
+      queryParams: { 
+        orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
+        paymentId: 'PAY-' + Math.floor(Math.random() * 1000000) 
+      }
+    });
   }
   
   retryPayment(): void {
     this.error = null;
-    this.processPayment();
+    this.loadCartData();
   }
   
   goBack(): void {
     this.router.navigate(['/cart']);
+  }
+  
+  // Calculate tax (for demo purposes - 8%)
+  calculateTax(): number {
+    if (!this.cart) return 0;
+    return parseFloat((this.cart.total_price * 0.08).toFixed(2));
+  }
+  
+  // Get total with tax
+  getTotal(): number {
+    if (!this.cart) return 0;
+    return parseFloat((this.cart.total_price + this.calculateTax()).toFixed(2));
   }
   
   // Helper method to mark all form controls as touched
