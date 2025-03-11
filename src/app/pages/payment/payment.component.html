@@ -1,1 +1,266 @@
-<p>payment works!</p>
+<div class="container mt-4 animate-fade-in">
+  <div class="center-container">
+    <h2>Payment Details</h2>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2 text-muted">Processing payment information...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+    <button class="btn btn-sm ms-2" (click)="retryPayment()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Try Again
+    </button>
+  </div>
+
+  <!-- Payment Form -->
+  <div *ngIf="!loading && !error" class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4 animate-slide-up">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i> Payment Method</h5>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+            <!-- Card Type Selection -->
+            <div class="mb-4">
+              <label class="form-label">Select Card Type</label>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="card-option" [class.selected]="selectedCardType === 'visa'" (click)="selectCardType('visa')">
+                  <i class="fab fa-cc-visa fa-2x"></i>
+                  <span>Visa</span>
+                </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'mastercard'" (click)="selectCardType('mastercard')">
+                  <i class="fab fa-cc-mastercard fa-2x"></i>
+                  <span>MasterCard</span>
+                </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'amex'" (click)="selectCardType('amex')">
+                  <i class="fab fa-cc-amex fa-2x"></i>
+                  <span>American Express</span>
+                </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'discover'" (click)="selectCardType('discover')">
+                  <i class="fab fa-cc-discover fa-2x"></i>
+                  <span>Discover</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Card Number -->
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Card Number</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-credit-card"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="cardNumber" 
+                  formControlName="cardNumber"
+                  placeholder="XXXX XXXX XXXX XXXX"
+                >
+              </div>
+              <div *ngIf="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched" class="text-danger mt-1">
+                Please enter a valid card number
+              </div>
+            </div>
+            
+            <div class="row">
+              <!-- Card Holder Name -->
+              <div class="col-md-6 mb-3">
+                <label for="cardHolderName" class="form-label">Card Holder Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="cardHolderName" 
+                  formControlName="cardHolderName"
+                  placeholder="Name as shown on card"
+                >
+                <div *ngIf="paymentForm.get('cardHolderName')?.invalid && paymentForm.get('cardHolderName')?.touched" class="text-danger mt-1">
+                  Card holder name is required
+                </div>
+              </div>
+              
+              <!-- Expiration Date -->
+              <div class="col-md-3 mb-3">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="expiryDate" 
+                  formControlName="expiryDate"
+                  placeholder="MM/YY"
+                >
+                <div *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched" class="text-danger mt-1">
+                  Invalid expiry date
+                </div>
+              </div>
+              
+              <!-- CVV -->
+              <div class="col-md-3 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <div class="input-group">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="cvv" 
+                    formControlName="cvv"
+                    placeholder="XXX"
+                  >
+                  <span class="input-group-text" title="3-digit security code usually found on the back of your card">
+                    <i class="bi bi-question-circle"></i>
+                  </span>
+                </div>
+                <div *ngIf="paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched" class="text-danger mt-1">
+                  Invalid CVV
+                </div>
+              </div>
+            </div>
+            
+            <!-- Billing Address -->
+            <div class="mb-3 mt-4">
+              <div class="form-check">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="sameAsShipping" 
+                  formControlName="sameAsShipping"
+                >
+                <label class="form-check-label" for="sameAsShipping">
+                  Billing address same as shipping address
+                </label>
+              </div>
+            </div>
+            
+            <!-- Billing Address Fields (shown only if checkbox is unchecked) -->
+            <div *ngIf="!paymentForm.get('sameAsShipping')?.value" class="billing-address animate-fade-in">
+              <h6 class="mb-3"><i class="bi bi-geo-alt me-2"></i> Billing Address</h6>
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="streetAddress" class="form-label">Street Address</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="streetAddress" 
+                    formControlName="streetAddress"
+                  >
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="city" 
+                    formControlName="city"
+                  >
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="state" class="form-label">State/Province</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="state" 
+                    formControlName="state"
+                  >
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="zipCode" class="form-label">Zip/Postal Code</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="zipCode" 
+                    formControlName="zipCode"
+                  >
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="country" class="form-label">Country</label>
+                  <select class="form-select" id="country" formControlName="country">
+                    <option value="">Select country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="JP">Japan</option>
+                    <option value="EG">Egypt</option>
+                    <!-- Add more countries as needed -->
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+      <div class="card animate-slide-up">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Order Summary</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="summary-item">
+            <span>Subtotal</span>
+            <span>$79.98</span>
+          </div>
+          <div class="summary-item">
+            <span>Shipping</span>
+            <span class="text-success">Free</span>
+          </div>
+          <div class="summary-item">
+            <span>Tax</span>
+            <span>$6.40</span>
+          </div>
+          <hr>
+          <div class="summary-item total">
+            <strong>Total</strong>
+            <strong>$86.38</strong>
+          </div>
+          
+          <button 
+            class="btn btn-primary w-100 mt-4" 
+            type="submit"
+            [disabled]="paymentForm?.invalid"
+            (click)="processPayment()"
+          >
+            <i class="bi bi-lock-fill me-2"></i> Pay Now
+          </button>
+          
+          <button 
+            class="btn btn-outline-secondary w-100 mt-2" 
+            (click)="goBack()"
+          >
+            <i class="bi bi-arrow-left me-2"></i> Back to Cart
+          </button>
+          
+          <div class="secure-payment mt-4">
+            <div class="d-flex justify-content-center gap-3 mb-2">
+              <i class="fab fa-cc-visa fa-lg"></i>
+              <i class="fab fa-cc-mastercard fa-lg"></i>
+              <i class="fab fa-cc-amex fa-lg"></i>
+              <i class="fab fa-cc-discover fa-lg"></i>
+            </div>
+            <div class="text-center">
+              <small class="text-muted">
+                <i class="bi bi-shield-lock me-1"></i> Secure payment processing
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
