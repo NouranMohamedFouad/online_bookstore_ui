@@ -8,6 +8,7 @@ import { LoginService } from '../../auth/login/login.service';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, of } from 'rxjs';
 
+
 interface JwtPayload {
   id: string;
   iat: number;
@@ -37,18 +38,18 @@ export class CartComponent implements OnInit {
     // Check if user is authenticated before loading cart
     if (!this.loginService.isAuthenticated()) {
       console.error('User is not authenticated, redirecting to login');
-      this.router.navigate(['/login'], { 
-        queryParams: { 
+      this.router.navigate(['/login'], {
+        queryParams: {
           returnUrl: '/cart',
-          errorMsg: 'Please log in to view your cart' 
-        } 
+          errorMsg: 'Please log in to view your cart'
+        }
       });
       return;
     }
-    
+
     // Get userId from token
     this.getUserIdFromToken();
-    
+
     console.log('User is authenticated with ID:', this.userId);
     this.loadCart();
   }
@@ -80,13 +81,13 @@ export class CartComponent implements OnInit {
         catchError(err => {
           console.error('Error in cart component loading cart:', err);
           if (err.status === 401 || err.status === 403) {
-            this.router.navigate(['/login'], { 
-              queryParams: { 
+            this.router.navigate(['/login'], {
+              queryParams: {
                 returnUrl: '/cart',
-                errorMsg: err.status === 401 
-                  ? 'Your session has expired. Please log in again.' 
+                errorMsg: err.status === 401
+                  ? 'Your session has expired. Please log in again.'
                   : 'You don\'t have permission to access this cart.'
-              } 
+              }
             });
           } else {
             this.error = err.error?.message || 'Failed to load cart';
@@ -98,12 +99,12 @@ export class CartComponent implements OnInit {
       .subscribe(cart => {
         if (cart) {
           console.log('Cart loaded successfully:', cart);
-          
+
           // Ensure cart has the correct user ID if it's missing
           if (cart && !cart.userId && this.userId) {
             cart.userId = this.userId;
           }
-          
+
           this.cart = cart;
           this.loading = false;
         }
@@ -112,7 +113,7 @@ export class CartComponent implements OnInit {
 
   updateQuantity(bookId: string, quantity: number): void {
     if (quantity < 1) return;
-    
+
     this.loading = true;
     console.log(`Updating quantity for book ${bookId} to ${quantity}`);
     this.cartService.updateQuantity(bookId, quantity)

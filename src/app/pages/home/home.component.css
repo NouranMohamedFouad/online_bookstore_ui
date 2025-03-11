@@ -1,12 +1,44 @@
 
-/* Button Container */
-.button-container {
-  padding-top: 30px;
-  display: flex;
-  justify-content: space-around; 
-  gap: 20px;
-  margin-bottom: 30px;
+  #carouselExampleControls {
+
+    /*Roundedcorners*/overflow: hidden;
+    /*Ensureimagesdon'toverflow*/border: 5px solid #fff;
+    /*Whiteborder*/box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /*Addshadowfordepth*/max-width: 80%;
+    /*Adjustwidthasneeded*/margin: 20px auto;
+    -webkit-transform:;
+    -moz-transform:;
+    -ms-transform:;
+    -o-transform:;
+    -webkit-border-radius: 200px 200px 0 0;
+    -moz-border-radius: 200px 200px 0 0;
+    -ms-border-radius: 200px 200px 0 0;
+    -o-border-radius: 200px 200px 0 0;
+    clip-path: polygon(50% 100% at 50% 100%);
 }
+
+  .carousel-item img {
+    border-radius: 20px; /* Rounded corners for images */
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%; /* Circular buttons */
+    padding: 10px;
+  }
+
+  .carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%; /* Circular indicators */
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+  }
+
+  .carousel-indicators .active {
+    background-color: #fff; /* White for active indicator */
+  }
+
 
 /* Add Book and Delete All Books Buttons */
 .add-book, .delete-all-books {
