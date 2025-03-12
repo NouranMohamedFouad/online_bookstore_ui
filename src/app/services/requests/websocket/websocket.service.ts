@@ -33,7 +33,6 @@ export class WebsocketService {
       console.error('WebSocket is not open.');
     }
   }
-
   closeConnection() {
     this.socket.close();
   }

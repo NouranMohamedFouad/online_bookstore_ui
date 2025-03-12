@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap, throwError } from 'rxjs';
-import { Cart } from '../../../interfaces/cart';
+import { Observable, catchError, tap, throwError, forkJoin, map, of, switchMap, timeout } from 'rxjs';
+import { Cart, CartItem } from '../../../interfaces/cart';
 import { LoginService } from '../../../auth/login/login.service';
 import { jwtDecode } from 'jwt-decode';
 
@@ -66,17 +66,16 @@ export class CartRequestsService {
     const userId = this.getUserIdFromToken();
     console.log('User ID from token:', userId);
     
-    return this.http.get<Cart>(`${this.baseUrl}/cart`)
-      .pipe(
-        tap(cart => {
-          console.log('Cart received:', cart);
-          // Enrich the cart with user ID if needed
-          if (cart && !cart.userId && userId) {
-            cart.userId = userId;
-          }
-        }),
-        catchError(this.handleError)
-      );
+    return this.http.get<Cart>(`${this.baseUrl}/cart`).pipe(
+      tap(cart => {
+        console.log('Cart received with populated book details:', cart);
+        // Enrich the cart with user ID if needed
+        if (cart && !cart.userId && userId) {
+          cart.userId = userId;
+        }
+      }),
+      catchError(this.handleError)
+    );
   }
 
   // Add an item to cart

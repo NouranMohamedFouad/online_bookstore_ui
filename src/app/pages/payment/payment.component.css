@@ -278,3 +278,44 @@ hr {
     margin-bottom: 15px;
   }
 }
+
+.cart-items-summary .btn {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  transition: all 0.2s ease;
+}
+
+.cart-items-summary .btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.cart-item-preview {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-item-preview:last-child {
+  border-bottom: none;
+}
+
+.item-quantity {
+  font-weight: 600;
+  color: #D61F6F;
+}
+
+.item-title {
+  max-width: 150px;
+  font-size: 0.9rem;
+  display: block;
+  line-height: 1.2;
+}
+
+.text-muted small {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.item-price {
+  font-weight: 600;
+}

@@ -214,26 +214,26 @@
         <div class="card-body p-4">
           <div class="summary-item">
             <span>Subtotal</span>
-            <span>$79.98</span>
+            <span>${{ cart?.total_price.toFixed(2) || '0.00' }}</span>
           </div>
           <div class="summary-item">
             <span>Shipping</span>
             <span class="text-success">Free</span>
           </div>
           <div class="summary-item">
-            <span>Tax</span>
-            <span>$6.40</span>
+            <span>Tax (8%)</span>
+            <span>${{ calculateTax() }}</span>
           </div>
           <hr>
           <div class="summary-item total">
             <strong>Total</strong>
-            <strong>$86.38</strong>
+            <strong>${{ getTotal() }}</strong>
           </div>
           
           <button 
             class="btn btn-primary w-100 mt-4" 
             type="submit"
-            [disabled]="paymentForm?.invalid"
+            [disabled]="paymentForm?.invalid || !cart"
             (click)="processPayment()"
           >
             <i class="bi bi-lock-fill me-2"></i> Pay Now
@@ -245,6 +245,38 @@
           >
             <i class="bi bi-arrow-left me-2"></i> Back to Cart
           </button>
+          
+          <!-- Cart Items Summary (Collapsed) -->
+          <div class="cart-items-summary mt-4">
+            <button 
+              class="btn btn-sm w-100 text-start" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#cartItemsList" 
+              aria-expanded="false" 
+              aria-controls="cartItemsList"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-bag me-2"></i> {{ cart?.items.length || 0 }} Items in Cart</span>
+                <i class="bi bi-chevron-down"></i>
+              </div>
+            </button>
+            
+            <div class="collapse mt-2" id="cartItemsList">
+              <div class="cart-item-preview" *ngFor="let item of cart?.items">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center">
+                    <span class="item-quantity me-2">{{ item.quantity }}×</span>
+                    <div>
+                      <span class="item-title text-truncate">{{ item.book?.title || 'Book' }}</span>
+                      <small class="d-block text-muted">{{ item.book?.author || 'Author' }}</small>
+                    </div>
+                  </div>
+                  <span class="item-price">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div class="secure-payment mt-4">
             <div class="d-flex justify-content-center gap-3 mb-2">

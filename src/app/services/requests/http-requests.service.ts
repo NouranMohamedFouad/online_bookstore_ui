@@ -38,6 +38,7 @@ export class HttpRequestsService {
       name: '',
       email: '',
       phone: '',
+      role: '',
       address: {
         street: '',
         city: '',

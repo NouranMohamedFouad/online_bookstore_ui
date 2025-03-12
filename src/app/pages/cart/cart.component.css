@@ -114,12 +114,15 @@ p.text-muted {
   color: white;
 }
 
-/* Quantity control */
+/* Quantity control - improve visibility and fix display issues */
 .input-group {
   max-width: 120px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
 }
 
 .input-group .btn {
@@ -128,7 +131,12 @@ p.text-muted {
   color: white;
   font-weight: 600;
   padding: 0.375rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
   transition: all 0.2s ease;
+  z-index: 2;
 }
 
 .input-group .btn:hover:not([disabled]) {
@@ -141,11 +149,17 @@ p.text-muted {
 }
 
 .input-group input {
-  background-color: rgba(248, 247, 247, 0.068);
-  color: white;
-  text-align: center;
-  font-weight: 500;
-  border: 1px solid rgba(217, 217, 217, 0.3);
+  display: none;
+}
+
+.input-group input::-webkit-inner-spin-button,
+.input-group input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-group input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .input-group input:focus {
@@ -153,6 +167,21 @@ p.text-muted {
   box-shadow: none;
   color: white;
   border-color: rgba(214, 31, 111, 0.5);
+}
+
+.quantity-display {
+  background-color: rgba(248, 247, 247, 0.068);
+  color: white;
+  text-align: center;
+  font-weight: 500;
+  border-top: 1px solid rgba(217, 217, 217, 0.3);
+  border-bottom: 1px solid rgba(217, 217, 217, 0.3);
+  padding: 0.375rem 0.5rem;
+  width: 50px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Total price */
@@ -319,5 +348,19 @@ h3 {
   
   .me-3 {
     margin-right: 0 !important;
+  }
+}
+
+/* Media queries adjustments for quantity controls */
+@media (max-width: 767.98px) {
+  .input-group {
+    margin: 0;
+    max-width: 100px;
+  }
+  
+  .col-md-2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between !important;
   }
 }

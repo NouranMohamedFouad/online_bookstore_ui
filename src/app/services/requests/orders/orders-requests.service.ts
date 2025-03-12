@@ -11,10 +11,14 @@ export class OrdersRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  getOrdersList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/orders`);
+  getOrdersList(userId: number | undefined): Observable<any> {
+    return this.http.get(`${this.baseUrl}/orders/${userId}`);
   }
   getBookbyId(bookId: string): Observable<any> {
       return this.http.get(`${this.baseUrl}/books/objectId/${bookId}`);
-    }
+  }
+
+  updateOrderStatus(orderId: number, status: string): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/orders/${orderId}?status=${status}`, {});
+  }
 }

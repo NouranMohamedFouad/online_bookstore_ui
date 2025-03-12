@@ -4,6 +4,8 @@ import { Order } from '../../../interfaces/order';
 import { OrdersRequestsService } from '../../../services/requests/orders/orders-requests.service';
 import { OrderItemComponent } from "../order-item/order-item.component";
 import { DatePipe } from '@angular/common';
+import { WebsocketService } from '../../../services/requests/websocket/websocket.service';
+import { User } from '../../../interfaces/user';
 
 @Component({
   selector: 'app-order-history',
@@ -11,20 +13,48 @@ import { DatePipe } from '@angular/common';
   templateUrl: './order-history.component.html',
   styleUrl: './order-history.component.css',
   providers: [DatePipe] 
-
 })
 
 export class OrderHistoryComponent {
-  constructor(private httpRequest: OrdersRequestsService,private datePipe: DatePipe){}
+
+  constructor(
+    private oredrsHttpRequest: OrdersRequestsService,
+    private datePipe: DatePipe,
+    private websocketService: WebsocketService,
+    private httpRequestsService:HttpRequestsService
+  ){}
+
   orders!:Order[];
+  response = '';
+  storedUser!:User;
 
   ngOnInit()
   {    
-    console.log("orders got collected");
-    this.httpRequest.getOrdersList().subscribe(res=> {
+    this.storedUser = this.httpRequestsService.getUserData();
+    this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
       this.orders=res;
-      console.log(this.orders);
+      this.sendMessage();
       return this.orders;
     }); 
+
+    this.websocketService.socket.onmessage = (event) => {
+      this.response = event.data;
+    };
+  }
+  sendMessage() {
+    const orderDetails = {
+      orderId: this.orders[0].orderId,
+      totalPrice: this.orders[0].totalPrice,
+      createdAt: this.orders[0].createdAt
+    };
+
+    const data = {
+      user: this.storedUser,
+      order: orderDetails
+    };
+    this.websocketService.sendMessage(JSON.stringify(data));
+  }
+  ngOnDestroy() {
+    this.websocketService.closeConnection();
   }
 }
