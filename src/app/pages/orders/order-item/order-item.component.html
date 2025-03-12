@@ -18,3 +18,38 @@
     </div>
   </div>
   <hr>
+
+  @if(userRole == 'admin')
+  {
+    <div class="mb-4">
+      <label class="form-label">Update Order Status:</label>
+      <div class="d-flex flex-wrap gap-3">
+        <div class="card-option" [class.selected]="selectedStatus === 'pending'" (click)="selectCardType('pending')">
+          <i class="fas fa-clock fa-2x"></i>
+          <span>Pending</span>
+        </div>
+        <div class="card-option" [class.selected]="selectedStatus === 'shipped'" (click)="selectCardType('shipped')">
+          <i class="fas fa-shipping-fast fa-2x"></i>
+          <span>Shipped</span>
+        </div>
+        <div class="card-option" [class.selected]="selectedStatus === 'delivered'" (click)="selectCardType('delivered')">
+          <i class="fas fa-check-circle fa-2x"></i>
+          <span>Delivered</span>
+        </div>
+        <div class="card-option" [class.selected]="selectedStatus === 'cancelled'" (click)="selectCardType('cancelled')">
+          <i class="fas fa-ban fa-2x "></i>
+          <span>Cancelled</span>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary w-40 mt-3" (click)="updateStatus(selectedStatus)" [disabled]="disabled">
+        <i class="fas fa-edit"></i> Update
+      </button>
+    </div>
+    
+  }
+
+
+ 

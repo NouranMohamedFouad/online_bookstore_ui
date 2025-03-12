@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
   
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, HttpClientModule,],
+  imports: [RouterOutlet, HeaderComponent, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

@@ -15,7 +15,7 @@
   
       @for(book of order.books; track book.bookId)
       {      
-        <app-order-item [orderItem]="book"> </app-order-item>
+        <app-order-item [orderItem]="book" [userRole]="storedUser.role" [orderStatus]="order.status" [orderId]="order.orderId"> </app-order-item>
       }
     </div>
   </div>
