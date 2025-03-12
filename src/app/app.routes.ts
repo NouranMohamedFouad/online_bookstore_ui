@@ -30,7 +30,7 @@ export const routes: Routes = [
         title:'Add Book'
     },
     {
-        path: 'book-details/:id',
+        path: 'book-details/:bookId',
         component:BookDetailsComponent,
         title: 'BookDetails'
     },

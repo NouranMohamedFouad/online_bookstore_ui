@@ -6,12 +6,11 @@ import { CommonModule } from '@angular/common';
 import { CeilPipe } from '../../pipe/ceil.pipe';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
-import { ImageSliderComponent } from "../image-slider/image-slider.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CeilPipe, ImageSliderComponent],
+  imports: [CommonModule, CeilPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

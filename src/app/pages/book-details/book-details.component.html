@@ -1,6 +1,15 @@
 <div class="book-details-container container-fluid">
   <div class="book-list row g-4 m-auto d-flex align-items-center justify-content-center">
-    <div *ngFor="let book of books" class="book-card col-12 col-md-6 position-relative">
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading book details...</p>
+    </div>
+
+    <!-- Book details -->
+    <div *ngIf="!isLoading && book" class="book-card col-12 col-md-6 position-relative">
       <div class="label">Most Popular</div>
       <div *ngIf="book.stock > 0" class="in-stock-label position-absolute">In Stock</div>
       <h2 class="book-title">{{ book.title }}</h2>
@@ -43,6 +52,16 @@
           <small>Out of stock</small>
         </div>
       </div>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- No book found -->
+    <div *ngIf="!isLoading && !book" class="text-center">
+      <p class="text-danger">No book details found.</p>
     </div>
   </div>
 </div>

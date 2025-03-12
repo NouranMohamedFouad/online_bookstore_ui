@@ -40,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.loginService.getToken();
     console.log('Auth interceptor processing request to:', request.url);
     console.log('Token available:', token ? 'Yes' : 'No');
-    
+
     if (token) {
       try {
         // Verify token is valid by attempting to decode it
@@ -59,11 +59,11 @@ export class AuthInterceptor implements HttpInterceptor {
         if (isExpired) {
           console.warn('Token is expired, logging out');
           this.loginService.logout();
-          this.router.navigate(['/login'], { 
-            queryParams: { 
+          this.router.navigate(['/login'], {
+            queryParams: {
               returnUrl: this.router.url,
-              errorMsg: 'Your session has expired. Please log in again.' 
-            } 
+              errorMsg: 'Your session has expired. Please log in again.'
+            }
           });
           return throwError(() => new Error('Token expired'));
         }
@@ -76,48 +76,48 @@ export class AuthInterceptor implements HttpInterceptor {
         });
 
         console.log('Added auth header to request:', request.url);
-        
+
         return next.handle(authRequest).pipe(
           tap(event => {
             console.log('Response from API for', request.url, typeof event);
           }),
           catchError((error: HttpErrorResponse) => {
             console.error('API error:', request.url, error);
-            
+
             // Handle 401 Unauthorized errors
             if (error.status === 401) {
               console.log('401 Unauthorized error - logging out');
               // Token is invalid or expired
               this.loginService.logout();
-              this.router.navigate(['/login'], { 
-                queryParams: { 
+              this.router.navigate(['/login'], {
+                queryParams: {
                   returnUrl: this.router.url,
-                  errorMsg: 'Your session has expired. Please log in again.' 
-                } 
+                  errorMsg: 'Your session has expired. Please log in again.'
+                }
               });
             }
-            
+
             // Handle 403 Forbidden errors
             if (error.status === 403) {
               console.log('403 Forbidden error - insufficient permissions');
-              this.router.navigate(['/'], { 
-                queryParams: { 
-                  errorMsg: 'You don\'t have permission to access this resource' 
-                } 
+              this.router.navigate(['/'], {
+                queryParams: {
+                  errorMsg: 'You don\'t have permission to access this resource'
+                }
               });
             }
-            
+
             return throwError(() => error);
           })
         );
       } catch (error) {
         console.error('Token decode error:', error);
         this.loginService.logout();
-        this.router.navigate(['/login'], { 
-          queryParams: { 
+        this.router.navigate(['/login'], {
+          queryParams: {
             returnUrl: this.router.url,
-            errorMsg: 'Authentication error. Please log in again.' 
-          } 
+            errorMsg: 'Authentication error. Please log in again.'
+          }
         });
         return throwError(() => new Error('Invalid token format'));
       }
@@ -127,15 +127,15 @@ export class AuthInterceptor implements HttpInterceptor {
     console.warn('No token available for authenticated endpoint:', request.url);
     if (request.url.includes('/cart')) {
       console.error('Cart request without authentication - redirecting to login');
-      this.router.navigate(['/login'], { 
-        queryParams: { 
+      this.router.navigate(['/login'], {
+        queryParams: {
           returnUrl: this.router.url,
-          errorMsg: 'Please log in to access your cart' 
-        } 
+          errorMsg: 'Please log in to access your cart'
+        }
       });
       return throwError(() => new Error('Authentication required'));
     }
-    
+
     return next.handle(request);
   }
 }
