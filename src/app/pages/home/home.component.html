@@ -59,7 +59,7 @@
             <button *ngIf="userRole === 'admin'" class="btn btn-warning update-book" (click)="updateBook(book.bookId)">
               Update
             </button>
-            <button class="btn btn-primary view-details" (click)="viewBookDetails(book.bookId)">
+            <button *ngIf="userRole === 'customer'" class="btn btn-primary view-details" (click)="viewBookDetails(book.bookId)">
               View
             </button>
             <button *ngIf="userRole === 'admin'" class="btn btn-danger delete-book" (click)="deleteBook(book.bookId)">
