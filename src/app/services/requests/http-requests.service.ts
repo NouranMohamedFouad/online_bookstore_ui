@@ -1,8 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient ,HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CryptoHelper } from '../../helper/crypto-helper';
-
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +30,7 @@ export class HttpRequestsService {
   }
 
   getUserData() {
-    const userData = CryptoHelper.decrypt(localStorage.getItem('userData') || '');
+    const userData = localStorage.getItem('userData');
     if (userData) {
       return JSON.parse(userData);
     }
@@ -49,12 +47,15 @@ export class HttpRequestsService {
         flatNo: ''
       }
     };
-  }
+}
   getUserToken() {
-    const userToken = CryptoHelper.decrypt(localStorage.getItem('token') || '');
+    const userToken = localStorage.getItem('token');
     return userToken;
   }
   updateUserData(id: number, userData: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}/users/${id}`, userData);
+  }
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
 }
