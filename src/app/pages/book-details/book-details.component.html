@@ -9,12 +9,12 @@
     </div>
 
     <div>
-      <div class="team" id="team">
+      <div class="team" id="team" *ngIf="!isLoading && book">
         <h2 class="main-title text-center mb-5 position-relative">
           Book Details
           <span class="title-underline"></span> <!-- Underline element -->
         </h2>        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 w-100">
-          <div class="box" style="max-width: 350px;">
+          <div class="box" style="max-width: 350px;" >
             <div class="data d-flex align-items-center" *ngIf="!isLoading && book">
               <img [src]="book.image" alt="{{ book.title }}" class="img-fluid shadow-sm" />
               <div class="social d-flex flex-column gap-3 ms-3">
@@ -58,7 +58,7 @@
                       <strong>Description:</strong> {{ book.description }}
                     </div>
                   </div>
-                
+
                   <div class="book-price mb-3">
                     <span class="text-muted">Price For Buy Book: ${{ book.price }}</span>
                   </div>
@@ -93,8 +93,10 @@
       {{ errorMessage }}
     </div>
 
-    <div *ngIf="!isLoading && !book" class="text-center col-12">
-      <p class="text-danger">No book details found.</p>
+    <div *ngIf="!isLoading && !book" class="text-center col-6 mt-3 mt-md-5 p-3 p-md-4 bg-light rounded shadow-sm">
+      <p class="text-danger fs-6 fs-md-5 fw-medium mb-0">
+        <i class="fas fa-exclamation-circle me-2"></i> No book details found.
+      </p>
     </div>
   </div>
 </div>

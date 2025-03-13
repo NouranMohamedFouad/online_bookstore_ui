@@ -1,8 +1,9 @@
 <div class="reviews-container">
   <h2>Reviews for {{ book.title }}</h2>
 
+  <!-- Add a Review Section -->
   <div class="add-review-section">
-    <h3>Add a Review</h3>
+    <h3 class="text-center">Add a Review</h3>
     <form (ngSubmit)="submitReview()">
       <div class="form-group">
         <label for="addRating">Rating:</label>
@@ -25,56 +26,69 @@
           required
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Submit Review</button>
+      <button type="submit" class="button2">Submit Review</button>
     </form>
   </div>
 
+  <!-- Existing Reviews Section -->
   <div class="existing-reviews-section mt-5">
-    <h3>Existing Reviews</h3>
-    <ul>
-      <li *ngFor="let review of reviews">
-        <div class="review-item">
-          <p><strong>Rating:</strong> {{ review.rating }}</p>
-          <p><strong>Comment:</strong> {{ review.comment }}</p>
+    <h3 class="text-center">Existing Reviews</h3>
+    <table class="reviews-table">
+      <thead>
+        <tr>
+          <th>Rating</th>
+          <th>Comment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let review of reviews">
+          <td>{{ review.rating }}</td>
+          <td>{{ review.comment }}</td>
+          <td class="actions">
+            <button (click)="editReview(review)" class="btn">
+              <i class="fas fa-edit"></i> <!-- Edit Icon -->
+            </button>
+            <button (click)="deleteReview(review.reviewId)" class="btn">
+              <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-          <div class="review-actions">
-            <button (click)="editReview(review)" class="btn btn-warning bttn ">✏️ Edit</button>
-            <button (click)="deleteReview(review.reviewId)" class="btn btn-danger bttn">🗑️ Delete</button>
-          </div>
+    <!-- Edit Review Form (Hidden by Default) -->
+    <div *ngIf="editingReview" class="edit-review-section mt-4">
+      <h4>Edit Your Review</h4>
+      <form (ngSubmit)="updateReview()">
+        <div class="form-group">
+          <label for="editRating">Rating:</label>
+          <input
+            type="number"
+            id="editRating"
+            [(ngModel)]="editRating"
+            name="editRating"
+            min="1"
+            max="5"
+            required
+          />
         </div>
-
-        <div *ngIf="editingReview && editingReview._id === review._id" class="edit-review-section">
-          <h4>Edit Your Review</h4>
-          <form (ngSubmit)="updateReview()">
-            <div class="form-group">
-              <label for="editRating">Rating:</label>
-              <input
-                type="number"
-                id="editRating"
-                [(ngModel)]="editRating"
-                name="editRating"
-                min="1"
-                max="5"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="editComment">Comment:</label>
-              <textarea
-                id="editComment"
-                [(ngModel)]="editComment"
-                name="editComment"
-                required
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <button type="button" (click)="cancelEditing()" class="btn btn-secondary">Cancel</button>
-          </form>
+        <div class="form-group">
+          <label for="editComment">Comment:</label>
+          <textarea
+            id="editComment"
+            [(ngModel)]="editComment"
+            name="editComment"
+            required
+          ></textarea>
         </div>
-      </li>
-    </ul>
+        <button type="submit" class="btn me-3">Update</button>
+        <button type="button" (click)="cancelEditing()" class="btn">Cancel</button>
+      </form>
+    </div>
   </div>
 
+  <!-- Loading Message -->
   <ng-template #loading>
     <p class="loading">Loading book details...</p>
   </ng-template>

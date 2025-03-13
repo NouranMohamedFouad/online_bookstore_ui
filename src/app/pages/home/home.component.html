@@ -1,12 +1,7 @@
 <div class="carousel-container">
   <div class="search-container">
-    <input 
-      #searchInput 
-      type="text" 
-      class="search-bar" 
-      placeholder="Search books..." 
-      (keydown.enter)="onSearch(searchInput.value)" 
-    />
+    <input #searchInput type="text" class="search-bar" placeholder="Search books..."
+      (keydown.enter)="onSearch(searchInput.value)" />
   </div>
 
   <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -17,7 +12,7 @@
           <h3>{{ item.heading }}</h3>
           <p>{{ item.text }}</p>
         </div>
-      </div>      
+      </div>
     </div>
 
     <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
@@ -28,7 +23,7 @@
     </button>
 
     <div class="carousel-indicators">
-      <button *ngFor="let image of carouselImages; let i = index" type="button" data-bs-target="#bookCarousel" 
+      <button *ngFor="let image of carouselImages; let i = index" type="button" data-bs-target="#bookCarousel"
         [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
     </div>
   </div>
@@ -44,22 +39,23 @@
       <div class="card box shadow-lg">
         <div class="img-holder position-relative">
           <img [src]="book.image" [alt]="book.title" class="card-img-top img-fluid" />
-          
+
           <div class="card-overlay"></div>
-          
+
           <div class="card-badge badge text-white">{{ book.category }}</div>
         </div>
-      
+
         <div class="card-body text-center">
           <h5 class="card-title">{{ book.title }}</h5>
           <p class="card-author">Author: {{ book.author }}</p>
           <p class="card-price">Price: ${{ book.price }}</p>
-          
+
           <div class="button-group d-flex justify-content-center gap-2 mt-3">
             <button *ngIf="userRole === 'admin'" class="btn btn-warning update-book" (click)="updateBook(book.bookId)">
               Update
             </button>
-            <button class="btn btn-primary view-details" (click)="viewBookDetails(book.bookId)">
+            <button *ngIf="userRole === 'customer'||userRole === 'admin'" class="btn btn-primary view-details"
+              (click)="viewBookDetails(book.bookId)">
               View
             </button>
             <button *ngIf="userRole === 'admin'" class="btn btn-danger delete-book" (click)="deleteBook(book.bookId)">
@@ -67,22 +63,17 @@
             </button>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
   </div>
   <div class="pagination-container">
-    <button 
-      (click)="onPageChange(currentPage - 1)" 
-      [disabled]="currentPage === 1" 
-      class="btn pagination-btn prev">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="btn pagination-btn prev">
       « Previous
     </button>
-  
+
     <span class="page-info">Page {{ currentPage }} of {{ totalPages | ceil }}</span>
-  
-    <button 
-      (click)="onPageChange(currentPage + 1)" 
-      [disabled]="currentPage >= totalPages" 
+
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages"
       class="btn pagination-btn next">
       Next »
     </button>
