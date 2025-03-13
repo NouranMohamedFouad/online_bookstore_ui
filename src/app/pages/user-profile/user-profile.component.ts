@@ -187,7 +187,7 @@
           localStorage.clear();
           sessionStorage.clear();
           alert('Your account has been deleted.');
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('Error deleting account:', error);
