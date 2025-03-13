@@ -1,9 +1,10 @@
+import { User } from './../../interfaces/user';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpRequestsService } from '../../services/requests/http-requests.service';
-import { User } from '../../interfaces/user';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../auth/login/login.service';
 @Component({
   selector: 'app-user-profile',
   imports: [CommonModule, RouterModule, FormsModule],
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserProfileComponent {
   selectedSection: string = 'profile';
+  isDeleting = false;
   user: User = {
     name: '',
     email: '',
@@ -27,7 +29,7 @@ export class UserProfileComponent {
     newPassword: '',
     confirmPassword: '',
   };
-  constructor(private httpRequestsService:HttpRequestsService) {}
+  constructor(private httpRequestsService: HttpRequestsService, private router: Router,private loginService:LoginService) {}
 
   switchSection(section: string) {
     this.selectedSection = section;
@@ -54,11 +56,13 @@ export class UserProfileComponent {
 
   updateProfile() {
     const userId = this.user.userId;
+    console.log(this.user);
     if (userId === undefined) {
       console.error('User ID is undefined');
       return;
     }
     const userData = {
+      userId: this.user.userId,
       name: this.user.name,
       email: this.user.email,
       phone: this.user.phone,
@@ -69,6 +73,9 @@ export class UserProfileComponent {
       (response) => {
         console.log('Profile updated successfully:', response);
         alert('Profile updated!');
+          localStorage.removeItem('userData');
+          localStorage.setItem('userData', JSON.stringify(response));
+          window.location.href = "/user-profile";
       },
       (error) => {
         console.error('Error updating profile:', error);
@@ -102,5 +109,30 @@ export class UserProfileComponent {
         alert('Failed to update password.');
       }
     );
+  }
+  confirmDelete(){
+    this.isDeleting = true;
+    const userId = this.user.userId;
+    if (userId === undefined) {
+      console.error('User ID is undefined');
+      this.isDeleting = false;
+      return;
+    }
+
+
+    this.httpRequestsService.deleteUser(userId).subscribe({
+      next: (response) => {
+        console.log('Account deleted successfully:', response);
+        localStorage.clear();
+        sessionStorage.clear();
+
+        alert('Your account has been deleted.');
+      },
+      error: (error) => {
+        console.error('Error deleting account:', error);
+        alert('Failed to delete account. Please try again.');
+        this.isDeleting = false;
+      }
+    });
   }
 }
