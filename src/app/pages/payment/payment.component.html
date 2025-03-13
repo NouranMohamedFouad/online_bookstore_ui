@@ -212,9 +212,14 @@
           <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Order Summary</h5>
         </div>
         <div class="card-body p-4">
+          <!-- Add WebSocket connection status - only visible if debugging enabled -->
+          <div *ngIf="response" class="websocket-connected mb-3">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            Server responded: {{ response }}
+          </div>
           <div class="summary-item">
             <span>Subtotal</span>
-            <span>${{ cart?.total_price?.toFixed(2) ?? '0.00' }}</span>
+            <span>${{ cart.total_price.toFixed(2) }}</span>
           </div>
           <div class="summary-item">
             <span>Shipping</span>
@@ -233,7 +238,7 @@
           <button
             class="btn btn-dark w-100 mt-4"
             type="submit"
-            [disabled]="paymentForm?.invalid || !cart"
+            [disabled]="paymentForm.invalid || cart.items.length === 0"
             (click)="processPayment()"
           >
             <i class="bi bi-lock-fill me-2"></i> Pay Now
@@ -257,13 +262,16 @@
               aria-controls="cartItemsList"
             >
               <div class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-bag me-2"></i> {{ cart?.items?.length || 0 }} Items in Cart</span>
+                <span><i class="bi bi-bag me-2"></i> {{ cart.items.length }} Items in Cart</span>
                 <i class="bi bi-chevron-down"></i>
               </div>
             </button>
 
             <div class="collapse mt-2" id="cartItemsList">
-              <div class="cart-item-preview" *ngFor="let item of cart?.items">
+              <div *ngIf="cart.items.length === 0" class="text-center text-muted py-3">
+                Your cart is empty
+              </div>
+              <div class="cart-item-preview" *ngFor="let item of cart.items">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <div class="d-flex align-items-center">
                     <span class="item-quantity me-2">{{ item.quantity }}×</span>

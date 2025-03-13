@@ -9,7 +9,7 @@ import { CryptoHelper } from '../../helper/crypto-helper';
   providedIn: 'root',
 })
 export class LoginService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'https://2f5b52c0e356bf8c8225d94776a10676.serveo.net';
   private userSubject = new BehaviorSubject<User | null>(null);
 
   // Observable stream of the authenticated user
