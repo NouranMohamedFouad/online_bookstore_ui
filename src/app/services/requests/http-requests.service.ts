@@ -45,7 +45,7 @@ export class HttpRequestsService {
     };
   }
   getUserToken() {
-    const userToken = localStorage.getItem('token');
+    const userToken = CryptoHelper.decrypt(localStorage.getItem('token') || '');
     return userToken;
   }
   updateUserData(id: number, userData: any): Observable<any> {
