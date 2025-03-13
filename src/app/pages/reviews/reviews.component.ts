@@ -95,7 +95,7 @@ export class ReviewsComponent implements OnInit {
       bookId: this.book.bookId, // Include bookId
     };
 
-    this.http.post(`http://localhost:3000/reviews?&bookId=3`, newReview).subscribe({
+    this.http.post(`http://localhost:3000/reviews?bookId=${this.book.bookId}`, newReview).subscribe({
       next: () => {
         console.log('Review added successfully');
         this.resetAddForm(); // Reset the add review form
@@ -132,7 +132,7 @@ export class ReviewsComponent implements OnInit {
     this.http.patch(`http://localhost:3000/reviews/${this.editingReview.reviewId}`, updatedReview).subscribe({
       next: () => {
         console.log('Review updated successfully');
-        this.cancelEditing(); // Reset the edit review form
+        this.cancelEditing(); 
         this.fetchReviews(this.book.bookId); // Refresh the reviews list
       },
       error: (err) => {
@@ -141,12 +141,11 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // Delete a review
   deleteReview(reviewId: string): void {
     this.http.delete(`http://localhost:3000/reviews/${reviewId}`).subscribe({
       next: () => {
         console.log('Review deleted successfully');
-        this.fetchReviews(this.book.bookId); // Refresh the reviews list
+        this.fetchReviews(this.book.bookId); 
       },
       error: (err) => {
         console.error('Error deleting review:', err);
@@ -154,19 +153,16 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // Check if the review belongs to the current user
   isUserReview(review: any): boolean {
     return this.userId === review.userId;
   }
 
-  // Cancel the edit mode and reset the edit form
   cancelEditing(): void {
     this.editingReview = null;
     this.editRating = 0;
     this.editComment = '';
   }
 
-  // Reset the add review form
   resetAddForm(): void {
     this.addRating = 0;
     this.addComment = '';
