@@ -13,6 +13,8 @@ import { AddBookComponent } from './pages/add-book/add-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';
 import { authGuard } from './guards/auth.guard';
 import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation.component';
+import { isAdminGuard } from './guards/is-admin/is-admin.guard';
+import { isLogedinGuard } from './guards/is-logedin/is-logedin.guard';
 
 export const routes: Routes = [
     {
@@ -23,19 +25,25 @@ export const routes: Routes = [
     {
         path: 'update-book/:id',
         component: UpdateBookComponent,
-        title: 'Update Book'
+        title: 'Update Book',
+        canActivate: [isAdminGuard]
     },
     {
-        path:'add-book',
-        component:AddBookComponent,
-        title:'Add Book'
+        path: 'add-book',
+        component: AddBookComponent,
+        title: 'Add Book',
+        canActivate: [isAdminGuard]
     },
     {
         path: 'book-details/:bookId',
-        component:BookDetailsComponent,
+        component: BookDetailsComponent,
         title: 'BookDetails'
     },
-     { path: 'books/:id/reviews', component: ReviewsComponent },
+    {
+        path: 'books/:id/reviews',
+        component: ReviewsComponent,
+        canActivate: [isLogedinGuard]
+    },
     {
         path: 'register',
         component: RegisterComponent,
@@ -49,7 +57,8 @@ export const routes: Routes = [
     {
         path: 'user-profile',
         component: UserProfileComponent,
-        title: 'User Profile'
+        title: 'User Profile',
+        canActivate: [isLogedinGuard]
     },
     {
         path: 'cart',
@@ -66,18 +75,26 @@ export const routes: Routes = [
     {
         path: 'reviews/:bookId',
         component: ReviewsComponent,
-        title: 'Review'
+        title: 'Review',
+        canActivate: [isLogedinGuard]
+
     },
-    { path: 'books/:bookId', component: ReviewsComponent },
+    {
+        path: 'books/:bookId',
+        component: ReviewsComponent
+    },
     {
         path: 'orders',
         component: OrderHistoryComponent,
-        title: 'Orders History'
+        title: 'Orders History',
+        canActivate: [isLogedinGuard]
+
     },
     {
         path: 'order-confirmation',
         component: OrderConfirmationComponent,
-        title: 'Order Confirmation'
+        title: 'Order Confirmation',
+        canActivate: [isLogedinGuard]
     },
     {
         path: '**',

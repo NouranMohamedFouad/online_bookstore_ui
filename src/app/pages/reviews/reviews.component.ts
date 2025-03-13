@@ -98,7 +98,7 @@ export class ReviewsComponent implements OnInit {
       bookId: this.book.bookId, // Include bookId
     };
 
-    this.http.post(`http://localhost:3000/reviews`, newReview).subscribe({
+    this.http.post(`http://localhost:3000/reviews?&bookId=3`, newReview).subscribe({
       next: () => {
         console.log('Review added successfully');
         this.resetAddForm(); // Reset the add review form
