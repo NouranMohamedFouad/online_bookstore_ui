@@ -7,6 +7,7 @@ import { NgIf } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartRequestsService } from '../../services/requests/cart/cart-requests.service';
 import { LoginService } from '../../auth/login/login.service';
+import { BooksRequestsService } from '../../services/requests/books/books-requests.service';
 
 @Component({
   selector: 'app-book-details',
@@ -16,7 +17,7 @@ import { LoginService } from '../../auth/login/login.service';
   standalone: true
 })
 export class BookDetailsComponent implements OnInit {
-  book: Book | null = null; // Single book
+  book!: Book; // Single book
   apiUrl = ''; // API URL
 
   isLoading = false;
@@ -25,7 +26,8 @@ export class BookDetailsComponent implements OnInit {
   processingBookId: string | null = null; // Track which book is being added
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
+    private bookService: BooksRequestsService, 
     private router: Router,
     private route: ActivatedRoute, // Inject ActivatedRoute
     private cartService: CartRequestsService,
@@ -45,40 +47,10 @@ export class BookDetailsComponent implements OnInit {
   }
 
   fetchBooks(bookId: number): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    this.http.get<{ books: Book[] }>(`http://localhost:3000/books?bookId=${bookId}`)
-      .pipe(
-        catchError((error) => {
-          console.error('Error fetching book details:', error);
-          this.errorMessage = 'Failed to fetch book details. Please try again later.';
-          return of({ books: [] }); // Return an empty array of books
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          console.log('API Response:', response); // Debugging
-          if (response.books.length === 0) {
-            console.error('No book data returned from API.');
-            return;
-          }
-
-          // Find the book with the matching bookId
-          const foundBook = response.books.find((book) => book.bookId === bookId);
-          if (foundBook) {
-            this.book = foundBook;
-            console.log('Book assigned:', this.book); // Debugging
-          } else {
-            console.error('No matching book found for the given bookId.');
-          }
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Error fetching book details:', err);
-          this.isLoading = false;
-        },
-      });
+   this.bookService.getBookById(bookId).subscribe({
+     next: (book: Book) => this.book = book,
+     error: (err) => console.error('Error fetching book:', err)
+   });
   }
 
   navigateToReviews(bookId: number): void {

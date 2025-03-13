@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../interfaces/book';
+import { BooksRequestsService } from '../../services/requests/books/books-requests.service';
 
 @Component({
   selector: 'app-reviews',
@@ -18,8 +19,6 @@ export class ReviewsComponent implements OnInit {
   reviews: any[] = [];
   rating: number = 0;
   comment: string = '';
-
-
   // Add review form data
   addRating: number = 0;
   addComment: string = '';
@@ -32,10 +31,15 @@ export class ReviewsComponent implements OnInit {
   //userId: string | null = localStorage.getItem('userId'); // Logged-in user ID
   userId: string | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private httpRequestsService:  HttpRequestsService) {}
+  constructor(private http: HttpClient,
+    private route: ActivatedRoute,
+    private httpRequestsService: HttpRequestsService,
+    private booksRequestsService: BooksRequestsService) { }
 
   ngOnInit(): void {
-    this.userId = this.httpRequestsService.getUserData().userId;
+    console.log(this.httpRequestsService.getUserData());
+
+    this.userId = this.httpRequestsService.getUserData()._id;
     console.log('User ID from AuthService:', this.userId);
 
     const bookId = Number(this.route.snapshot.paramMap.get('bookId'));
@@ -51,21 +55,14 @@ export class ReviewsComponent implements OnInit {
 
   // Fetch book details from the API
   fetchBookDetails(bookId: number): void {
-    console.log('Fetching book details for bookId:', bookId);
-
-    this.http.get<Book>(`http://localhost:3000/books/${bookId}`).subscribe({
+    this.booksRequestsService.getBookById(bookId).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
-        if (!response) {
-          console.error('No book data returned from API.');
-          return;
-        }
         this.book = response;
         console.log('Book assigned:', this.book);
       },
       error: (err) => {
         console.error('Error fetching book details:', err);
-      },
+      }
     });
   }
 

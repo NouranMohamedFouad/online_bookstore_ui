@@ -8,15 +8,12 @@
       <p>Loading book details...</p>
     </div>
 
-    <!-- Book details -->
     <div>
-      <!-- Team Card -->
       <div class="team" id="team">
         <h2 class="main-title text-center mb-5 position-relative">
           Book Details
           <span class="title-underline"></span> <!-- Underline element -->
         </h2>        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 w-100">
-          <!-- Image and Icons -->
           <div class="box" style="max-width: 350px;">
             <div class="data d-flex align-items-center" *ngIf="!isLoading && book">
               <img [src]="book.image" alt="{{ book.title }}" class="img-fluid shadow-sm" />
@@ -37,10 +34,8 @@
             </div>
           </div>
 
-          <!-- Book Details Card -->
           <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border: none;">
             <div *ngIf="!isLoading && book" class="book-card position-relative">
-              <!-- Labels -->
               <div *ngIf="book.stock > 0" class="label-in-stock">
                 In Stock
               </div>
@@ -48,19 +43,16 @@
                 Out of Stock
               </div>
 
-              <!-- Card Content -->
               <div class="p-3">
-                <!-- Book Details -->
                 <div class="book-details">
                   <div class="book-info">
                     <h2 class="book-title fs-4 fw-bold mb-3">{{ book.title }}</h2>
                     <div class="book-author-category mb-3 d-flex flex-wrap gap-2">
                       <p class="text-muted mb-0">Author: {{ book.author }}</p>
                       <p class="text-muted mb-0">Category: {{ book.category }}</p>
-                      <p class="text-muted mb-0">Language: English</p>
                     </div>
                     <div class="book-rating mb-3">
-                      <strong>Average Rating:</strong> {{ book.average_rating }}
+                      <strong>Rating:</strong> {{ book.average_rating }}
                     </div>
                     <div class="book-description mb-3">
                       <strong>Description:</strong> {{ book.description }}
@@ -70,12 +62,8 @@
                   <div class="book-price mb-3">
                     <span class="text-muted">Price For Buy Book: ${{ book.price }}</span>
                   </div>
-                  <div class="book-price mb-4">
-                    <span class="text-muted">Price For Borrow Book: $150</span>
-                  </div>
                 </div>
 
-                <!-- Buttons -->
                 <div class="d-flex  align-items-center justify-content-around gap-3">
                   <button class="book-action-button btn  w-25 px-4 py-2"
                     (click)="navigateToReviews(book.bookId)">
@@ -101,12 +89,10 @@
       </div>
     </div>
 
-    <!-- Error message -->
     <div *ngIf="errorMessage" class="alert alert-danger col-12 col-md-8 col-lg-6">
       {{ errorMessage }}
     </div>
 
-    <!-- No book found -->
     <div *ngIf="!isLoading && !book" class="text-center col-12">
       <p class="text-danger">No book details found.</p>
     </div>

@@ -28,6 +28,7 @@ export class HttpRequestsService {
   getUserData() {
     const userData = CryptoHelper.decrypt(localStorage.getItem('userData') || '');
     if (userData) {
+      console.log(userData);
       return JSON.parse(userData);
     }
     return {

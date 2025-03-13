@@ -1,7 +1,6 @@
 <div class="reviews-container">
-  <h2>Reviews for {{ book?.title }}</h2>
+  <h2>Reviews for {{ book.title }}</h2>
 
-  <!-- Add Review Form -->
   <div class="add-review-section">
     <h3>Add a Review</h3>
     <form (ngSubmit)="submitReview()">
@@ -30,7 +29,6 @@
     </form>
   </div>
 
-  <!-- Existing Reviews -->
   <div class="existing-reviews-section mt-5">
     <h3>Existing Reviews</h3>
     <ul>
@@ -39,14 +37,12 @@
           <p><strong>Rating:</strong> {{ review.rating }}</p>
           <p><strong>Comment:</strong> {{ review.comment }}</p>
 
-          <!-- Edit & Delete Buttons -->
           <div class="review-actions">
             <button (click)="editReview(review)" class="btn btn-warning bttn ">✏️ Edit</button>
-            <button (click)="deleteReview(review._id)" class="btn btn-danger bttn">🗑️ Delete</button>
+            <button (click)="deleteReview(review.reviewId)" class="btn btn-danger bttn">🗑️ Delete</button>
           </div>
         </div>
 
-        <!-- Edit Review Form (Visible Only When Editing) -->
         <div *ngIf="editingReview && editingReview._id === review._id" class="edit-review-section">
           <h4>Edit Your Review</h4>
           <form (ngSubmit)="updateReview()">
@@ -79,7 +75,6 @@
     </ul>
   </div>
 
-  <!-- Loading Template -->
   <ng-template #loading>
     <p class="loading">Loading book details...</p>
   </ng-template>
