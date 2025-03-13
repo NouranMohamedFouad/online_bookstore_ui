@@ -1,119 +1,147 @@
 .form-container {
-    border: 1px solid rgba(217, 217, 217, 1);
-    padding: 20px;
-    border-radius: 10px;
-    background-color:  rgb(32,31,40);
-    margin: 30px auto;
-    width: 80%;
-    box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
-    margin-top: 50px;
-    padding-top: 20px;
-    font-weight: bold;
-    color: rgb(245, 243, 243);
-  }
-  button{
-    margin-top: 10px;
-    background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);
-  }
-  .center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  a{
-    background: linear-gradient(45deg, #f00f7f, #418ce2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration:underline;
-    position: relative;
-  }
-  a::after {
-    content: ''; 
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(45deg, #f00f7f, #418ce2);
-  }
-  .col-md-4{
-    margin-top: 15px;
-  }
-  h2{
-    background: linear-gradient(45deg, #D61F6F, #418ce2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration:underline;
-    position: relative;
-  
-    text-shadow: 2px 2px 5px rgba(255, 0, 127, 0.5),
-    -2px -2px 5px rgba(65, 140, 226, 0.5);
-  
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-  input{
-    background-color: rgba(248, 247, 247, 0.068);
-    color: white;
-    font-size: medium;
-    font-weight: 600;
-    border: 1px solid rgba(217, 217, 217, 0.5);
-  }
-  
-  input:focus {
-    background-color: rgba(248, 247, 247, 0.068) !important;
-    color: white !important;
-    outline: none !important;
-    border: 1px solid #D61F6F;
-  }
-  textarea, select {
-    background-color: rgba(248, 247, 247, 0.068);
-    color: white;
-    font-size: medium;
-    font-weight: 600;
-    border: 1px solid rgba(217, 217, 217, 0.5);
-    padding: 8px;
-    border-radius: 5px;
-    width: 100%;
+  border: 1px solid rgba(217, 217, 217, 1);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1c1615;
+  /* Dark brown from the gradient */
+  margin: 30px auto;
+  width: 80%;
+  box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
+  margin-top: 50px;
+  padding-top: 20px;
+  font-weight: bold;
+  color: #f0b878;
+  /* Light beige from the gradient */
 }
 
-textarea:focus, select:focus {
-    background-color: rgba(248, 247, 247, 0.068) !important;
-    color: white !important;
-    outline: none !important;
-    border: 1px solid #D61F6F;
+button {
+  margin-top: 10px;
+  background: linear-gradient(270deg, #9b4f37 11.24%, #3a2620 99.99%);
+  /* Warm brown gradient */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background: linear-gradient(270deg, #7b3c2b 11.24%, #2a1d18 99.99%);
+  /* Darker warm brown gradient */
+  transform: scale(1.05);
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+a {
+  background: linear-gradient(45deg, #9b4f37, #f0b878);
+  /* Warm brown to beige gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: underline;
+  position: relative;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(45deg, #9b4f37, #f0b878);
+  /* Warm brown to beige gradient */
+}
+
+.col-md-4 {
+  margin-top: 15px;
+}
+
+h2 {
+  background: linear-gradient(45deg, #9b4f37, #f0b878);
+  /* Warm brown to beige gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: underline;
+  position: relative;
+  text-shadow: 2px 2px 5px rgba(155, 79, 55, 0.5),
+    -2px -2px 5px rgba(240, 184, 120, 0.5);
+  /* Warm brown and beige shadow */
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+input {
+  background-color: rgba(248, 247, 247, 0.068);
+  color: #f0b878;
+  /* Light beige text */
+  font-size: medium;
+  font-weight: 600;
+  border: 1px solid rgba(217, 217, 217, 0.5);
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+input:focus {
+  background-color: rgba(248, 247, 247, 0.068) !important;
+  color: #f0b878 !important;
+  /* Light beige text */
+  outline: none !important;
+  border: 1px solid #9b4f37;
+  /* Warm brown border on focus */
+}
+
+textarea,
+select {
+  background-color: rgba(248, 247, 247, 0.068);
+  color: #f0b878;
+  /* Light beige text */
+  font-size: medium;
+  font-weight: 600;
+  border: 1px solid rgba(217, 217, 217, 0.5);
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+textarea:focus,
+select:focus {
+  background-color: rgba(248, 247, 247, 0.068) !important;
+  color: #f0b878 !important;
+  /* Light beige text */
+  outline: none !important;
+  border: 1px solid #9b4f37;
+  /* Warm brown border on focus */
 }
 
 select {
-    background-color: rgba(248, 247, 247, 0.068);
-    color: white;
-    font-size: medium;
-    font-weight: 600;
-    border: 1px solid rgba(217, 217, 217, 0.5);
-    padding: 8px;
-    border-radius: 5px;
-    width: 100%;
-    appearance: none; /* Removes default styling */
+  appearance: none;
 }
 
-/* Style for options */
 option {
-    background-color: rgb(32,31,40);
-    color: white;
+  background-color: #1c1615;
+  /* Dark brown background for options */
+  color: #f0b878;
+  /* Light beige text */
 }
 
-/* Focus effect */
 select:focus {
-    background-color: rgba(248, 247, 247, 0.068) !important;
-    color: white !important;
-    outline: none !important;
-    border: 1px solid #D61F6F;
+  background-color: rgba(248, 247, 247, 0.068) !important;
+  color: #f0b878 !important;
+  /* Light beige text */
+  outline: none !important;
+  border: 1px solid #9b4f37;
+  /* Warm brown border on focus */
 }
-

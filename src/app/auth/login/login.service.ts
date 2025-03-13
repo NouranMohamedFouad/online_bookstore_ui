@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { User, AuthResponse, LoginRequest } from '../../interfaces/user';
 import { Router } from '@angular/router';
+import { CryptoHelper } from '../../helper/crypto-helper';
 
 @Injectable({
   providedIn: 'root',
@@ -92,17 +93,17 @@ export class LoginService {
   getToken(): string | null {
     try {
       // Check if token has expired
-      const expiresAt = localStorage.getItem('tokenExpires');
-      const token = localStorage.getItem('token');
-      
+      const expiresAt = CryptoHelper.decrypt(localStorage.getItem('tokenExpires') || '');
+      const token = CryptoHelper.decrypt(localStorage.getItem('token') || '');
+
       if (!token || !expiresAt) {
         console.warn('No token or expiration found in localStorage');
         return null;
       }
-      
+
       const expirationDate = new Date(expiresAt);
       const now = new Date();
-      
+
       // Add logging to help debug token expiration issues
       console.log('Token expiration check:', {
         expirationTimestamp: expirationDate.getTime(),
@@ -110,14 +111,14 @@ export class LoginService {
         expiresIn: Math.floor((expirationDate.getTime() - now.getTime()) / 1000) + ' seconds',
         isExpired: expirationDate < now
       });
-      
+
       if (expirationDate < now) {
         // Token has expired
         console.warn('Token has expired, clearing user data');
         this.clearUserData();
         return null;
       }
-      
+
       return token;
     } catch (error) {
       console.error('Error retrieving token:', error);
@@ -147,9 +148,9 @@ export class LoginService {
    * Load user data from localStorage on app initialization
    */
   private loadUserFromStorage(): void {
-    const userData = localStorage.getItem('userData');
-    const token = localStorage.getItem('token');
-    const tokenExpires = localStorage.getItem('tokenExpires');
+    const userData = CryptoHelper.decrypt(localStorage.getItem('userData') || '');
+    const token = CryptoHelper.decrypt(localStorage.getItem('token') || '');
+    const tokenExpires = CryptoHelper.decrypt(localStorage.getItem('tokenExpires') || '');
 
     if (!userData || !token || !tokenExpires) {
       return;
@@ -191,9 +192,12 @@ export class LoginService {
     const expirationDate = new Date(new Date().getTime() + expiresInMs);
 
     // Store user data and token
-    localStorage.setItem('userData', JSON.stringify(user));
-    localStorage.setItem('token', token);
-    localStorage.setItem('tokenExpires', expirationDate.toISOString());
+    // localStorage.setItem('userData', JSON.stringify(user));
+    // localStorage.setItem('token', token);
+    // localStorage.setItem('tokenExpires', expirationDate.toISOString());
+    localStorage.setItem('userData', CryptoHelper.encrypt(JSON.stringify(user)));
+    localStorage.setItem('token', CryptoHelper.encrypt(token));
+    localStorage.setItem('tokenExpires', CryptoHelper.encrypt(expirationDate.toISOString()));
 
     console.log('Authentication successful, token stored', {
       user: user.name,

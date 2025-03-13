@@ -16,10 +16,31 @@ import { User } from '../../interfaces/user';
 })
 export class HomeComponent implements OnInit {
   carouselImages = [
-    'assets/images/th (1).jpeg',
-    'assets/images/th (2).jpeg',
-    'assets/images/th (3).jpeg',
-    'assets/images/th (4).jpeg'
+    {
+      heading: "Unlock Your Next Adventure",
+      text :'Dive into worlds unknown and let stories ignite your imagination',
+      image :'assets/images/th (5).jpeg'
+    },
+    {
+      heading: "Explore, Dream, Read!",
+      text :'Handpicked books to take you on unforgettable journeys.',
+      image :'assets/images/th (6).jpeg'
+    },
+    {
+      heading: "Turn the Page, Begin the Magic",
+      text :' Every book holds a secret—are you ready to discover it?',
+      image :'assets/images/th (7).jpeg'
+    },
+    {
+      heading: "Featured Books",
+      text :' Curated stories to inspire and captivate.',
+      image :'assets/images/th (8).jpeg'
+    },
+    {
+      heading: "Your Next Favorite Book Awaits!",
+      text :'Discover hidden gems and timeless classics today.',
+      image :'assets/images/th (9).jpeg'
+    }
   ];
   books: Book[] = [];
   currentPage: number = 1;
