@@ -335,3 +335,33 @@ hr {
   font-weight: 500;
   color: #111827;
 }
+
+.websocket-error {
+  background-color: rgba(255, 235, 235, 0.8);
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.websocket-connecting {
+  background-color: rgba(255, 248, 225, 0.8);
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.websocket-connected {
+  background-color: rgba(212, 237, 218, 0.8);
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}

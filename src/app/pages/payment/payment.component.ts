@@ -19,7 +19,11 @@ export class PaymentComponent implements OnInit {
   loading: boolean = false;
   error: string | null = null;
   selectedCardType: string = 'visa';
-  cart: Cart | null = null;
+  cart: Cart = {
+    userId: '',
+    items: [],
+    total_price: 0
+  };
   response: string='';
 
   
@@ -35,9 +39,17 @@ export class PaymentComponent implements OnInit {
     this.initForm();
     this.loadCartData();
 
-    this.websocketService.socket.onmessage = (event) => {
-      this.response = event.data;
-    };
+    // Handle WebSocket messages if the connection is available
+    try {
+      if (this.websocketService.socket) {
+        this.websocketService.socket.onmessage = (event) => {
+          this.response = event.data;
+          console.log('Payment component received WebSocket message:', event.data);
+        };
+      }
+    } catch (error) {
+      console.error('Error setting up WebSocket listener in payment component:', error);
+    }
   }
   
   loadCartData(): void {
@@ -47,7 +59,12 @@ export class PaymentComponent implements OnInit {
     this.cartService.getCart().subscribe({
       next: (cart: Cart) => {
         console.log('Cart loaded in payment component with populated book details:', cart);
-        this.cart = cart;
+        if (cart && cart.items) {
+          this.cart = cart;
+        } else {
+          this.error = 'Your cart appears to be empty. Please add items to your cart before proceeding to payment.';
+          console.warn('Empty or invalid cart data received:', cart);
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -149,14 +166,25 @@ export class PaymentComponent implements OnInit {
     
   }
   sendMessage() {
+    if (!this.cart) {
+      console.warn('Cannot send order message: Cart is empty or undefined');
+      return;
+    }
 
     const orderDetails = {
-      totalPrice: this.cart?.total_price,
+      totalPrice: this.cart.total_price,
+      itemCount: this.cart.items.length,
+      timestamp: new Date().toISOString()
     };
-    const data = {
-      order: orderDetails
-    };
-    this.websocketService.sendMessage("send to server");
+    
+    try {
+      const success = this.websocketService.sendMessage(JSON.stringify(orderDetails));
+      if (!success) {
+        console.warn('Failed to send order details via WebSocket');
+      }
+    } catch (error) {
+      console.error('Error sending order details via WebSocket:', error);
+    }
   }
   
   
@@ -171,13 +199,13 @@ export class PaymentComponent implements OnInit {
   
   // Calculate tax (for demo purposes - 8%)
   calculateTax(): number {
-    if (!this.cart) return 0;
+    if (!this.cart || !this.cart.total_price) return 0;
     return parseFloat((this.cart.total_price * 0.08).toFixed(2));
   }
   
   // Get total with tax
   getTotal(): number {
-    if (!this.cart) return 0;
+    if (!this.cart || !this.cart.total_price) return 0;
     return parseFloat((this.cart.total_price + this.calculateTax()).toFixed(2));
   }
 
