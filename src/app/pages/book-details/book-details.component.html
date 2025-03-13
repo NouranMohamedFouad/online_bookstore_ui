@@ -9,58 +9,105 @@
     </div>
 
     <!-- Book details -->
-    <div *ngIf="!isLoading && book" class="book-card col-12 col-md-6 position-relative">
-      <div class="label">Most Popular</div>
-      <div *ngIf="book.stock > 0" class="in-stock-label position-absolute">In Stock</div>
-      <h2 class="book-title">{{ book.title }}</h2>
-      <img class="book-image img-fluid rounded-circle" [src]="book.image" alt="{{ book.title }}" />
-      <div class="book-price">
-        <span class="amount">${{ book.price }}</span>
-      </div>
-      <ul class="book-details-list list-unstyled">
-        <li><strong>Author:</strong> {{ book.author }}</li>
-        <li><strong>Category:</strong> {{ book.category }}</li>
-        <li><strong>Stock:</strong> {{ book.stock }}</li>
-        <li><strong>Description:</strong> {{ book.description }}</li>
-        <li><strong>Average Rating:</strong> {{ book.average_rating }}</li>
-      </ul>
-      <div class="d-flex justify-content-end gap-3">
-        <button class="book-action-button btn btn-primary px-4 py-2 shadow-sm rounded-pill"
-          (click)="navigateToReviews(book.bookId)">Add Review</button>
-        
-        <!-- Add to Cart Button -->
-        <button 
-          class="book-action-button btn btn-success px-4 py-2 shadow-sm rounded-pill"
-          (click)="addToCart(book._id)"
-          [disabled]="!canAddToCart(book)">
-          
-          <!-- Normal state -->
-          <span *ngIf="!isBookBeingAdded(book._id)">
-            <i class="bi bi-cart-plus me-1"></i>
-            Add to Cart
-          </span>
-          
-          <!-- Loading state -->
-          <span *ngIf="isBookBeingAdded(book._id)">
-            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Adding...
-          </span>
-        </button>
-        
-        <!-- Out of stock message -->
-        <div *ngIf="book.stock <= 0" class="text-danger mt-2">
-          <small>Out of stock</small>
+    <div>
+      <!-- Team Card -->
+      <div class="team" id="team">
+        <h2 class="main-title text-center mb-5 position-relative">
+          Book Details
+          <span class="title-underline"></span> <!-- Underline element -->
+        </h2>        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 w-100">
+          <!-- Image and Icons -->
+          <div class="box" style="max-width: 350px;">
+            <div class="data d-flex align-items-center" *ngIf="!isLoading && book">
+              <img [src]="book.image" alt="{{ book.title }}" class="img-fluid shadow-sm" />
+              <div class="social d-flex flex-column gap-3 ms-3">
+                <a href="#" class="text-decoration-none">
+                  <i class="fas fa-file-pdf"></i> <!-- PDF Icon -->
+                </a>
+                <a href="#" class="text-decoration-none">
+                  <i class="fas fa-file-alt"></i> <!-- Document Icon -->
+                </a>
+                <a href="#" class="text-decoration-none">
+                  <i class="fas fa-file-excel"></i> <!-- Excel Icon -->
+                </a>
+                <a href="#" class="text-decoration-none">
+                  <i class="fas fa-file-image"></i> <!-- Image Icon -->
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Book Details Card -->
+          <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border: none;">
+            <div *ngIf="!isLoading && book" class="book-card position-relative">
+              <!-- Labels -->
+              <div *ngIf="book.stock > 0" class="label-in-stock">
+                In Stock
+              </div>
+              <div *ngIf="book.stock <= 0" class="label-out-of-stock">
+                Out of Stock
+              </div>
+
+              <!-- Card Content -->
+              <div class="p-3">
+                <!-- Book Details -->
+                <div class="book-details">
+                  <div class="book-info">
+                    <h2 class="book-title fs-4 fw-bold mb-3">{{ book.title }}</h2>
+                    <div class="book-author-category mb-3 d-flex flex-wrap gap-2">
+                      <p class="text-muted mb-0">Author: {{ book.author }}</p>
+                      <p class="text-muted mb-0">Category: {{ book.category }}</p>
+                      <p class="text-muted mb-0">Language: English</p>
+                    </div>
+                    <div class="book-rating mb-3">
+                      <strong>Average Rating:</strong> {{ book.average_rating }}
+                    </div>
+                    <div class="book-description mb-3">
+                      <strong>Description:</strong> {{ book.description }}
+                    </div>
+                  </div>
+                
+                  <div class="book-price mb-3">
+                    <span class="text-muted">Price For Buy Book: ${{ book.price }}</span>
+                  </div>
+                  <div class="book-price mb-4">
+                    <span class="text-muted">Price For Borrow Book: $150</span>
+                  </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex  align-items-center justify-content-around gap-3">
+                  <button class="book-action-button btn  w-25 px-4 py-2"
+                    (click)="navigateToReviews(book.bookId)">
+                    Add Review
+                  </button>
+
+                  <button class="book-action-button btn btn-outline-success w-25 px-4 py-2"
+                    (click)="addToCart(book._id)" [disabled]="!canAddToCart(book)">
+                    <span *ngIf="!isBookBeingAdded(book._id)">
+                      <i class="bi bi-cart-plus me-1"></i>
+                      Add to Cart
+                    </span>
+                    <span *ngIf="isBookBeingAdded(book._id)">
+                      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Adding...
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Error message -->
-    <div *ngIf="errorMessage" class="alert alert-danger">
+    <div *ngIf="errorMessage" class="alert alert-danger col-12 col-md-8 col-lg-6">
       {{ errorMessage }}
     </div>
 
     <!-- No book found -->
-    <div *ngIf="!isLoading && !book" class="text-center">
+    <div *ngIf="!isLoading && !book" class="text-center col-12">
       <p class="text-danger">No book details found.</p>
     </div>
   </div>

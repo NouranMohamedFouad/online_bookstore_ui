@@ -1,212 +1,369 @@
-:root {
-  --main-transition: 0.3s;
-  --main-padding-top: 100px;
-  --main-padding-bottom: 100px;
-  --main-color: #D61F6F;
-}
 
-.book-details-container {
+.team {
+  padding-top: var(--main-padding-top);
+  padding-bottom: var(--main-padding-bottom);
   position: relative;
 }
-
-.book-list {
-  display: flex;
-  flex-wrap: wrap;
+.team .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
 }
-
-.book-card {
+.team .box {
   position: relative;
-  box-shadow: 0 12px 20px 0 rgb(0 0 0 / 13%), 0 2px 4px 0 rgb(0 0 0 / 12%);
-  transition: var(--main-transition);
-  background: rgba(26, 42, 57, 1);
-  text-align: center;
-  z-index: 1;
-  border-bottom: 3px solid rgba(217, 217, 217, 1);
-  padding: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  -webkit-transition: var(--main-transition);
-  -moz-transition: var(--main-transition);
-  -ms-transition: var(--main-transition);
-  -o-transition: var(--main-transition);
+  background-color: #e4e4e4;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+
 }
 
-.book-card::before,
-.book-card::after {
-  content: "";
-  width: 0;
-  height: 50%;
-  background-color: #00000049;
-  position: absolute;
+
+  .team .box::before, .team .box::after {
+    content: "";
+    background-color: #e4e4e4;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 10px;
+    transition: var(--main-transition);
+  }
+
+.team .box::before {
+  width: calc(100% - 60px);
+  background-color: #e4e4e4;
+  
+  z-index: -2;
+  background-color: transparent; /* Adjust as needed */
+}
+
+.team .box::after {
   z-index: -1;
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
+  background-color: #e4e4e4;
+  width: 0;
 }
 
-.book-card::before {
-  left: 0;
+.team .box:hover::after {
+  width: calc(100% - 60px);
+}
+.team .box .data {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+.team .box .data img {
+  width: calc(100% - 60px);
+  transition: 0.4s;
+  border-radius: 50px;
+  transform: translateX(-40px);
+  -webkit-transform: translateX(-40px);
+  -moz-transform: translateX(-40px);
+  -ms-transform: translateX(-40px);
+  -o-transform: translateX(-40px);
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  -webkit-transition: 0.4s;
+  -moz-transition: 0.4s;
+  -ms-transition: 0.4s;
+  -o-transition: 0.4s;
+}
+.team .box:hover img {
+  filter: grayscale(100%);
+
+}
+.social a i {
+  font-size: 24px; /* Adjust icon size */
+  color: #555; /* Default icon color */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+/* Book Details Styling */
+
+
+
+
+.social a:hover i {
+  color: #ccc; /* Change color on hover */
+  transform: scale(1.2); /* Slightly enlarge on hover */
+}
+.team .box .data .social {
+ padding-right: 80px;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.team .box .data .social i {
+  color: #777;
+  transition: var(--main-transition);
+}
+.team .box .info {
+  padding-left: 80px;
+}
+.team .box .info h3 {
+  margin-bottom: 0;
+  color: var(--main-color);
+  font-size: 22px;
+  transition: var(--main-transition);
+}
+.team .box .info p {
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+.team .box:hover .info h3 {
+  color: #777;
+}
+/* Add these styles to your existing CSS */
+
+/* Card Styling */
+
+
+.card {
+  border: none;
+  border-radius: 30px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  animation: float 4s ease-in-out infinite; /* Floating animation */
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+}
+.btn{
+  border: 2px solid #ccc;
+}
+/* Main Title Styling */
+.main-title {
+  font-size: 2.5rem; /* Large font size */
+  font-weight: bold;
+  color: #333; /* Dark text color */
+  text-transform: uppercase; /* Uppercase text */
+  position: relative;
+  display: inline-block; 
+  text-align: center;/* Ensure the underline fits the text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Underline Styling */
+.title-underline {
+  position: absolute;
+  bottom: -10px; /* Position below the text */
+  left: 50%; /* Center the underline */
+  transform: translateX(-50%); /* Center the underline */
+  width: 30px; /* Initial width of the underline */
+  height: 4px; /* Thickness of the underline */
+  background: linear-gradient(90deg, #444, #ccc); /* Gradient color */
+  border-radius: 2px; /* Rounded corners */
+  animation: underline-grow 2s infinite alternate; /* Animation */
+}
+
+/* Underline Animation */
+@keyframes underline-grow {
+  0% {
+    width: 0px; /* Start with a small width */
+  }
+  100% {
+    width: 20%; /* Expand to full width */
+  }
+}
+
+/* Hover Effect */
+.main-title:hover .title-underline {
+  background: linear-gradient(90deg, #ccc, #fff); /* Reverse gradient on hover */
+  animation: underline-grow 1s infinite alternate; /* Faster animation on hover */
+}
+
+/* Gradient Border Effect */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ccc, #e4e4e4, #fff, #444);
+  border-radius: 32px; /* Slightly larger to cover the card */
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1; /* Show gradient border on hover */
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Rotating Glow Effect */
+.card::after {
+  content: "";
+  position: absolute;
   top: 0;
-}
-
-.book-card::after {
+  left: 0;
   right: 0;
   bottom: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 70%);
+  border-radius: 30px;
+  z-index: -1;
+  opacity: 0;
+  animation: rotate-glow 6s linear infinite;
+  transition: opacity 0.3s ease;
 }
 
-.book-card:hover::before,
-.book-card:hover::after {
-  width: 100%;
+.card:hover::after {
+  opacity: 1; /* Show rotating glow on hover */
 }
 
+@keyframes rotate-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
+/* Hover Effects */
+.card:hover {
+  transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 255, 255, 0.8); /* Glowing shadow */
+  animation: none; /* Disable floating animation on hover */
+}
 
+/* Color-Changing Shadow */
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 0 20px #ccc; /* Red shadow */
+  }
+  25% {
+    box-shadow: 0 0 20px #e4e4e4; /* Blue shadow */
+  }
+  50% {
+    box-shadow: 0 0 20px #777; /* Green shadow */
+  }
+  75% {
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.6); /* Yellow shadow */
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.6); /* Red shadow */
+  }
+}
 
-
-.in-stock-label {
+.card:hover {
+  animation: shadow-pulse 3s infinite; /* Color-changing shadow on hover */
+}
+/* Labels */
+.label-most-popular,
+.label-in-stock,
+.label-out-of-stock {
   position: absolute;
   top: 10px;
-  left: -30px;
-  background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);
-  color: white;
-  font-weight: bold;
-  padding: 5px 30px;
-  transform: rotate(-45deg);
+  z-index: 1;
   font-size: 14px;
-  z-index: 2;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.label-in-stock {
+  right: 10px;
+  background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+  color: #fff;
+}
+
+.label-out-of-stock {
+  right: 10px;
+  background: linear-gradient(135deg, #dc3545, #c82333); /* Dark Red gradient */
+  color: #fff;
+  animation: shake 0.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Book Details List */
+/* Consistent Font Sizes and Margins */
+.book-details {
+  font-family: "Cairo", sans-serif;
+  color: #333;
 }
 
 .book-title {
+  font-size: 24px; /* Title font size */
   font-weight: bold;
-  margin: 30px 0;
-  font-size: 25px;
-  letter-spacing: -1px;
-  color: white;
+  margin-bottom: 16px; /* Consistent margin */
 }
 
-.book-image {
-  width: 250px;
-  height: 250px;
-  margin-bottom: 30px;
-  border: 3px solid rgba(217, 217, 217, 1);
-  border-radius: 50%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.book-author-category p,
+.book-rating,
+.book-description,
+.book-price {
+  font-size: 16px; /* Consistent font size */
+  margin-bottom: 16px; /* Consistent margin */
 }
 
-.book-image:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+.book-author-category p,
+.book-rating strong,
+.book-description strong {
+  font-weight: 600; /* Bold for strong elements */
 }
 
 .book-price {
-  margin-bottom: 20px;
-  color: white;
-}
-
-.book-price .amount {
-  display: block;
-  font-size: 60px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.book-details-list {
-  text-align: left;
-}
-
-.book-details-list li {
-  padding: 20px;
-  border-top: 1px solid rgba(217, 217, 217, 0.2);
-  color: #ccc;
-  list-style-type: none;
-  text-transform: capitalize;
-  font-size: 20px;
-}
-
-.book-details-list li::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  margin-right: 10px;
-}
-
-.book-details-list li:nth-child(1)::before {
-  content: "\f007";
-}
-
-.book-details-list li:nth-child(2)::before {
-  content: "\f15c";
-}
-
-.book-details-list li:nth-child(3)::before {
-  content: "\f291";
-}
-
-.book-details-list li:nth-child(4)::before {
-  content: "\f15c";
-}
-
-.book-details-list li:hover {
-  color: #D61F6F;
-  transform: translateX(3px);
-  cursor: pointer;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.book-action-button {
-  display: block;
-  width: fit-content;
-  border: none;
-  color: white;
-  margin: 30px auto 40px;
-  padding: 15px 20px;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: var(--main-transition);
-  background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);
-}
-
-.book-action-button:hover {
-  opacity: 0.9;
-  transform: translateY(-5px);
-}
-
-.book-card.popular {
-  top: -20px;
-}
-
-.book-card .label {
-  position: absolute;
-  writing-mode: vertical-rl;
-  color: white;
-
-  padding: 10px 10px 35px 10px;
-  font-size: 18px;
-  right: 20px;
-  width: 40px;
-  background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.206374) 99.99%, rgba(112, 5, 173, 0) 100%);
-  font-weight: bold;
-
-  z-index: 2;
- 
-}
-
-.book-card .label::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  border-style: solid;
-  border-color: transparent transparent white;
-  border-width: 20px;
-}
-.stars {
-  display: inline-block;
-  font-size: 18px;
-}
-
-.stars i {
-  margin-right: 3px; /* Adjust spacing between stars */
+  color: #555; /* Muted color for prices */
 }

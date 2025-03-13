@@ -21,7 +21,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "animate.css": "^4.1.1",
     "book-store-mean": "file:",
-    "bootstrap": "^5.3.0",
+    "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
     "ngx-wow": "^2.0.1",

@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Card Number -->
             <div class="mb-3">
               <label for="cardNumber" class="form-label">Card Number</label>
@@ -58,10 +58,10 @@
                 <span class="input-group-text">
                   <i class="bi bi-credit-card"></i>
                 </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="cardNumber" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardNumber"
                   formControlName="cardNumber"
                   placeholder="XXXX XXXX XXXX XXXX"
                 >
@@ -70,15 +70,15 @@
                 Please enter a valid card number
               </div>
             </div>
-            
+
             <div class="row">
               <!-- Card Holder Name -->
               <div class="col-md-6 mb-3">
                 <label for="cardHolderName" class="form-label">Card Holder Name</label>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="cardHolderName" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardHolderName"
                   formControlName="cardHolderName"
                   placeholder="Name as shown on card"
                 >
@@ -86,14 +86,14 @@
                   Card holder name is required
                 </div>
               </div>
-              
+
               <!-- Expiration Date -->
               <div class="col-md-3 mb-3">
                 <label for="expiryDate" class="form-label">Expiry Date</label>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="expiryDate" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="expiryDate"
                   formControlName="expiryDate"
                   placeholder="MM/YY"
                 >
@@ -101,15 +101,15 @@
                   Invalid expiry date
                 </div>
               </div>
-              
+
               <!-- CVV -->
               <div class="col-md-3 mb-3">
                 <label for="cvv" class="form-label">CVV</label>
                 <div class="input-group">
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="cvv" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cvv"
                     formControlName="cvv"
                     placeholder="XXX"
                   >
@@ -122,14 +122,14 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Billing Address -->
             <div class="mb-3 mt-4">
               <div class="form-check">
-                <input 
-                  class="form-check-input" 
-                  type="checkbox" 
-                  id="sameAsShipping" 
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="sameAsShipping"
                   formControlName="sameAsShipping"
                 >
                 <label class="form-check-label" for="sameAsShipping">
@@ -137,52 +137,52 @@
                 </label>
               </div>
             </div>
-            
+
             <!-- Billing Address Fields (shown only if checkbox is unchecked) -->
             <div *ngIf="!paymentForm.get('sameAsShipping')?.value" class="billing-address animate-fade-in">
               <h6 class="mb-3"><i class="bi bi-geo-alt me-2"></i> Billing Address</h6>
-              
+
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="streetAddress" class="form-label">Street Address</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="streetAddress" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="streetAddress"
                     formControlName="streetAddress"
                   >
                 </div>
-                
+
                 <div class="col-md-6 mb-3">
                   <label for="city" class="form-label">City</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="city" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
                     formControlName="city"
                   >
                 </div>
-                
+
                 <div class="col-md-4 mb-3">
                   <label for="state" class="form-label">State/Province</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="state" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="state"
                     formControlName="state"
                   >
                 </div>
-                
+
                 <div class="col-md-4 mb-3">
                   <label for="zipCode" class="form-label">Zip/Postal Code</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="zipCode" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="zipCode"
                     formControlName="zipCode"
                   >
                 </div>
-                
+
                 <div class="col-md-4 mb-3">
                   <label for="country" class="form-label">Country</label>
                   <select class="form-select" id="country" formControlName="country">
@@ -214,7 +214,7 @@
         <div class="card-body p-4">
           <div class="summary-item">
             <span>Subtotal</span>
-            <span>${{ cart?.total_price.toFixed(2) || '0.00' }}</span>
+            <span>${{ cart?.total_price?.toFixed(2) ?? '0.00' }}</span>
           </div>
           <div class="summary-item">
             <span>Shipping</span>
@@ -229,39 +229,39 @@
             <strong>Total</strong>
             <strong>${{ getTotal() }}</strong>
           </div>
-          
-          <button 
-            class="btn btn-primary w-100 mt-4" 
+
+          <button
+            class="btn btn-primary w-100 mt-4"
             type="submit"
             [disabled]="paymentForm?.invalid || !cart"
             (click)="processPayment()"
           >
             <i class="bi bi-lock-fill me-2"></i> Pay Now
           </button>
-          
-          <button 
-            class="btn btn-outline-secondary w-100 mt-2" 
+
+          <button
+            class="btn btn-outline-secondary w-100 mt-2"
             (click)="goBack()"
           >
             <i class="bi bi-arrow-left me-2"></i> Back to Cart
           </button>
-          
+
           <!-- Cart Items Summary (Collapsed) -->
           <div class="cart-items-summary mt-4">
-            <button 
-              class="btn btn-sm w-100 text-start" 
-              type="button" 
-              data-bs-toggle="collapse" 
-              data-bs-target="#cartItemsList" 
-              aria-expanded="false" 
+            <button
+              class="btn btn-sm w-100 text-start"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#cartItemsList"
+              aria-expanded="false"
               aria-controls="cartItemsList"
             >
               <div class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-bag me-2"></i> {{ cart?.items.length || 0 }} Items in Cart</span>
+                <span><i class="bi bi-bag me-2"></i> {{ cart?.items?.length || 0 }} Items in Cart</span>
                 <i class="bi bi-chevron-down"></i>
               </div>
             </button>
-            
+
             <div class="collapse mt-2" id="cartItemsList">
               <div class="cart-item-preview" *ngFor="let item of cart?.items">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -277,7 +277,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="secure-payment mt-4">
             <div class="d-flex justify-content-center gap-3 mb-2">
               <i class="fab fa-cc-visa fa-lg"></i>
