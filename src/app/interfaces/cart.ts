@@ -10,4 +10,5 @@ export interface CartItem {
   quantity: number;
   price: number;
   book?: any; // Will be populated with book details when needed
+  updating?: boolean; // Flag to track if this item is being updated
 }

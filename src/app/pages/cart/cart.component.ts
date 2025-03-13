@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../auth/login/login.service';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, of } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 
 interface JwtPayload {
@@ -18,15 +19,17 @@ interface JwtPayload {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
   cart: Cart | null = null;
+  cartItems: CartItem[] = [];
   loading = true;
   error: string | null = null;
   userId: string | null = null;
+  taxRate = 0.08; // 8% tax rate
 
   constructor(
     private cartService: CartRequestsService,
@@ -51,7 +54,7 @@ export class CartComponent implements OnInit {
     this.getUserIdFromToken();
 
     console.log('User is authenticated with ID:', this.userId);
-    this.loadCart();
+    this.fetchCartItems();
   }
 
   // Extract user ID from the JWT token
@@ -74,8 +77,18 @@ export class CartComponent implements OnInit {
     }
   }
 
-  loadCart(): void {
+  fetchCartItems(): void {
     this.loading = true;
+    this.error = null;
+    
+    // Store bookIds of items currently being updated
+    const updatingItems = this.cartItems
+      .filter(item => item.updating)
+      .map(item => ({
+        bookId: item.bookId,
+        updating: true
+      }));
+      
     this.cartService.getCart()
       .pipe(
         catchError(err => {
@@ -106,9 +119,25 @@ export class CartComponent implements OnInit {
           }
 
           this.cart = cart;
+          this.cartItems = cart.items || [];
+          
+          // Restore the updating flags for items being modified
+          if (updatingItems.length > 0) {
+            updatingItems.forEach(updatingItem => {
+              const itemIndex = this.cartItems.findIndex(item => item.bookId === updatingItem.bookId);
+              if (itemIndex !== -1) {
+                this.cartItems[itemIndex].updating = true;
+              }
+            });
+          }
+          
           this.loading = false;
         }
       });
+  }
+
+  loadCart(): void {
+    this.fetchCartItems();
   }
 
   updateQuantity(bookId: string, quantity: number): void {
@@ -118,19 +147,32 @@ export class CartComponent implements OnInit {
     if (isNaN(quantity) || quantity < 1) {
       console.error('Invalid quantity value:', quantity);
       // Reload the cart to restore the correct quantity
-      this.loadCart();
+      this.fetchCartItems();
       return;
     }
     
-    this.loading = true;
+    // Find the item being updated
+    const itemIndex = this.cartItems.findIndex(item => item.bookId === bookId);
+    if (itemIndex === -1) {
+      console.error('Item not found in cart:', bookId);
+      return;
+    }
+    
+    // Mark this specific item as updating
+    this.cartItems[itemIndex].updating = true;
+    
     console.log(`Updating quantity for book ${bookId} to ${quantity}`);
     this.cartService.updateQuantity(bookId, quantity)
       .pipe(
         catchError(err => {
           console.error('Error updating quantity:', err);
           this.error = err.error?.message || 'Failed to update quantity';
-          this.loading = false;
-          this.loadCart(); // Reload cart to ensure consistency
+          
+          // Remove updating flag
+          if (itemIndex !== -1) {
+            this.cartItems[itemIndex].updating = false;
+          }
+          
           return of(null);
         })
       )
@@ -138,36 +180,78 @@ export class CartComponent implements OnInit {
         if (updatedCart) {
           console.log('Quantity updated successfully:', updatedCart);
           this.cart = updatedCart;
-          this.loading = false;
+          this.cartItems = updatedCart.items || [];
+        } else {
+          // If no response, make sure to remove updating flag
+          if (itemIndex !== -1 && this.cartItems[itemIndex]) {
+            this.cartItems[itemIndex].updating = false;
+          }
         }
       });
   }
 
   removeItem(bookId: string): void {
-    this.loading = true;
     console.log(`Removing book ${bookId} from cart`);
+    
+    // Find the item's index and mark it as updating
+    const itemIndex = this.cartItems.findIndex(item => item.bookId === bookId);
+    if (itemIndex === -1) {
+      console.error('Item not found in cart:', bookId);
+      return;
+    }
+    
+    // Mark this specific item as updating
+    this.cartItems[itemIndex].updating = true;
+    
     this.cartService.removeFromCart(bookId)
       .pipe(
         catchError(err => {
           console.error('Error removing item:', err);
           this.error = err.error?.message || 'Failed to remove item';
-          this.loading = false;
-          this.loadCart();
+          
+          // Remove updating flag if the item still exists
+          if (itemIndex !== -1 && this.cartItems[itemIndex]) {
+            this.cartItems[itemIndex].updating = false;
+          }
+          
           return of(null);
         })
       )
       .subscribe(result => {
         console.log('Item removed successfully');
-        this.loadCart();
+        this.fetchCartItems();
       });
   }
 
-  checkout(): void {
+  getSubtotal(): number {
+    if (!this.cart || !this.cartItems.length) return 0;
+    return this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  }
+
+  getShippingCost(): number {
+    const subtotal = this.getSubtotal();
+    // Free shipping for orders over $50
+    return subtotal > 50 ? 0 : 5.99;
+  }
+
+  getTaxAmount(): number {
+    return this.getSubtotal() * this.taxRate;
+  }
+
+  getTotal(): number {
+    return this.getSubtotal() + this.getShippingCost() + this.getTaxAmount();
+  }
+
+  proceedToCheckout(): void {
     // Navigate to payment page
     this.router.navigate(['/payment']);
   }
 
+  checkout(): void {
+    this.proceedToCheckout();
+  }
+
   continueShopping(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/books']);
   }
 }

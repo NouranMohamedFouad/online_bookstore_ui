@@ -1,143 +1,154 @@
-<div class="container mt-4 animate-fade-in">
-  <div class="center-container">
-    <h2>Shopping Cart</h2>
-  </div>
-
-  <!-- Loading state -->
-  <div *ngIf="loading" class="text-center my-5">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+<div class="container animate-fade-in">
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="center-container my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading your cart...</p>
     </div>
-    <p class="mt-2 text-muted">Loading your cart...</p>
-  </div>
+  }
 
-  <!-- Error state -->
-  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
-    <button class="btn btn-sm ms-2" (click)="loadCart()">
-      <i class="bi bi-arrow-clockwise me-1"></i> Try Again
-    </button>
-  </div>
-
-  <!-- Empty cart state -->
-  <div *ngIf="!loading && !error && (!cart || cart.items.length === 0)" class="text-center my-5 animate-slide-up">
-    <div class="mb-4">
-      <i class="bi bi-cart" style="font-size: 4rem;"></i>
+  <!-- Error State -->
+  @if (error) {
+    <div class="center-container my-5">
+      <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+      </div>
+      <button class="btn btn-primary mt-3" (click)="fetchCartItems()">
+        <i class="bi bi-arrow-repeat me-2"></i> Try Again
+      </button>
     </div>
-    <h3>Your cart is empty</h3>
-    <p class="text-muted">Looks like you haven't added any books to your cart yet.</p>
-    <button class="btn btn-primary mt-3" (click)="continueShopping()">
-      <i class="bi bi-book me-2"></i> Continue Shopping
-    </button>
-  </div>
+  }
+
+  <!-- Empty Cart State -->
+  @if (!loading && !error && cartItems.length === 0) {
+    <div class="center-container my-5 animate-slide-up">
+      <div class="card p-5 text-center">
+        <i class="bi bi-cart-x" style="font-size: 3rem; color: #8b5cf6;"></i>
+        <h2 class="mt-4">Your cart is empty</h2>
+        <p class="mb-4">Looks like you haven't added any books to your cart yet.</p>
+        <button class="btn btn-primary" routerLink="/books">
+          <i class="bi bi-book me-2"></i> Continue Shopping
+        </button>
+      </div>
+    </div>
+  }
 
   <!-- Cart with items -->
-  <div *ngIf="!loading && !error && cart && cart.items.length > 0" class="row">
-    <div class="col-lg-8">
-      <!-- Cart items -->
-      <div class="card mb-4 animate-slide-up">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-md-6">Product</div>
-            <div class="col-md-2 text-center">Price</div>
-            <div class="col-md-2 text-center">Quantity</div>
-            <div class="col-md-2 text-center">Total</div>
+  @if (!loading && !error && cartItems.length > 0) {
+    <h2 class="mb-4">Shopping Cart</h2>
+    
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-lg-8 mb-4">
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <h5>Cart Items ({{ cartItems.length }})</h5>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="row mb-3 py-3" *ngFor="let item of cart.items">
-            <div class="col-md-6 d-flex align-items-center">
-              <div class="me-3">
-                <img 
-                  [src]="item.book?.image || 'https://via.placeholder.com/150x200?text=Book+Cover'" 
-                  alt="Book cover" 
-                  class="img-fluid" 
-                  style="max-width: 80px; max-height: 120px;"
-                  onerror="this.src='https://via.placeholder.com/150x200?text=Book+Cover'; this.onerror=null;"
-                >
+          <div class="card-body">
+            <div class="row mb-3 py-3" *ngFor="let item of cartItems">
+              <div class="col-md-6 d-flex align-items-center">
+                <div class="me-3">
+                  <img 
+                    [src]="item.book?.image || 'https://via.placeholder.com/150x200?text=Book+Cover'" 
+                    alt="Book cover" 
+                    class="img-fluid" 
+                    style="max-width: 80px; max-height: 120px;"
+                    onerror="this.src='https://via.placeholder.com/150x200?text=Book+Cover'; this.onerror=null;"
+                  >
+                </div>
+                <div>
+                  <h5 class="mb-1">{{ item.book?.title || 'Book' }}</h5>
+                  <p class="text-muted mb-0">{{ item.book?.author || 'Author' }}</p>
+                </div>
               </div>
-              <div>
-                <h5 class="mb-1">{{ item.book?.title || 'Book' }}</h5>
-                <p class="text-muted mb-0">{{ item.book?.author || 'Author' }}</p>
+              <div class="col-md-2 d-flex align-items-center justify-content-center" data-title="Price">
+                $ {{ item.price.toFixed(2) }}
               </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-center justify-content-center" data-title="Price">
-              ${{ item.price.toFixed(2) }}
-            </div>
-            <div class="col-md-2 d-flex align-items-center justify-content-center" data-title="Quantity">
-              <div class="input-group">
-                <button 
-                  class="btn" 
-                  type="button"
-                  [disabled]="item.quantity <= 1"
-                  (click)="updateQuantity(item.bookId, item.quantity - 1)"
-                  aria-label="Decrease quantity"
-                >
-                  <i class="bi bi-dash"></i>
-                </button>
-                <span class="quantity-display">{{ item.quantity }}</span>
-                <button 
-                  class="btn" 
-                  type="button"
-                  (click)="updateQuantity(item.bookId, item.quantity + 1)"
-                  aria-label="Increase quantity"
-                >
-                  <i class="bi bi-plus"></i>
-                </button>
+              <div class="col-md-2 d-flex align-items-center justify-content-center" data-title="Quantity">
+                <div class="input-group" [class.updating]="item.updating">
+                  <button 
+                    class="btn" 
+                    type="button"
+                    [disabled]="item.quantity <= 1 || item.updating"
+                    (click)="updateQuantity(item.bookId, item.quantity - 1)"
+                    aria-label="Decrease quantity"
+                  >
+                    <i class="bi bi-dash"></i>
+                  </button>
+                  <span class="quantity-display">
+                    {{ item.quantity }}
+                    <span class="spinner-border spinner-border-sm" *ngIf="item.updating" role="status" aria-hidden="true"></span>
+                  </span>
+                  <button 
+                    class="btn" 
+                    type="button"
+                    [disabled]="item.updating"
+                    (click)="updateQuantity(item.bookId, item.quantity + 1)"
+                    aria-label="Increase quantity"
+                  >
+                    <i class="bi bi-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="col-md-2 d-flex align-items-center justify-content-between" data-title="Total">
-              <span class="d-md-none d-inline">Total:</span>
-              <div class="d-flex align-items-center">
-                <span class="me-3">${{ (item.price * item.quantity).toFixed(2) }}</span>
-                <button 
-                  class="btn btn-sm btn-outline-danger" 
-                  (click)="removeItem(item.bookId)"
-                  title="Remove item"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
+              <div class="col-md-2 d-flex align-items-center justify-content-between" data-title="Total">
+                <span class="d-md-none d-inline">Total:</span>
+                <div class="d-flex align-items-center">
+                  <span class="me-3">$ {{ (item.price * item.quantity).toFixed(2) }}</span>
+                  <button 
+                    class="btn btn-sm btn-outline-danger" 
+                    (click)="removeItem(item.bookId)"
+                    title="Remove item"
+                    [disabled]="item.updating || loading"
+                  >
+                    <i class="bi bi-trash" *ngIf="!item.updating"></i>
+                    <span class="spinner-border spinner-border-sm" *ngIf="item.updating" role="status" aria-hidden="true"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Order summary -->
-    <div class="col-lg-4">
-      <div class="card animate-slide-up">
-        <div class="card-header">
-          <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Order Summary</h5>
-        </div>
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between mb-3">
-            <span>Subtotal</span>
-            <span>${{ cart.total_price.toFixed(2) }}</span>
+      <!-- Cart Summary -->
+      <div class="col-lg-4">
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <h5>Order Summary</h5>
           </div>
-          <div class="d-flex justify-content-between mb-3">
-            <span>Shipping</span>
-            <span class="text-success">Free</span>
+          <div class="card-body">
+            <div class="summary-item">
+              <span>Subtotal</span>
+              <span>$ {{ getSubtotal().toFixed(2) }}</span>
+            </div>
+            <div class="summary-item">
+              <span>Shipping</span>
+              <span>{{ getShippingCost() > 0 ? '$ ' + getShippingCost().toFixed(2) : 'Free' }}</span>
+            </div>
+            <div class="summary-item">
+              <span>Tax ({{ taxRate * 100 }}%)</span>
+              <span>$ {{ getTaxAmount().toFixed(2) }}</span>
+            </div>
+            
+            <hr>
+            
+            <div class="summary-item total">
+              <span>Total</span>
+              <span>$ {{ getTotal().toFixed(2) }}</span>
+            </div>
+            
+            <button class="btn btn-primary w-100 mt-4" (click)="proceedToCheckout()">
+              <i class="bi bi-credit-card me-2"></i> Proceed to Checkout
+            </button>
+            
+            <button class="btn btn-outline-secondary w-100 mt-3" routerLink="/">
+              <i class="bi bi-arrow-left me-2"></i> Continue Shopping
+            </button>
           </div>
-          <hr>
-          <div class="d-flex justify-content-between mb-3">
-            <strong>Total</strong>
-            <strong>${{ cart.total_price.toFixed(2) }}</strong>
-          </div>
-          <button 
-            class="btn btn-primary w-100 mt-3" 
-            (click)="checkout()"
-          >
-            <i class="bi bi-credit-card me-2"></i> Proceed to Checkout
-          </button>
-          <button 
-            class="btn btn-outline-secondary w-100 mt-2" 
-            (click)="continueShopping()"
-          >
-            <i class="bi bi-arrow-left me-2"></i> Continue Shopping
-          </button>
         </div>
       </div>
     </div>
-  </div>
+  }
 </div>

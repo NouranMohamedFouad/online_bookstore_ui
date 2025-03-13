@@ -94,8 +94,26 @@ export class CartRequestsService {
     const userId = this.getUserIdFromToken();
     console.log('User ID from token:', userId);
     
-    return this.http.patch<Cart>(`${this.baseUrl}/cart`, { bookId, quantity })
-      .pipe(catchError(this.handleError));
+    return this.http.patch<any>(`${this.baseUrl}/cart`, { bookId, quantity })
+      .pipe(
+        map(response => {
+          // Handle both direct Cart response and wrapped response formats
+          if (response.success && response.data) {
+            console.log('Received wrapped cart response:', response);
+            return response.data;
+          } else {
+            console.log('Received direct cart response:', response);
+            return response;
+          }
+        }),
+        tap(cart => {
+          console.log('Cart after quantity update:', cart);
+        }),
+        catchError(error => {
+          console.error('Error updating cart quantity:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   // Remove an item from cart

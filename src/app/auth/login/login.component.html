@@ -1,95 +1,110 @@
-<div class="center-container">
-  <h2>Welcome Back</h2>
-</div>
-<div class="container my-5 form-container">
-  <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        formControlName="email"
-        aria-describedby="emailError"
-        [class.is-invalid]="email?.invalid && (email?.touched || email?.dirty)"
-      />
-      @if (email?.invalid && (email?.touched || email?.dirty)) { @if
-      (email?.errors?.['required']) {
-      <div id="emailError" class="form-text text-danger">Email is required</div>
-      } @if (email?.errors?.['email'] || email?.errors?.['pattern']) {
-      <div id="emailError" class="form-text text-danger">
-        Please enter a valid email address
-      </div>
-      } }
+<div class="login-container">
+  <div class="image-section">
+    <img alt="" src="./../../../assets/images/login.png"/>
+  </div>
+  <div class="form-section">
+    <div class="header">
+      <!-- <img alt="Focus logo" class="logo" src="https://storage.googleapis.com/a1aa/image/ExdhOl1gJJx3Tm9d4tQLMbsc7pebFJs4QevOwwsAfX0.jpg"/> -->
     </div>
-
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        formControlName="password"
-        aria-describedby="passwordError"
-        [class.is-invalid]="
-          password?.invalid && (password?.touched || password?.dirty)
-        "
-      />
-      @if (password?.invalid && (password?.touched || password?.dirty)) { @if
-      (password?.errors?.['required']) {
-      <div id="passwordError" class="form-text text-danger">
-        Password is required
-      </div>
-      } @if (password?.errors?.['minlength']) {
-      <div id="passwordError" class="form-text text-danger">
-        Password must be at least 8 characters
-      </div>
-      } @if (password?.errors?.['pattern']) {
-      <div id="passwordError" class="form-text text-danger">
-        Password must include at least one uppercase letter, one lowercase
-        letter, one number, and one special character
-      </div>
-      } }
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          id="rememberMe"
-          formControlName="rememberMe"
+    <h2>Welcome to Book Store!</h2>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input 
+          class="form-input"
+          [class.error]="email?.invalid && (email?.touched || email?.dirty)"
+          id="email" 
+          formControlName="email" 
+          placeholder="Email" 
+          type="email"
         />
-        <label class="form-check-label" for="rememberMe">Remember me</label>
+        @if (email?.invalid && (email?.touched || email?.dirty)) { 
+          @if (email?.errors?.['required']) {
+            <div class="error-message">Email is required</div>
+          } 
+          @if (email?.errors?.['email'] || email?.errors?.['pattern']) {
+            <div class="error-message">Please enter a valid email address</div>
+          } 
+        }
       </div>
-      <a href="#" class="forgot-password">Forgot Password?</a>
-    </div>
-
-    @if (errorMessage) {
-    <div class="alert alert-danger" role="alert">
-      {{ errorMessage }}
-    </div>
-    }
-
-    <button
-      type="submit"
-      class="btn btn-primary w-100"
-      [disabled]="loginForm.invalid || isSubmitting"
-    >
-      @if (isSubmitting) {
-      <span
-        class="spinner-border spinner-border-sm me-2"
-        role="status"
-        aria-hidden="true"
-      ></span>
-      Logging in... } @else { Login }
-    </button>
-
-    <div class="center-container mt-4">
-      <h4>
-        Don't have an account?
-        <a href="/register" class="sign-up-link">Sign Up</a>
-      </h4>
-    </div>
-  </form>
+      
+      <div class="form-group mb-6">
+        <label class="form-label" for="password">Password</label>
+        <input 
+          class="form-input"
+          [class.error]="password?.invalid && (password?.touched || password?.dirty)"
+          id="password" 
+          formControlName="password" 
+          placeholder="Password" 
+          type="password"
+        />
+        @if (password?.invalid && (password?.touched || password?.dirty)) { 
+          @if (password?.errors?.['required']) {
+            <div class="error-message">Password is required</div>
+          } 
+          @if (password?.errors?.['minlength']) {
+            <div class="error-message">Password must be at least 8 characters</div>
+          } 
+          @if (password?.errors?.['pattern']) {
+            <div class="error-message">
+              Password must include at least one uppercase letter, one lowercase letter, one number, and one special character
+            </div>
+          }
+        }
+      </div>
+      
+      <div class="remember-me-container">
+        <div class="checkbox-container">
+          <input
+            class="checkbox"
+            type="checkbox"
+            id="rememberMe"
+            formControlName="rememberMe"
+          />
+          <label for="rememberMe">Remember me</label>
+        </div>
+        <a class="help-link" href="#">Forgot Password?</a>
+      </div>
+      
+      @if (errorMessage) {
+        <div class="alert" role="alert">
+          {{ errorMessage }}
+        </div>
+      }
+      
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="loginForm.invalid || isSubmitting"
+      >
+        @if (isSubmitting) {
+          <span class="loading-spinner">
+            <svg class="spin-animation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          Logging in...
+        } @else {
+          Login
+        }
+      </button>
+      
+      <!-- <div class="social-container">
+        <span class="social-text">Or connect with</span>
+        <div class="social-icons">
+          <a class="social-icon" href="#">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a class="social-icon" href="#">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a class="social-icon" href="#">
+            <i class="fab fa-google"></i>
+          </a>
+        </div>
+      </div> -->
+    </form>
+  </div>
 </div>
