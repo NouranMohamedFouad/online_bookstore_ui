@@ -32,7 +32,7 @@
 .not-found-title {
   font-size: 120px;
   font-weight: 900;
-  background: linear-gradient(45deg, #f00f7f, #418ce2);
+  background: linear-gradient(45deg, #66465a, #418ce2);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -60,7 +60,7 @@
   font-size: 16px;
   font-weight: 500;
   color: #fff;
-  background: linear-gradient(45deg, #f00f7f, #418ce2);
+  background: linear-gradient(45deg, #66465a, #418ce2);
   border: none;
   border-radius: 50px;
   text-decoration: none;
@@ -70,7 +70,7 @@
 }
 
 .not-found-button:hover {
-  background: linear-gradient(45deg, #d6006a, #316fc2);
+  background: linear-gradient(45deg, #6b676798, #316fc2);
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(240, 15, 127, 0.4);
 }

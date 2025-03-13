@@ -6,6 +6,7 @@
   import { FormsModule } from '@angular/forms';
   import { ChangeDetectorRef } from '@angular/core';
   import { CryptoHelper } from '../../helper/crypto-helper';
+  import { LoginService } from '../../auth/login/login.service';
 
   @Component({
     selector: 'app-user-profile',
@@ -16,6 +17,7 @@
   export class UserProfileComponent {
     selectedSection: string = 'profile';
     isDeleting = false;
+    showModal=false;
     user: User = {
       name: '',
       email: '',
@@ -34,7 +36,7 @@
 
     validationErrors: { [key: string]: string } = {};
 
-    constructor(private httpRequestsService: HttpRequestsService, private router: Router,private cdr: ChangeDetectorRef) {}
+    constructor(private httpRequestsService: HttpRequestsService, private router: Router,private cdr: ChangeDetectorRef,private loginService:LoginService) {}
 
     switchSection(section: string) {
       this.selectedSection = section;
@@ -184,10 +186,12 @@
       this.httpRequestsService.deleteUser(userId).subscribe({
         next: (response) => {
           console.log('Account deleted successfully:', response);
+          this.loginService.logout();
           localStorage.clear();
           sessionStorage.clear();
           alert('Your account has been deleted.');
-          this.router.navigate(['/']);
+          this.showModal = false;
+          this.router.navigate(['http://localhost:4200/']);
         },
         error: (error) => {
           console.error('Error deleting account:', error);

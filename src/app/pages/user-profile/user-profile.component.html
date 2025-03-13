@@ -30,58 +30,50 @@
           <div class="row">
             <div class="col-md-6">
               <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
-              <div *ngIf="validationErrors['name']" class="text-danger">{{ validationErrors['name'] }}</div>
+              <input type="text" class="form-control" id="name"
+                [(ngModel)]="user.name" name="name" required>
+              <div *ngIf="validationErrors['name']" class="text-danger">{{
+                validationErrors['name'] }}</div>
             </div>
             <div class="col-md-6">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" required readonly>
+              <input type="email" class="form-control" id="email"
+                [(ngModel)]="user.email" name="email" required readonly>
             </div>
           </div>
           <div class="col-md-6">
             <label for="phone" class="form-label">Phone</label>
-            <input type="tel" class="form-control" id="phone" [(ngModel)]="user.phone" name="phone" required>
-            <div *ngIf="validationErrors['phone']" class="text-danger">{{ validationErrors['phone'] }}</div>
+            <input type="tel" class="form-control" id="phone"
+              [(ngModel)]="user.phone" name="phone" required>
+            <div *ngIf="validationErrors['phone']" class="text-danger">{{
+              validationErrors['phone'] }}</div>
           </div>
           <div class="d-flex justify-content-between mt-4">
             <button type="submit" class="btn btn-update mt-4"
               [disabled]="profileForm.invalid">
               UPDATE PROFILE
             </button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-              data-bs-target="#deleteModal">
-              Delete my account
+            <button type="button" (click)="showModal = true"
+              class="btn btn-delete mt-4" class="deletebtn">
+              Delete Account
             </button>
-            <div class="modal fade" id="deleteModal" tabindex="-1"
-              aria-labelledby="deleteModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                  <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm
-                      Account Deletion</h5>
-                    <button type="button" class="btn-close btn-close-white"
-                      data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-
-                  <div class="modal-body">
-                    <p class="mb-0">Are you sure you want to delete your
-                      account? This action <strong>cannot</strong> be
-                      undone.</p>
-                  </div>
-
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                      data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger"
-                      (click)="confirmDelete()" [disabled]="isDeleting">
-                      @if (isDeleting) {
-                      <span class="spinner-border spinner-border-sm"></span>
-                      }
-                      Delete
-                    </button>
-                  </div>
-                </div>
+          </div>
+          <div *ngIf="showModal"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-96" class="delete-btn">
+              <h3 class="text-xl font-semibold mb-4">Delete Account</h3>
+              <p class="text-gray-700 mb-6">Are you sure you want to delete your
+                account? This action cannot be undone.</p>
+              <div class="flex justify-end space-x-4" class="delete-btn">
+                <button (click)="showModal = false"
+                  class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors" class="delete-btn">
+                  Cancel
+                </button>
+                <button (click)="confirmDelete()"
+                  [disabled]="isDeleting"
+                  class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors" class="delete-btn">
+                  Delete
+                </button>
               </div>
             </div>
           </div>
@@ -97,7 +89,7 @@
             <div class="col-md-6">
               <label for="street" class="form-label">Street</label>
               <input type="text" class="form-control" id="street"
-                [(ngModel)]="user.address.street" name="street" required>
+                [(ngModel)]="user.address.street" name="street">
             </div>
             <div *ngIf="validationErrors['street']" class="text-danger">
               {{ validationErrors['street'] }}
@@ -105,7 +97,7 @@
             <div class="col-md-6">
               <label for="city" class="form-label">City</label>
               <input type="text" class="form-control" id="city"
-                [(ngModel)]="user.address.city" name="city" required>
+                [(ngModel)]="user.address.city" name="city">
             </div>
             <div *ngIf="validationErrors['city']" class="text-danger">
               {{ validationErrors['city'] }}
@@ -113,7 +105,7 @@
             <div class="col-md-6">
               <label for="buildingNo" class="form-label">Building Number</label>
               <input type="number" class="form-control" id="buildingNo"
-                [(ngModel)]="user.address.buildingNo" name="buildingNo" required>
+                [(ngModel)]="user.address.buildingNo" name="buildingNo">
             </div>
             <div *ngIf="validationErrors['buildingNo']" class="text-danger">
               {{ validationErrors['buildingNo'] }}
@@ -121,7 +113,7 @@
             <div class="col-md-6">
               <label for="floorNo" class="form-label">Floor Number</label>
               <input type="number" class="form-control" id="floorNo"
-                [(ngModel)]="user.address.floorNo" name="floorNo" required>
+                [(ngModel)]="user.address.floorNo" name="floorNo">
             </div>
             <div *ngIf="validationErrors['floorNo']" class="text-danger">
               {{ validationErrors['floorNo'] }}
@@ -129,16 +121,16 @@
             <div class="col-md-6">
               <label for="flatNo" class="form-label">Flat Number</label>
               <input type="number" class="form-control" id="flatNo"
-                [(ngModel)]="user.address.flatNo" name="flatNo" required>
+                [(ngModel)]="user.address.flatNo" name="flatNo">
             </div>
             <div *ngIf="validationErrors['flatNo']" class="text-danger">
               {{ validationErrors['flatNo'] }}
             </div>
           </div>
           <button type="submit" class="btn btn-update mt-4"
-              [disabled]="profileForm.invalid">
-              UPDATE Address
-            </button>
+            [disabled]="profileForm.invalid">
+            UPDATE Address
+          </button>
         </form>
       </div>
       }
@@ -148,32 +140,35 @@
         <h4 class="personal">Change Password</h4>
         <form #passwordForm="ngForm" (ngSubmit)="updatePassword()" novalidate>
           <div class="row">
-            <!-- OLD PASSWORD -->
             <div class="col-md-6">
               <label for="oldPassword" class="form-label">Old Password</label>
               <input type="password" class="form-control" id="oldPassword"
-                [(ngModel)]="user.oldPassword" name="oldPassword" required #oldPassword="ngModel">
-              <div *ngIf="passwordForm.submitted && oldPassword.invalid" class="text-danger">
+                [(ngModel)]="user.oldPassword" name="oldPassword" required
+                #oldPassword="ngModel">
+              <div *ngIf="passwordForm.submitted && oldPassword.invalid"
+                class="text-danger">
                 Old password is required.
               </div>
             </div>
-
-            <!-- NEW PASSWORD -->
             <div class="col-md-6">
               <label for="newPassword" class="form-label">New Password</label>
               <input type="password" class="form-control" id="newPassword"
-                [(ngModel)]="user.newPassword" name="newPassword" required minlength="6" #newPassword="ngModel">
-              <div *ngIf="passwordForm.submitted && newPassword.invalid" class="text-danger">
+                [(ngModel)]="user.newPassword" name="newPassword" required
+                minlength="6" #newPassword="ngModel">
+              <div *ngIf="passwordForm.submitted && newPassword.invalid"
+                class="text-danger">
                 Password must be at least 6 characters long.
               </div>
             </div>
-
-            <!-- CONFIRM PASSWORD -->
             <div class="col-md-6">
-              <label for="confirmPassword" class="form-label">Confirm New Password</label>
+              <label for="confirmPassword" class="form-label">Confirm New
+                Password</label>
               <input type="password" class="form-control" id="confirmPassword"
-                [(ngModel)]="user.confirmPassword" name="confirmPassword" required #confirmPassword="ngModel">
-              <div *ngIf="passwordForm.submitted && user.confirmPassword !== user.newPassword" class="text-danger">
+                [(ngModel)]="user.confirmPassword" name="confirmPassword"
+                required #confirmPassword="ngModel">
+              <div
+                *ngIf="passwordForm.submitted && user.confirmPassword !== user.newPassword"
+                class="text-danger">
                 Passwords do not match.
               </div>
             </div>
@@ -189,3 +184,4 @@
 
     </div>
   </div>
+
