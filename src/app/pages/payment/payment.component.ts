@@ -136,9 +136,10 @@ export class PaymentComponent implements OnInit {
     ); 
     setTimeout(() => {
       this.sendMessage();
+      this.router.navigate(['/order-confirmation']);
+
     }, 2000);
 
-    this.router.navigate(['/order-confirmation']);
     // , {
     //   queryParams: { 
     //     orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
@@ -155,7 +156,7 @@ export class PaymentComponent implements OnInit {
     const data = {
       order: orderDetails
     };
-    this.websocketService.sendMessage(JSON.stringify(data));
+    this.websocketService.sendMessage("send to server");
   }
   
   
