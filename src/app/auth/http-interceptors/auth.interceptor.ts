@@ -30,8 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (
       request.url.includes('/auth/login') ||
       request.url.includes('/auth/signup') ||
-      (request.url.includes('/books') && request.method === 'GET') ||
-      request.url.includes('/paymob/') // Skip auth for Paymob API calls
+      (request.url.includes('/books') && request.method === 'GET')
     ) {
       console.log('Skipping auth for public endpoint:', request.url);
       return next.handle(request);
@@ -60,12 +59,10 @@ export class AuthInterceptor implements HttpInterceptor {
           url: request.url
         });
 
-        // Allow payment-related requests to proceed even if token is near expiry
-        const isPaymentRequest = 
-          request.url.includes('/payment') || 
-          request.url.includes('/cart');
+        // Allow cart-related requests to proceed even if token is near expiry
+        const isCartRequest = request.url.includes('/cart');
 
-        if (isExpired && !isPaymentRequest) {
+        if (isExpired && !isCartRequest) {
           console.warn('Token is expired, logging out');
           // Don't immediately log out, just handle the error that will come back
           const authRequest = request.clone({
@@ -100,28 +97,6 @@ export class AuthInterceptor implements HttpInterceptor {
           catchError((error: HttpErrorResponse) => {
             console.error('API error:', request.url, error);
 
-            // For payment requests, be more forgiving with auth errors
-            if (isPaymentRequest && error.status === 401) {
-              console.log('Auth error in payment flow - redirecting to login');
-              
-              // Store the cart in session storage to retrieve after login
-              if (this.router.url.includes('/payment')) {
-                try {
-                  sessionStorage.setItem('pendingPayment', 'true');
-                } catch (err) {
-                  console.error('Error saving pending payment state:', err);
-                }
-              }
-              
-              this.router.navigate(['/login'], {
-                queryParams: {
-                  returnUrl: this.router.url
-                }
-              });
-              
-              return throwError(() => new Error('Authentication required for payment'));
-            }
-
             // Handle 401 Unauthorized errors
             if (error.status === 401) {
               console.log('401 Unauthorized error - logging out');
@@ -150,16 +125,6 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       } catch (error) {
         console.error('Token decode error:', error);
-        // Don't log out immediately for payment requests
-        if (request.url.includes('/payment') || request.url.includes('/cart')) {
-          console.log('Token error during payment flow - proceeding to login');
-          this.router.navigate(['/login'], {
-            queryParams: {
-              returnUrl: request.url
-            }
-          });
-          return throwError(() => new Error('Authentication required'));
-        }
         
         this.loginService.logout();
         this.router.navigate(['/login'], {
@@ -175,13 +140,13 @@ export class AuthInterceptor implements HttpInterceptor {
     // No token available, proceed without authentication for some endpoints
     console.warn('No token available for authenticated endpoint:', request.url);
     
-    // For payment or cart requests, redirect to login
-    if (request.url.includes('/payment') || request.url.includes('/cart')) {
-      console.error('Payment/cart request without authentication - redirecting to login');
+    // For cart requests, redirect to login
+    if (request.url.includes('/cart')) {
+      console.error('Cart request without authentication - redirecting to login');
       this.router.navigate(['/login'], {
         queryParams: {
           returnUrl: this.router.url,
-          errorMsg: 'Please log in to continue with payment'
+          errorMsg: 'Please log in to continue with your cart'
         }
       });
       return throwError(() => new Error('Authentication required'));

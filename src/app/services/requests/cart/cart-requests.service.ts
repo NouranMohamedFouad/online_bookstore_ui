@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError, forkJoin, map, of, switchMap, timeout } from 'rxjs';
 import { Cart, CartItem } from '../../../interfaces/cart';
@@ -60,13 +60,82 @@ export class CartRequestsService {
     return throwError(() => error);
   }
 
+  // Create a cart with a sample item to ensure a cart record exists in the DB
+  ensureCartExists(): Observable<boolean> {
+    console.log('Ensuring cart exists in the database');
+    
+    // Get the authentication token
+    const token = this.loginService.getToken();
+    if (!token) {
+      console.error('No token available to create cart');
+      return throwError(() => new Error('Authentication required'));
+    }
+    
+    // Set headers with authentication token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    
+    // First check if cart already exists
+    return this.getCart().pipe(
+      switchMap(cart => {
+        if (cart && cart.items && cart.items.length > 0) {
+          // Cart exists with items, no need to do anything
+          console.log('Cart already exists with items, no need to create a new one');
+          return of(true);
+        }
+        
+        // We need a test product ID that exists in your database for this to work
+        // This is just a temporary item that we'll add and then remove
+        // Use a book ID that definitely exists in your system
+        const sampleBookId = '65f2f82a9e75a8c0afe239b1'; // Replace with a valid book ID
+        
+        console.log('Creating cart with sample item to ensure it exists in database');
+        return this.http.post<any>(`${this.baseUrl}/cart`, { bookId: sampleBookId }, { headers }).pipe(
+          switchMap(cart => {
+            console.log('Created cart with sample item:', cart);
+            // Now remove the sample item to leave an empty cart
+            return this.http.delete<any>(`${this.baseUrl}/cart/${sampleBookId}`, { headers }).pipe(
+              map(response => {
+                console.log('Removed sample item, empty cart now exists');
+                return true;
+              }),
+              catchError(error => {
+                console.warn('Failed to remove sample item, but cart was created');
+                return of(true);
+              })
+            );
+          }),
+          catchError(error => {
+            console.error('Failed to create cart with sample item:', error);
+            return of(false);
+          })
+        );
+      })
+    );
+  }
+
   // Get the current user's cart
   getCart(): Observable<Cart> {
     console.log('Getting cart from API');
     const userId = this.getUserIdFromToken();
     console.log('User ID from token:', userId);
     
-    return this.http.get<Cart>(`${this.baseUrl}/cart`).pipe(
+    // Get the authentication token for request
+    const token = this.loginService.getToken();
+    if (!token) {
+      console.error('No token available for cart request');
+      return throwError(() => new Error('Authentication required'));
+    }
+    
+    // Set headers with authentication token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    
+    return this.http.get<Cart>(`${this.baseUrl}/cart`, { headers }).pipe(
       timeout(7000), // 7-second timeout to prevent hanging
       tap(cart => {
         console.log('Cart received with populated book details:', cart);
@@ -104,7 +173,20 @@ export class CartRequestsService {
     const userId = this.getUserIdFromToken();
     console.log('User ID from token:', userId);
     
-    return this.http.post<Cart>(`${this.baseUrl}/cart`, { bookId })
+    // Get the authentication token
+    const token = this.loginService.getToken();
+    if (!token) {
+      console.error('No token available for adding to cart');
+      return throwError(() => new Error('Authentication required'));
+    }
+    
+    // Set headers with authentication token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    
+    return this.http.post<Cart>(`${this.baseUrl}/cart`, { bookId }, { headers })
       .pipe(catchError(this.handleError));
   }
 
