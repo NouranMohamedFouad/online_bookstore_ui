@@ -15,6 +15,10 @@ export class OrdersRequestsService {
     private httpRequestsService: HttpRequestsService
   ) { }
 
+  getAllOrders(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/orders`);
+  }
+
   getOrdersList(userId: number | undefined): Observable<any> {
     return this.http.get(`${this.baseUrl}/orders/${userId}`);
   }

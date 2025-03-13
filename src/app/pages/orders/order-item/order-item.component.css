@@ -28,7 +28,7 @@
 
 .quantity {
   font-size:24px;
-  color: gray;
+  color: rgb(199, 196, 196);
   margin-top: 4px;
 }
 
@@ -48,14 +48,14 @@ hr {
   margin-bottom: 3%;
 }
 .close-icon {
-  color: #D61F6F; 
-  text-shadow: 2px 2px 4px rgba(214, 31, 111, 0.5); 
+  color: #080808; 
+  text-shadow: 2px 2px 4px rgba(61, 60, 61, 0.808); 
   transition: transform 0.2s ease-in-out; 
 }
 
 .close-icon:hover {
   transform: scale(1.2); 
-  text-shadow: 3px 3px 6px rgba(214, 31, 111, 0.7); 
+  text-shadow: 3px 3px 6px rgba(53, 51, 52, 0.7); 
 }
 
 
@@ -86,8 +86,8 @@ hr {
   
   .card-option.selected {
     background: linear-gradient(270deg, rgba(214, 31, 111, 0.2) 0%, rgba(133, 11, 160, 0.1) 100%);
-    border: 1px solid #D61F6F;
-    box-shadow: 0 0 15px rgba(214, 31, 111, 0.3);
+    border: 1px solid #313131;
+    box-shadow: 0 0 15px rgba(24, 24, 24, 0.3);
   }
   
   .btn {
@@ -97,13 +97,14 @@ hr {
   }
   
   .btn-primary {
-    background: linear-gradient(270deg, #D61F6F 11.24%, rgba(133, 11, 160, 0.6) 99.99%);
+    background: linear-gradient(270deg, #f1f0f0 , rgba(233, 232, 232, 0.6) );
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color:#000000dc;
   }
   
   .btn-primary:hover {
-    background: linear-gradient(270deg, #D61F6F 30%, rgba(133, 11, 160, 0.8) 100%);
+    background: linear-gradient(270deg, #adadad 30%, rgba(117, 117, 117, 0.8) 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
   }

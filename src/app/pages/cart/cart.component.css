@@ -296,7 +296,7 @@ h3 {
 }
 
 .spinner-border {
-  color: #8b5cf6; /* Purple */
+  color: #757575; /* Purple */
   width: 2rem;
   height: 2rem;
 }
@@ -435,10 +435,20 @@ h3 {
 
 .input-group.updating .spinner-border {
   display: inline-block;
-  color: #7b2cbf;
+  color: #c2c2c2;
 }
 
 /* Prevent quantity controls from being clickable during updates */
 .input-group.updating button {
   pointer-events: none;
+}
+
+.checkout{
+  background-color:#444;
+  color: #fff;
+}
+
+.checkout:hover{
+  
+  background-color: #6d6d6d;
 }

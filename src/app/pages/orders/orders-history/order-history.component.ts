@@ -30,10 +30,18 @@ export class OrderHistoryComponent {
   ngOnInit()
   {    
     this.storedUser = this.httpRequestsService.getUserData();
-    this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
-      this.orders=res;
-      return this.orders;
-    }); 
+    if(this.storedUser.role=='admin'){
+      this.oredrsHttpRequest.getAllOrders().subscribe(res=> {
+        this.orders=res;
+        return this.orders;
+      }); 
+    }
+    else if(this.storedUser.role=='customer'){
+      this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
+        this.orders=res;
+        return this.orders;
+      }); 
+    }
   }
  
 }
