@@ -1,6 +1,7 @@
-import { HttpClient ,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CryptoHelper } from '../../helper/crypto-helper';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class HttpRequestsService {
   }
 
   getUserData() {
-    const userData = localStorage.getItem('userData');
+    const userData = CryptoHelper.decrypt(localStorage.getItem('userData') || '');
     if (userData) {
       return JSON.parse(userData);
     }
@@ -47,7 +48,7 @@ export class HttpRequestsService {
         flatNo: ''
       }
     };
-}
+  }
   getUserToken() {
     const userToken = localStorage.getItem('token');
     return userToken;
