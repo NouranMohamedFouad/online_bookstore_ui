@@ -1,46 +1,35 @@
-:root {
-  --primary-bg: rgb(242, 242, 247);
-  --secondary-bg: rgb(240, 240, 241);
-  --text-color: #444;
-  --border-color: #33333388;
-  --shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
-  --primary-button-bg: #2d6442;
-  --primary-button-hover-bg: #1e4a2f;
-  --danger-button-bg: #dc2626;
-  --danger-button-hover-bg: #b91c1c;
-  --font-family: 'Poppins', sans-serif;
-}
-
 body {
-  background-color: var(--primary-bg);
-  font-family: var(--font-family);
+  background-color: rgb(242, 242, 247);
 }
 
 .sidebar {
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
+  background-color: rgb(240, 240, 241);
+  color: white;
+  border: 1px solid #33333388;
   padding: 20px;
   height: 100vh;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
   margin-top: 10px;
+  padding: 30px;
   border-radius: 10px;
 }
 
 .profile-container {
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
+  background-color: rgb(240, 240, 241);
+  color: #444;
+  border: 1px solid #33333388;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
   font-weight: bold;
   margin-top: 10px;
+  padding: 30px;
+  border-radius: 10px;
 }
 
-.btn-update, .deletebtn {
+.btn-update ,.deletebtn {
   margin-top: 15px;
-  color: var(--text-color);
+  color: #444;
   border: 1px solid #ccc;
   padding: 14px 28px;
   border-radius: 10px;
@@ -52,25 +41,22 @@ body {
 }
 
 .btn-update:hover {
-  background-color: var(--primary-button-hover-bg);
-  color: white;
-}
-
-.deletebtn:hover {
-  background-color: var(--danger-button-hover-bg);
+  background-color: #2d6442;
+  box-shadow: 0px 4px 8px rgba(112, 136, 112, 0.3);
   color: white;
 }
 
 li {
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow);
+  background-color: rgb(240, 240, 241);
+  color: #444;
+  border: 1px solid #33333388;
+  box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
   cursor: pointer;
   margin-top: 6px;
 }
 
-.text-muted, .personal {
+.text-muted,
+.personal {
   background-color: #444;
   -webkit-background-clip: text;
   background-clip: text;
@@ -78,21 +64,17 @@ li {
   text-decoration: underline;
   position: relative;
   font-weight: bold;
-  font-family: var(--font-family);
+  font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 input {
   background-color: rgba(160, 141, 141, 0.068);
-  color: var(--text-color);
+  color: #444;
   font-size: medium;
   font-weight: 600;
   border: 1px solid rgba(17, 17, 17, 0.5);
-  padding: 10px;
-  border-radius: 5px;
-  width: 100%;
-  margin-bottom: 10px;
 }
 
 input:focus {
@@ -117,9 +99,8 @@ a {
   background-color: #a89ea3b0 !important;
   color: white !important;
 }
-
 .delete-btn {
-  background-color: var(--danger-button-bg);
+  background-color: #dc2626;
   color: white;
   padding: 6px 10px;
   border-radius: 6px;
@@ -130,11 +111,13 @@ a {
   transition: all 0.3s ease-in-out;
 }
 
-.delete-btn:hover {
-  background-color: var(--danger-button-hover-bg);
+.deletebtn:hover{
+  background-color: #b91c1c;
+  box-shadow: 0px 4px 8px rgba(133, 103, 103, 0.3);
+  color: white;
 }
 
-.delete-btn:disabled {
+.delete-btn:disabled{
   background-color: #f87171;
   cursor: not-allowed;
 }
@@ -143,3 +126,4 @@ a {
   max-width: 400px;
   margin: auto;
 }
+
