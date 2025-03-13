@@ -96,7 +96,9 @@ export class CartRequestsService {
     
     return this.http.patch<any>(`${this.baseUrl}/cart`, { bookId, quantity })
       .pipe(
+        timeout(5000), // Add a 5 second timeout
         map(response => {
+          console.log('Raw response from update quantity:', response);
           // Handle both direct Cart response and wrapped response formats
           if (response.success && response.data) {
             console.log('Received wrapped cart response:', response);
@@ -108,9 +110,16 @@ export class CartRequestsService {
         }),
         tap(cart => {
           console.log('Cart after quantity update:', cart);
+          if (!cart.items) {
+            console.warn('Cart is missing items array, may cause UI issues');
+          }
         }),
         catchError(error => {
           console.error('Error updating cart quantity:', error);
+          // Return a more graceful error that won't break the UI
+          if (error.name === 'TimeoutError') {
+            return throwError(() => new Error('Request timed out. Please try again.'));
+          }
           return throwError(() => error);
         })
       );

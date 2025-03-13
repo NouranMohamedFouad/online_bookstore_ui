@@ -28,7 +28,7 @@
         <i class="bi bi-cart-x" style="font-size: 3rem; color: #8b5cf6;"></i>
         <h2 class="mt-4">Your cart is empty</h2>
         <p class="mb-4">Looks like you haven't added any books to your cart yet.</p>
-        <button class="btn btn-primary" routerLink="/books">
+        <button class="btn btn-primary" routerLink="/">
           <i class="bi bi-book me-2"></i> Continue Shopping
         </button>
       </div>
@@ -72,7 +72,7 @@
                     class="btn" 
                     type="button"
                     [disabled]="item.quantity <= 1 || item.updating"
-                    (click)="updateQuantity(item.bookId, item.quantity - 1)"
+                    (click)="updateQuantity(item.bookId, item.quantity - 1, $event)"
                     aria-label="Decrease quantity"
                   >
                     <i class="bi bi-dash"></i>
@@ -85,7 +85,7 @@
                     class="btn" 
                     type="button"
                     [disabled]="item.updating"
-                    (click)="updateQuantity(item.bookId, item.quantity + 1)"
+                    (click)="updateQuantity(item.bookId, item.quantity + 1, $event)"
                     aria-label="Increase quantity"
                   >
                     <i class="bi bi-plus"></i>

@@ -140,7 +140,13 @@ export class CartComponent implements OnInit {
     this.fetchCartItems();
   }
 
-  updateQuantity(bookId: string, quantity: number): void {
+  updateQuantity(bookId: string, quantity: number, event?: Event): void {
+    // Prevent the default form submission behavior if event is provided
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
     // Ensure quantity is a valid number
     quantity = parseInt(String(quantity), 10);
     
@@ -158,6 +164,12 @@ export class CartComponent implements OnInit {
       return;
     }
     
+    // Store original quantity in case of error
+    const originalQuantity = this.cartItems[itemIndex].quantity;
+    
+    // Optimistically update the UI
+    this.cartItems[itemIndex].quantity = quantity;
+    
     // Mark this specific item as updating
     this.cartItems[itemIndex].updating = true;
     
@@ -168,8 +180,9 @@ export class CartComponent implements OnInit {
           console.error('Error updating quantity:', err);
           this.error = err.error?.message || 'Failed to update quantity';
           
-          // Remove updating flag
-          if (itemIndex !== -1) {
+          // Revert to original quantity on error
+          if (itemIndex !== -1 && this.cartItems[itemIndex]) {
+            this.cartItems[itemIndex].quantity = originalQuantity;
             this.cartItems[itemIndex].updating = false;
           }
           
@@ -179,11 +192,37 @@ export class CartComponent implements OnInit {
       .subscribe(updatedCart => {
         if (updatedCart) {
           console.log('Quantity updated successfully:', updatedCart);
+          
+          // Update cart data carefully without full refresh
           this.cart = updatedCart;
-          this.cartItems = updatedCart.items || [];
+          
+          // Carefully update items while preserving UI state
+          if (updatedCart.items) {
+            updatedCart.items.forEach(updatedItem => {
+              const existingItemIndex = this.cartItems.findIndex(item => item.bookId === updatedItem.bookId);
+              if (existingItemIndex !== -1) {
+                // Preserve the updating flag but update quantity
+                const isUpdating = this.cartItems[existingItemIndex].updating;
+                updatedItem.updating = isUpdating;
+                this.cartItems[existingItemIndex] = updatedItem;
+              }
+            });
+            
+            // Handle removed items
+            this.cartItems = this.cartItems.filter(item => 
+              updatedCart.items.some(updatedItem => updatedItem.bookId === item.bookId)
+            );
+          }
+          
+          // Turn off updating flag for the specific item
+          const updatedItemIndex = this.cartItems.findIndex(item => item.bookId === bookId);
+          if (updatedItemIndex !== -1) {
+            this.cartItems[updatedItemIndex].updating = false;
+          }
         } else {
-          // If no response, make sure to remove updating flag
+          // If no response, revert changes and remove updating flag
           if (itemIndex !== -1 && this.cartItems[itemIndex]) {
+            this.cartItems[itemIndex].quantity = originalQuantity;
             this.cartItems[itemIndex].updating = false;
           }
         }
