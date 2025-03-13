@@ -44,16 +44,40 @@ export class PaymentComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    this.cartService.getCart().subscribe({
-      next: (cart: Cart) => {
-        console.log('Cart loaded in payment component with populated book details:', cart);
-        this.cart = cart;
-        this.loading = false;
+    // First ensure there's a cart in the database
+    this.cartService.ensureCartExists().subscribe({
+      next: (success) => {
+        if (!success) {
+          this.loading = false;
+          this.error = "Unable to create cart in the database. Please try again.";
+          return;
+        }
+        
+        // Now get the cart details
+        this.cartService.getCart().subscribe({
+          next: (cart: Cart) => {
+            console.log('Cart loaded in payment component:', cart);
+            this.cart = cart;
+            
+            // Validate cart has items before allowing checkout
+            if (!cart.items || cart.items.length === 0) {
+              this.error = 'Your cart is empty. Please add items to your cart before proceeding to checkout.';
+              console.warn('Empty cart detected in payment page');
+            }
+            
+            this.loading = false;
+          },
+          error: (err) => {
+            this.error = 'Could not load cart data. Please try again.';
+            this.loading = false;
+            console.error('Error loading cart:', err);
+          }
+        });
       },
-      error: (err) => {
-        this.error = 'Could not load cart data. Please try again.';
+      error: (error) => {
+        console.error("Error ensuring cart exists:", error);
         this.loading = false;
-        console.error('Error loading cart:', err);
+        this.error = "Unable to verify your cart. Please try refreshing the page or contact support.";
       }
     });
   }
@@ -112,6 +136,12 @@ export class PaymentComponent implements OnInit {
       return;
     }
     
+    // Verify cart exists and has items
+    if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
+      this.error = 'Cannot process payment: Your cart is empty. Please add items to your cart first.';
+      return;
+    }
+    
     this.loading = true;
     this.error = null;
     
@@ -126,37 +156,91 @@ export class PaymentComponent implements OnInit {
   }
   
   createOrder(): void {
-    this.oredrsHttpRequest.addOrder().subscribe(
-      response => {
-        console.log("Order added successfully :", response);
-      },
-      error => {
-        console.error("Error adding order:", error);
-      }
-    ); 
-    setTimeout(() => {
-      this.sendMessage();
-      this.router.navigate(['/order-confirmation']);
-
-    }, 2000);
-
-    // , {
-    //   queryParams: { 
-    //     orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
-    //     paymentId: 'PAY-' + Math.floor(Math.random() * 1000000) 
-    //   }
-    // });
+    if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
+      this.error = 'Cannot place order: Your cart is empty.';
+      return;
+    }
     
+    this.loading = true;
+    this.error = null;
+    
+    // First ensure a cart record exists in the database
+    // This solves the issue where userCart is null in the backend
+    this.cartService.ensureCartExists().subscribe({
+      next: (success) => {
+        if (!success) {
+          this.loading = false;
+          this.error = "Unable to verify your cart in the database. Please try again.";
+          return;
+        }
+        
+        console.log("Cart verified, proceeding with order creation");
+        
+        // Now proceed with order creation with improved error handling
+        this.oredrsHttpRequest.addOrder().subscribe({
+          next: (response) => {
+            console.log("Order added successfully:", response);
+            this.loading = false;
+            
+            // Send websocket notification after successful order
+            this.sendMessage();
+            
+            // Navigate to confirmation page
+            this.router.navigate(['/order-confirmation']);
+          },
+          error: (err) => {
+            this.loading = false;
+            console.error("Error adding order:", err);
+            
+            // Provide user-friendly error messages based on error type
+            if (err.message && typeof err.message === 'string') {
+              // Use the error message from the service if available
+              this.error = err.message;
+            } else if (err.status === 422) {
+              this.error = "There was a problem validating your order. Please check your cart and try again.";
+            } else if (err.status === 401 || err.status === 403) {
+              this.error = "You must be logged in to place an order. Please sign in and try again.";
+              // Redirect to login
+              setTimeout(() => {
+                this.router.navigate(['/login']);
+              }, 3000);
+            } else if (err.status === 0) {
+              this.error = "Network error. Please check your connection and try again.";
+            } else {
+              this.error = "An unexpected error occurred. Please try again later.";
+            }
+            
+            // Automatically retry for network errors after 3 seconds
+            if (err.status === 0) {
+              setTimeout(() => {
+                this.error = "Retrying order placement...";
+                this.createOrder();
+              }, 3000);
+            }
+          }
+        });
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error("Error verifying cart:", err);
+        this.error = "Unable to verify your cart. Please try again later.";
+      }
+    });
   }
+  
   sendMessage() {
+    if (!this.cart) {
+      console.error("Cannot send message: Cart is null");
+      return;
+    }
 
     const orderDetails = {
-      totalPrice: this.cart?.total_price,
+      totalPrice: this.cart.total_price,
     };
     const data = {
       order: orderDetails
     };
-    this.websocketService.sendMessage("send to server");
+    this.websocketService.sendMessage(JSON.stringify(data));
   }
   
   
@@ -166,6 +250,10 @@ export class PaymentComponent implements OnInit {
   }
   
   goBack(): void {
+    this.router.navigate(['/cart']);
+  }
+  
+  goToCart(): void {
     this.router.navigate(['/cart']);
   }
   
@@ -195,5 +283,4 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
-
 }
