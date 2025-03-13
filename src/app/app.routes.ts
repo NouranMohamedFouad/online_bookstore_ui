@@ -12,6 +12,7 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { AddBookComponent } from './pages/add-book/add-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';
 import { authGuard } from './guards/auth.guard';
+import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation.component';
 
 export const routes: Routes = [
     {
@@ -72,6 +73,11 @@ export const routes: Routes = [
         path: 'orders',
         component: OrderHistoryComponent,
         title: 'Orders History'
+    },
+    {
+        path: 'order-confirmation',
+        component: OrderConfirmationComponent,
+        title: 'Order Confirmation'
     },
     {
         path: '**',

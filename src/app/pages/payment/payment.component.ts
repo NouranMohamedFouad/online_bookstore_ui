@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartRequestsService } from '../../services/requests/cart/cart-requests.service';
 import { Cart } from '../../interfaces/cart';
+import { OrdersRequestsService } from '../../services/requests/orders/orders-requests.service';
+import { WebsocketService } from '../../services/requests/websocket/websocket.service';
 
 @Component({
   selector: 'app-payment',
@@ -18,16 +20,24 @@ export class PaymentComponent implements OnInit {
   error: string | null = null;
   selectedCardType: string = 'visa';
   cart: Cart | null = null;
+  response: string='';
+
   
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private cartService: CartRequestsService
+    private cartService: CartRequestsService,
+    private oredrsHttpRequest: OrdersRequestsService,
+    private websocketService: WebsocketService,
   ) {}
   
   ngOnInit(): void {
     this.initForm();
     this.loadCartData();
+
+    this.websocketService.socket.onmessage = (event) => {
+      this.response = event.data;
+    };
   }
   
   loadCartData(): void {
@@ -116,15 +126,38 @@ export class PaymentComponent implements OnInit {
   }
   
   createOrder(): void {
-    // Here you would call your order creation API
-    // For this example, we'll just simulate success and navigate to confirmation
-    this.router.navigate(['/orders/confirmation'], {
-      queryParams: { 
-        orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
-        paymentId: 'PAY-' + Math.floor(Math.random() * 1000000) 
+    this.oredrsHttpRequest.addOrder().subscribe(
+      response => {
+        console.log("Order added successfully :", response);
+      },
+      error => {
+        console.error("Error adding order:", error);
       }
-    });
+    ); 
+    setTimeout(() => {
+      this.sendMessage();
+    }, 2000);
+
+    this.router.navigate(['/order-confirmation']);
+    // , {
+    //   queryParams: { 
+    //     orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
+    //     paymentId: 'PAY-' + Math.floor(Math.random() * 1000000) 
+    //   }
+    // });
+    
   }
+  sendMessage() {
+
+    const orderDetails = {
+      totalPrice: this.cart?.total_price,
+    };
+    const data = {
+      order: orderDetails
+    };
+    this.websocketService.sendMessage(JSON.stringify(data));
+  }
+  
   
   retryPayment(): void {
     this.error = null;
@@ -146,6 +179,10 @@ export class PaymentComponent implements OnInit {
     if (!this.cart) return 0;
     return parseFloat((this.cart.total_price + this.calculateTax()).toFixed(2));
   }
+
+  ngOnDestroy() {
+    this.websocketService.closeConnection();
+  }
   
   // Helper method to mark all form controls as touched
   private markFormGroupTouched(formGroup: FormGroup): void {
@@ -157,4 +194,5 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
+
 }

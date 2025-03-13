@@ -21,4 +21,7 @@ export class OrdersRequestsService {
   updateOrderStatus(orderId: number, status: string): Observable<any> {
     return this.http.patch(`${this.baseUrl}/orders/${orderId}?status=${status}`, {});
   }
+  addOrder(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/orders`,{});
+  }
 }

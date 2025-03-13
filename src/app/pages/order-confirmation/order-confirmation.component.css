@@ -1,0 +1,109 @@
+.cent {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .success-container {
+    border: 1px solid rgba(217, 217, 217, 1);
+    text-align: center;
+    max-width: 800px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(32,31,40);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .success-content {
+    flex: 1;
+    padding-right: 40px;
+  }
+  
+  .success-title {
+    font-size: 120px;
+    font-weight: 900;
+    /* background: linear-gradient(45deg, #f00f7f, #418ce2); */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .success-subtitle {
+    font-size: 32px;
+    font-weight: 600;
+    color: #d1cfcf;
+    margin: 10px 0;
+  }
+  
+  .success-message {
+    font-size: 18px;
+    color: #b0b0b0;
+    margin: 20px 0;
+  }
+  
+  .success-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(45deg, #944a0d, #cf5606);
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .success-button:hover {
+    background: linear-gradient(45deg, #5e2f08, #cf5606);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px #974a0a;
+  }
+  
+  
+  .success-image {
+    max-width: 300px;
+    height: auto;
+    border-radius: 15px;
+    animation: float 3s ease-in-out infinite;
+    filter: brightness(0.9);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  

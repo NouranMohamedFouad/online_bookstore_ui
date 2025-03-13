@@ -33,7 +33,7 @@ export class OrderHistoryComponent {
     this.storedUser = this.httpRequestsService.getUserData();
     this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
       this.orders=res;
-      this.sendMessage();
+      //this.sendMessage();
       return this.orders;
     }); 
 

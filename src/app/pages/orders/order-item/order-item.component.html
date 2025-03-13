@@ -1,4 +1,4 @@
-<div class="book parent">
+<!-- <div class="book parent">
     <div class="child1">
       <img [src]="orderItem.bookDetails.image" [alt]="orderItem.bookDetails.title " class="img-fluid rounded bookImg">
     </div>
@@ -9,15 +9,35 @@
           <p>Quantity:{{ orderItem.quantity }}</p>
         </div>
         <div>
-          <img src="../../../../assets/images/delivered2.png" class="status">
+          <h5>Price: ${{ orderItem.bookDetails.price }}</h5>
         </div>
-        <div>
+      </div>
+    </div>
+  </div>
+  <hr> -->
+
+  <div class="book parent">
+    <!-- Book Image -->
+    <div class="child1">
+      <img [src]="orderItem.bookDetails.image" [alt]="orderItem.bookDetails.title" class="img-fluid rounded bookImg">
+    </div>
+      <div class="child2">
+      <div class="data">
+        <div class="left">
+          <h4>{{ orderItem.bookDetails.title }}</h4>
+          <p class="quantity">
+            <i class="fas fa-times close-icon"></i>
+            {{ orderItem.quantity }}
+          </p>
+        </div>
+          <div class="right">
           <h5>Price: ${{ orderItem.bookDetails.price }}</h5>
         </div>
       </div>
     </div>
   </div>
   <hr>
+  
 
   @if(userRole == 'admin')
   {
