@@ -10,11 +10,6 @@ export class HttpRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  // getBooksList(page: number, pageSize: number): Observable<any> {
-  //   let params = new HttpParams().set('page', page).set('pageSize', pageSize);
-  //   return this.http.get(`${this.baseUrl}/books`, { params });
-  // }
-
   getOrdersList(): Observable<any> {
     return this.http.get(`${this.baseUrl}/orders`);
   }
