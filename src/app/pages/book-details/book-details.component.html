@@ -8,16 +8,14 @@
       <p>Loading book details...</p>
     </div>
 
-    <!-- Book Details -->
-    <div *ngIf="!isLoading && book">
-      <div class="team" id="team">
+    <div>
+      <div class="team" id="team" *ngIf="!isLoading && book">
         <h2 class="main-title text-center mb-5 position-relative">
           Book Details
           <span class="title-underline"></span> <!-- Underline element -->
-        </h2>
-        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 w-100">
-          <div class="box" style="max-width: 350px;">
-            <div class="data d-flex align-items-center">
+        </h2>        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 w-100">
+          <div class="box" style="max-width: 350px;" >
+            <div class="data d-flex align-items-center" *ngIf="!isLoading && book">
               <img [src]="book.image" alt="{{ book.title }}" class="img-fluid shadow-sm" />
               <div class="social d-flex flex-column gap-3 ms-3">
                 <a href="#" class="text-decoration-none">
@@ -37,7 +35,7 @@
           </div>
 
           <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border: none;">
-            <div class="book-card position-relative">
+            <div *ngIf="!isLoading && book" class="book-card position-relative">
               <div *ngIf="book.stock > 0" class="label-in-stock">
                 In Stock
               </div>
@@ -66,13 +64,15 @@
                   </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-around gap-3">
-                  <button class="book-action-button btn w-25 px-4 py-2"
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-around gap-3">
+                  <!-- Add Review Button -->
+                  <button class="book-action-button btn w-100 w-md-auto px-4 py-2"
                     (click)="navigateToReviews(book.bookId)">
                     Add Review
                   </button>
-
-                  <button class="book-action-button btn btn-outline-success w-25 px-4 py-2"
+                
+                  <!-- Add to Cart Button -->
+                  <button class="book-action-button btn btn-outline-success w-100 w-md-auto px-4 py-2"
                     (click)="addToCart(book._id)" [disabled]="!canAddToCart(book)">
                     <span *ngIf="!isBookBeingAdded(book._id)">
                       <i class="bi bi-cart-plus me-1"></i>
@@ -91,13 +91,11 @@
       </div>
     </div>
 
-    <!-- Error Message -->
     <div *ngIf="errorMessage" class="alert alert-danger col-12 col-md-8 col-lg-6">
       {{ errorMessage }}
     </div>
 
-    <!-- No Book Found Message -->
-    <div *ngIf="!isLoading && !book && !errorMessage" class="text-center col-6 mt-3 mt-md-5 p-3 p-md-4 bg-light rounded shadow-sm">
+    <div *ngIf="!isLoading && !book" class="text-center col-6 mt-3 mt-md-5 p-3 p-md-4 bg-light rounded shadow-sm">
       <p class="text-danger fs-6 fs-md-5 fw-medium mb-0">
         <i class="fas fa-exclamation-circle me-2"></i> No book details found.
       </p>
