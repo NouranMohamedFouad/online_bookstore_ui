@@ -1,248 +1,298 @@
-<div class="container animate-fade-in">
-  <!-- Loading State -->
-  @if (loading) {
-    <div class="center-container my-5">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-3">Processing payment information...</p>
-    </div>
-  }
+<div class="container mt-4 animate-fade-in">
+  <div class="center-container">
+    <h2>Payment Details</h2>
+  </div>
 
-  <!-- Error State -->
-  @if (error) {
-    <div class="center-container my-5">
-      <div class="alert alert-danger" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
-      </div>
-      <button class="btn btn-primary mt-3" (click)="loadCheckoutData()">
-        <i class="bi bi-arrow-repeat me-2"></i> Try Again
-      </button>
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-  }
+    <p class="mt-2 text-muted">Processing payment information...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+    <button class="btn btn-sm ms-2" (click)="retryPayment()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Try Again
+    </button>
+  </div>
 
   <!-- Payment Form -->
-  @if (!loading && !error) {
-    <h2 class="mb-4">Checkout</h2>
-
-    <div class="row">
-      <!-- Payment Details -->
-      <div class="col-lg-8 mb-4">
-        <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="animate-slide-up">
-          <!-- Payment Method Section -->
-          <div class="card mb-4">
-            <div class="card-header">
-              <h5>Payment Method</h5>
-            </div>
-            <div class="card-body">
-              <div class="row mb-4">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <div class="card-option" [class.selected]="paymentMethod.value === 'credit'" (click)="selectPaymentMethod('credit')">
-                    <i class="bi bi-credit-card" style="font-size: 2rem; color: #8b5cf6;"></i>
-                    <span>Credit Card</span>
-                  </div>
+  <div *ngIf="!loading && !error" class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4 animate-slide-up">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i> Payment Method</h5>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+            <!-- Card Type Selection -->
+            <div class="mb-4">
+              <label class="form-label">Select Card Type</label>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="card-option" [class.selected]="selectedCardType === 'visa'" (click)="selectCardType('visa')">
+                  <i class="fab fa-cc-visa fa-2x"></i>
+                  <span>Visa</span>
                 </div>
-                <div class="col-md-6">
-                  <div class="card-option" [class.selected]="paymentMethod.value === 'paypal'" (click)="selectPaymentMethod('paypal')">
-                    <i class="fab fa-paypal" style="font-size: 2rem; color: #8b5cf6;"></i>
-                    <span>PayPal</span>
-                  </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'mastercard'" (click)="selectCardType('mastercard')">
+                  <i class="fab fa-cc-mastercard fa-2x"></i>
+                  <span>MasterCard</span>
+                </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'amex'" (click)="selectCardType('amex')">
+                  <i class="fab fa-cc-amex fa-2x"></i>
+                  <span>American Express</span>
+                </div>
+                <div class="card-option" [class.selected]="selectedCardType === 'discover'" (click)="selectCardType('discover')">
+                  <i class="fab fa-cc-discover fa-2x"></i>
+                  <span>Discover</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Number -->
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Card Number</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-credit-card"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardNumber"
+                  formControlName="cardNumber"
+                  placeholder="XXXX XXXX XXXX XXXX"
+                >
+              </div>
+              <div *ngIf="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched" class="text-danger mt-1">
+                Please enter a valid card number
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Card Holder Name -->
+              <div class="col-md-6 mb-3">
+                <label for="cardHolderName" class="form-label">Card Holder Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardHolderName"
+                  formControlName="cardHolderName"
+                  placeholder="Name as shown on card"
+                >
+                <div *ngIf="paymentForm.get('cardHolderName')?.invalid && paymentForm.get('cardHolderName')?.touched" class="text-danger mt-1">
+                  Card holder name is required
                 </div>
               </div>
 
-              <!-- Credit Card Form -->
-              @if (paymentMethod.value === 'credit') {
-                <div class="animate-fade-in">
-                  <div class="row mb-3">
-                    <div class="col-md-6 mb-3">
-                      <label for="cardType" class="form-label">Card Type</label>
-                      <div class="d-flex gap-3">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" formControlName="cardType" id="visa" value="visa">
-                          <label class="form-check-label" for="visa">
-                            <i class="fab fa-cc-visa me-1"></i> Visa
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" formControlName="cardType" id="mastercard" value="mastercard">
-                          <label class="form-check-label" for="mastercard">
-                            <i class="fab fa-cc-mastercard me-1"></i> MasterCard
-                          </label>
-                        </div>
-                      </div>
-                      @if (cardType.invalid && (cardType.dirty || cardType.touched)) {
-                        <div class="text-danger mt-1">Please select a card type</div>
-                      }
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="col-md-12">
-                      <label for="cardName" class="form-label">Name on Card</label>
-                      <input type="text" class="form-control" formControlName="cardName" id="cardName" placeholder="e.g. John Smith">
-                      @if (cardName.invalid && (cardName.dirty || cardName.touched)) {
-                        <div class="text-danger mt-1">Please enter the name on card</div>
-                      }
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="col-md-12">
-                      <label for="cardNumber" class="form-label">Card Number</label>
-                      <input type="text" class="form-control" formControlName="cardNumber" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx">
-                      @if (cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)) {
-                        <div class="text-danger mt-1">Please enter a valid card number</div>
-                      }
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                      <label for="expirationDate" class="form-label">Expiration Date</label>
-                      <input type="text" class="form-control" formControlName="expirationDate" id="expirationDate" placeholder="MM/YY">
-                      @if (expirationDate.invalid && (expirationDate.dirty || expirationDate.touched)) {
-                        <div class="text-danger mt-1">Please enter a valid expiration date</div>
-                      }
-                    </div>
-                    <div class="col-md-6">
-                      <label for="cvv" class="form-label">CVV</label>
-                      <input type="text" class="form-control" formControlName="cvv" id="cvv" placeholder="123">
-                      @if (cvv.invalid && (cvv.dirty || cvv.touched)) {
-                        <div class="text-danger mt-1">Please enter a valid CVV</div>
-                      }
-                    </div>
-                  </div>
+              <!-- Expiration Date -->
+              <div class="col-md-3 mb-3">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="expiryDate"
+                  formControlName="expiryDate"
+                  placeholder="MM/YY"
+                >
+                <div *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched" class="text-danger mt-1">
+                  Invalid expiry date
                 </div>
-              }
+              </div>
 
-              <!-- PayPal Info -->
-              @if (paymentMethod.value === 'paypal') {
-                <div class="animate-fade-in">
-                  <div class="alert alert-info">
-                    <i class="fab fa-paypal me-2"></i> You will be redirected to PayPal to complete your payment securely.
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col-md-12">
-                      <label for="paypalEmail" class="form-label">PayPal Email</label>
-                      <input type="email" class="form-control" formControlName="paypalEmail" id="paypalEmail" placeholder="your-email@example.com">
-                      @if (paypalEmail.invalid && (paypalEmail.dirty || paypalEmail.touched)) {
-                        <div class="text-danger mt-1">Please enter a valid email</div>
-                      }
-                    </div>
-                  </div>
+              <!-- CVV -->
+              <div class="col-md-3 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cvv"
+                    formControlName="cvv"
+                    placeholder="XXX"
+                  >
+                  <span class="input-group-text" title="3-digit security code usually found on the back of your card">
+                    <i class="bi bi-question-circle"></i>
+                  </span>
                 </div>
-              }
+                <div *ngIf="paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched" class="text-danger mt-1">
+                  Invalid CVV
+                </div>
+              </div>
             </div>
-          </div>
 
-          <!-- Billing Address Section has been removed -->
-        </form>
+            <!-- Billing Address -->
+            <div class="mb-3 mt-4">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="sameAsShipping"
+                  formControlName="sameAsShipping"
+                >
+                <label class="form-check-label" for="sameAsShipping">
+                  Billing address same as shipping address
+                </label>
+              </div>
+            </div>
+
+            <!-- Billing Address Fields (shown only if checkbox is unchecked) -->
+            <div *ngIf="!paymentForm.get('sameAsShipping')?.value" class="billing-address animate-fade-in">
+              <h6 class="mb-3"><i class="bi bi-geo-alt me-2"></i> Billing Address</h6>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="streetAddress" class="form-label">Street Address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="streetAddress"
+                    formControlName="streetAddress"
+                  >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    formControlName="city"
+                  >
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="state" class="form-label">State/Province</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="state"
+                    formControlName="state"
+                  >
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="zipCode" class="form-label">Zip/Postal Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="zipCode"
+                    formControlName="zipCode"
+                  >
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="country" class="form-label">Country</label>
+                  <select class="form-select" id="country" formControlName="country">
+                    <option value="">Select country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="JP">Japan</option>
+                    <option value="EG">Egypt</option>
+                    <!-- Add more countries as needed -->
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
 
-      <!-- Order Summary -->
-      <div class="col-lg-4">
-        <div class="card animate-slide-up">
-          <div class="card-header">
-            <h5>Order Summary</h5>
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+      <div class="card animate-slide-up">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Order Summary</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="summary-item">
+            <span>Subtotal</span>
+            <span>${{ cart?.total_price?.toFixed(2) ?? '0.00' }}</span>
           </div>
-          <div class="card-body">
-            <div class="cart-items-summary mb-3">
-              <div class="d-flex justify-content-between mb-2">
-                <span>Items ({{ cart?.items?.length || 0 }})</span>
-                <button class="btn" type="button" (click)="toggleCartPreview()">
-                  <i class="bi" [ngClass]="showCartPreview ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-                </button>
-              </div>
-              
-              @if (showCartPreview && cart && cart.items && cart.items.length > 0) {
-                <div class="animate-fade-in">
-                  @for (item of cart.items; track item.bookId) {
-                    <div class="cart-item-preview d-flex justify-content-between align-items-center">
-                      <div>
-                        <div class="item-title">{{ item.book?.title || 'Book' }}</div>
-                        <div class="text-muted">
-                          <small><span class="item-quantity">{{ item.quantity }}x</span> &#64; $ {{ item.price.toFixed(2) }}</small>
-                        </div>
-                      </div>
-                      <span class="item-price">$ {{ (item.price * item.quantity).toFixed(2) }}</span>
-                    </div>
-                  }
-                </div>
-              } @else if (showCartPreview) {
-                <div class="animate-fade-in text-center py-3">
-                  <p class="text-muted mb-0">No items in cart</p>
-                </div>
-              }
-            </div>
-            
-            <div class="summary-item">
-              <span>Subtotal</span>
-              <span>$ {{ getSubtotal().toFixed(2) }}</span>
-            </div>
-            <div class="summary-item">
-              <span>Shipping</span>
-              <span>{{ getShippingCost() > 0 ? '$ ' + getShippingCost().toFixed(2) : 'Free' }}</span>
-            </div>
-            <div class="summary-item">
-              <span>Tax ({{ taxRate * 100 }}%)</span>
-              <span>$ {{ getTaxAmount().toFixed(2) }}</span>
-            </div>
-            
-            <hr>
-            
-            <div class="summary-item total">
-              <span>Total</span>
-              <span>$ {{ getTotal().toFixed(2) }}</span>
-            </div>
-            
-            <button 
-              class="btn btn-primary w-100 mt-4" 
-              [disabled]="paymentForm.invalid || isSubmitting"
-              (click)="submitPayment()"
+          <div class="summary-item">
+            <span>Shipping</span>
+            <span class="text-success">Free</span>
+          </div>
+          <div class="summary-item">
+            <span>Tax (8%)</span>
+            <span>${{ calculateTax() }}</span>
+          </div>
+          <hr>
+          <div class="summary-item total">
+            <strong>Total</strong>
+            <strong>${{ getTotal() }}</strong>
+          </div>
+
+          <button
+            class="btn btn-primary w-100 mt-4"
+            type="submit"
+            [disabled]="paymentForm?.invalid || !cart"
+            (click)="processPayment()"
+          >
+            <i class="bi bi-lock-fill me-2"></i> Pay Now
+          </button>
+
+          <button
+            class="btn btn-outline-secondary w-100 mt-2"
+            (click)="goBack()"
+          >
+            <i class="bi bi-arrow-left me-2"></i> Back to Cart
+          </button>
+
+          <!-- Cart Items Summary (Collapsed) -->
+          <div class="cart-items-summary mt-4">
+            <button
+              class="btn btn-sm w-100 text-start"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#cartItemsList"
+              aria-expanded="false"
+              aria-controls="cartItemsList"
             >
-              @if (isSubmitting) {
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Processing...
-              } @else {
-                <i class="bi bi-lock-fill me-2"></i> Complete Payment
-              }
-            </button>
-            
-            <button class="btn btn-outline-secondary w-100 mt-3" routerLink="/cart">
-              <i class="bi bi-arrow-left me-2"></i> Back to Cart
-            </button>
-            
-            <div class="secure-payment text-center mt-3">
-              <i class="bi bi-shield-lock"></i> Secure Payment
-              <div class="d-flex justify-content-center gap-2 mt-2">
-                <i class="fab fa-cc-visa"></i>
-                <i class="fab fa-cc-mastercard"></i>
-                <i class="fab fa-cc-amex"></i>
-                <i class="fab fa-cc-paypal"></i>
+              <div class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-bag me-2"></i> {{ cart?.items?.length || 0 }} Items in Cart</span>
+                <i class="bi bi-chevron-down"></i>
               </div>
+            </button>
+
+            <div class="collapse mt-2" id="cartItemsList">
+              <div class="cart-item-preview" *ngFor="let item of cart?.items">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center">
+                    <span class="item-quantity me-2">{{ item.quantity }}×</span>
+                    <div>
+                      <span class="item-title text-truncate">{{ item.book?.title || 'Book' }}</span>
+                      <small class="d-block text-muted">{{ item.book?.author || 'Author' }}</small>
+                    </div>
+                  </div>
+                  <span class="item-price">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="secure-payment mt-4">
+            <div class="d-flex justify-content-center gap-3 mb-2">
+              <i class="fab fa-cc-visa fa-lg"></i>
+              <i class="fab fa-cc-mastercard fa-lg"></i>
+              <i class="fab fa-cc-amex fa-lg"></i>
+              <i class="fab fa-cc-discover fa-lg"></i>
+            </div>
+            <div class="text-center">
+              <small class="text-muted">
+                <i class="bi bi-shield-lock me-1"></i> Secure payment processing
+              </small>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Add this div after the form section, before the summary section -->
-    <div id="paymob-iframe-container" class="mt-4" *ngIf="paymobIframeUrl && !error">
-      <!-- Paymob iframe will be loaded here dynamically -->
-      <div class="text-center p-4" *ngIf="!paymobIframeLoaded">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading payment gateway...</span>
-        </div>
-        <p class="mt-3">Loading secure payment gateway...</p>
-      </div>
-    </div>
-
-    <!-- Add a thank you message that shows after successful payment -->
-    <div class="alert alert-success" *ngIf="paymobIframeLoaded">
-      <h4 class="alert-heading">Thank you for your order!</h4>
-      <p>Your payment is being processed. Please complete the payment in the iframe above.</p>
-      <p>Once your payment is successful, you will be redirected to the order confirmation page.</p>
-      <p class="mb-0">Order total: ${{ getTotal().toFixed(2) }}</p>
-    </div>
-  }
+  </div>
 </div>
