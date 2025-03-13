@@ -8,15 +8,14 @@ a {
   font-weight: 600;
 }
 .navbar {
-  padding: 15px;
-  background-image: linear-gradient(to right, #39354e, #201E2C, #39354e);
+  padding: 10px;
+  background-image: linear-gradient(to right , #000000, #b3b1b1 ,#030303);
   border-radius: 0px 0px 10px 10px;
- /* https://smoothshadows.com/#djEsMSw0LDAuMjgsMTA3LDM3LDMsI2E3YWNiOSwjZjNmNGY2LCNmZmZmZmYsMg%3D%3D */
-box-shadow: 0px 2px 7px rgba(167, 172, 185, 0.07),
-1px 9px 27px rgba(167, 172, 185, 0.14),
-2px 21px 60px rgba(167, 172, 185, 0.21),
-3px 37px 107px rgba(167, 172, 185, 0.28);
-
+  box-shadow: 0px 2px 7px rgba(167, 172, 185, 0.07),
+  1px 9px 27px rgba(167, 172, 185, 0.14),
+  2px 21px 60px rgba(167, 172, 185, 0.21),
+  3px 37px 107px rgba(167, 172, 185, 0.28);
+  color:#201E2C;
 
 
 }
@@ -44,7 +43,7 @@ span {
 }
 
 .btn:hover {
-  color: rgb(255, 99, 185);
+  color: rgb(177, 177, 177);
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -52,14 +51,17 @@ span {
   font-weight: 500;
   white-space: nowrap;
   font-size: 1.2rem;
-  color: rgb(255, 220, 255);
+  color: rgb(22, 22, 22);
+  text-shadow: #201E2C;
+  padding:5px;
+  border:2px solid #6e6d6d6b;
 }
 
 svg path {
   fill: white;
 }
 .offcanvas{
-  background-image: linear-gradient(to right, #302d3d, #201E2C);
+  background-image: linear-gradient(to right, #222222, #111111);
   border-radius: 20px 0px 20px 0px;
   border:none;
   color: aliceblue;
@@ -135,5 +137,3 @@ svg path {
     font-size: 0.9rem;
   }
 }
-
-

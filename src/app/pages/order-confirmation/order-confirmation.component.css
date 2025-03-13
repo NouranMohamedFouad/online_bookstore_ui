@@ -18,7 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(32,31,40);
+    background-color: rgb(31, 31, 31);
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
     animation: fadeIn 1s ease-in-out;
@@ -60,7 +60,7 @@
     font-size: 16px;
     font-weight: 500;
     color: #fff;
-    background: linear-gradient(45deg, #944a0d, #cf5606);
+    background: linear-gradient(45deg, #8d8d8d, #444);
     border: none;
     border-radius: 50px;
     text-decoration: none;
@@ -70,7 +70,7 @@
   }
   
   .success-button:hover {
-    background: linear-gradient(45deg, #5e2f08, #cf5606);
+    background: linear-gradient(45deg, #131313, #444);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px #974a0a;
   }

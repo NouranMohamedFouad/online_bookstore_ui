@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // Skip authentication for login and public endpoints
+    // Skip authentication for login, register, and public endpoints
     if (
       request.url.includes('/auth/login') ||
       request.url.includes('/auth/signup') ||
@@ -48,24 +48,37 @@ export class AuthInterceptor implements HttpInterceptor {
         const userId = decoded.id;
         const expiryDate = new Date(decoded.exp * 1000);
         const isExpired = expiryDate < new Date();
+        // Add a 5-minute buffer to prevent issues near expiration
+        const isNearExpiry = expiryDate.getTime() - new Date().getTime() < 5 * 60 * 1000;
 
         console.log('Token details:', {
           userId,
           expiryDate: expiryDate.toISOString(),
           isExpired,
+          isNearExpiry,
           url: request.url
         });
 
-        if (isExpired) {
+        // Allow cart-related requests to proceed even if token is near expiry
+        const isCartRequest = request.url.includes('/cart');
+
+        if (isExpired && !isCartRequest) {
           console.warn('Token is expired, logging out');
-          this.loginService.logout();
-          this.router.navigate(['/login'], {
-            queryParams: {
-              returnUrl: this.router.url,
-              errorMsg: 'Your session has expired. Please log in again.'
-            }
+          // Don't immediately log out, just handle the error that will come back
+          const authRequest = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`,
+            },
           });
-          return throwError(() => new Error('Token expired'));
+          return next.handle(authRequest).pipe(
+            catchError((error: HttpErrorResponse) => {
+              if (error.status === 401) {
+                this.loginService.logout();
+                this.router.navigate(['/login']);
+              }
+              return throwError(() => error);
+            })
+          );
         }
 
         // Clone the request and add the authorization header
@@ -112,6 +125,7 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       } catch (error) {
         console.error('Token decode error:', error);
+        
         this.loginService.logout();
         this.router.navigate(['/login'], {
           queryParams: {
@@ -123,14 +137,16 @@ export class AuthInterceptor implements HttpInterceptor {
       }
     }
 
-    // No token available, proceed without authentication
+    // No token available, proceed without authentication for some endpoints
     console.warn('No token available for authenticated endpoint:', request.url);
+    
+    // For cart requests, redirect to login
     if (request.url.includes('/cart')) {
       console.error('Cart request without authentication - redirecting to login');
       this.router.navigate(['/login'], {
         queryParams: {
           returnUrl: this.router.url,
-          errorMsg: 'Please log in to access your cart'
+          errorMsg: 'Please log in to continue with your cart'
         }
       });
       return throwError(() => new Error('Authentication required'));

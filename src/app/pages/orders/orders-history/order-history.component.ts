@@ -20,7 +20,6 @@ export class OrderHistoryComponent {
   constructor(
     private oredrsHttpRequest: OrdersRequestsService,
     private datePipe: DatePipe,
-    private websocketService: WebsocketService,
     private httpRequestsService:HttpRequestsService
   ){}
 
@@ -31,30 +30,18 @@ export class OrderHistoryComponent {
   ngOnInit()
   {    
     this.storedUser = this.httpRequestsService.getUserData();
-    this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
-      this.orders=res;
-      //this.sendMessage();
-      return this.orders;
-    }); 
-
-    this.websocketService.socket.onmessage = (event) => {
-      this.response = event.data;
-    };
+    if(this.storedUser.role=='admin'){
+      this.oredrsHttpRequest.getAllOrders().subscribe(res=> {
+        this.orders=res;
+        return this.orders;
+      }); 
+    }
+    else if(this.storedUser.role=='customer'){
+      this.oredrsHttpRequest.getOrdersList(this.storedUser.userId).subscribe(res=> {
+        this.orders=res;
+        return this.orders;
+      }); 
+    }
   }
-  sendMessage() {
-    const orderDetails = {
-      orderId: this.orders[0].orderId,
-      totalPrice: this.orders[0].totalPrice,
-      createdAt: this.orders[0].createdAt
-    };
-
-    const data = {
-      user: this.storedUser,
-      order: orderDetails
-    };
-    this.websocketService.sendMessage(JSON.stringify(data));
-  }
-  ngOnDestroy() {
-    this.websocketService.closeConnection();
-  }
+ 
 }
