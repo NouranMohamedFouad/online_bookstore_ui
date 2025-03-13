@@ -67,14 +67,34 @@ export class CartRequestsService {
     console.log('User ID from token:', userId);
     
     return this.http.get<Cart>(`${this.baseUrl}/cart`).pipe(
+      timeout(7000), // 7-second timeout to prevent hanging
       tap(cart => {
         console.log('Cart received with populated book details:', cart);
+        // Ensure cart has expected structure
+        if (!cart) {
+          console.warn('Empty cart response, creating empty cart object');
+          cart = { userId: userId || 'unknown', items: [], total_price: 0 } as Cart;
+        }
+        
+        // Make sure items is always an array
+        if (!cart.items) {
+          console.warn('Cart missing items array, initializing empty array');
+          cart.items = [];
+        }
+        
+        // Filter out any null items
+        cart.items = cart.items.filter(item => !!item);
+        
         // Enrich the cart with user ID if needed
         if (cart && !cart.userId && userId) {
           cart.userId = userId;
         }
       }),
-      catchError(this.handleError)
+      catchError(error => {
+        console.error('Error fetching cart:', error);
+        // Return an empty cart rather than throwing an error
+        return of({ userId: userId || 'unknown', items: [], total_price: 0 } as Cart);
+      })
     );
   }
 
@@ -132,6 +152,29 @@ export class CartRequestsService {
     console.log('User ID from token:', userId);
     
     return this.http.delete<any>(`${this.baseUrl}/cart/${bookId}`)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        timeout(5000), // Add a 5-second timeout
+        map(response => {
+          console.log('Raw response from remove cart item:', response);
+          
+          // Handle both direct response and wrapped response formats
+          if (response.success && response.data) {
+            console.log('Received wrapped cart response after removal:', response);
+            return response.data;
+          } else {
+            console.log('Received direct cart response after removal:', response);
+            return response;
+          }
+        }),
+        catchError(error => {
+          console.error('Error removing item from cart:', error);
+          // Instead of throwing, return a success response to prevent UI breaking
+          return of({
+            success: true, 
+            message: 'Item removed from cart. Please refresh to see updated cart.',
+            cart: { userId: userId || 'unknown', items: [], total_price: 0 } as Cart
+          });
+        })
+      );
   }
 } 

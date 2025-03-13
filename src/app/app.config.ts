@@ -7,6 +7,7 @@ import {
 import { routes } from './app.routes';
 import { AuthInterceptor } from './auth/http-interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { PaymobService } from './services/requests/payment/paymob.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
+    PaymobService,
   ],
 };

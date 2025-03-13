@@ -103,20 +103,35 @@ export class LoginService {
 
       const expirationDate = new Date(expiresAt);
       const now = new Date();
+      
+      // Add a 5-minute grace period for token expiration
+      // This helps prevent logout during active user sessions
+      const gracePeriodMs = 5 * 60 * 1000; // 5 minutes
+      const effectiveExpirationDate = new Date(expirationDate.getTime() + gracePeriodMs);
 
       // Add logging to help debug token expiration issues
       console.log('Token expiration check:', {
         expirationTimestamp: expirationDate.getTime(),
         nowTimestamp: now.getTime(),
         expiresIn: Math.floor((expirationDate.getTime() - now.getTime()) / 1000) + ' seconds',
-        isExpired: expirationDate < now
+        isExpired: expirationDate < now,
+        effectiveExpirationWithGrace: effectiveExpirationDate.toISOString(),
+        isExpiredWithGrace: effectiveExpirationDate < now
       });
 
-      if (expirationDate < now) {
+      // Only consider token expired after the grace period 
+      if (effectiveExpirationDate < now) {
         // Token has expired
-        console.warn('Token has expired, clearing user data');
+        console.warn('Token has expired (including grace period), clearing user data');
         this.clearUserData();
         return null;
+      }
+
+      // If token is getting close to expiration, try to refresh it
+      const tokenRefreshThresholdMs = 30 * 60 * 1000; // 30 minutes
+      if (expirationDate.getTime() - now.getTime() < tokenRefreshThresholdMs) {
+        console.log('Token is close to expiration, should refresh it soon');
+        // Note: We're not implementing actual refresh logic here, just logging
       }
 
       return token;

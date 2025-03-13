@@ -15,6 +15,7 @@ import { authGuard } from './guards/auth.guard';
 import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation.component';
 import { isAdminGuard } from './guards/is-admin/is-admin.guard';
 import { isLogedinGuard } from './guards/is-logedin/is-logedin.guard';
+import { PaymentCallbackComponent } from './pages/payment/payment-callback.component';
 
 export const routes: Routes = [
     {
@@ -71,6 +72,11 @@ export const routes: Routes = [
         component: PaymentComponent,
         title: 'Payment',
         canActivate: [authGuard]
+    },
+    {
+        path: 'payment/callback',
+        component: PaymentCallbackComponent,
+        title: 'Payment Result'
     },
     {
         path: 'reviews/:bookId',

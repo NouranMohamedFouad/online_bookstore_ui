@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,11 +7,8 @@ import { Cart } from '../../interfaces/cart';
 import { OrdersRequestsService } from '../../services/requests/orders/orders-requests.service';
 import { WebsocketService } from '../../services/requests/websocket/websocket.service';
 import { RouterLink } from '@angular/router';
-
-interface StateOption {
-  code: string;
-  name: string;
-}
+import { PaymobService } from '../../services/requests/payment/paymob.service';
+import { LoginService } from '../../auth/login/login.service';
 
 @Component({
   selector: 'app-payment',
@@ -20,7 +17,7 @@ interface StateOption {
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   loading: boolean = false;
   error: string | null = null;
@@ -31,66 +28,18 @@ export class PaymentComponent implements OnInit {
   showCartPreview: boolean = false;
   taxRate: number = 0.08; // 8% tax rate
   
-  // US States for dropdown
-  states: StateOption[] = [
-    { code: 'AL', name: 'Alabama' },
-    { code: 'AK', name: 'Alaska' },
-    { code: 'AZ', name: 'Arizona' },
-    { code: 'AR', name: 'Arkansas' },
-    { code: 'CA', name: 'California' },
-    { code: 'CO', name: 'Colorado' },
-    { code: 'CT', name: 'Connecticut' },
-    { code: 'DE', name: 'Delaware' },
-    { code: 'FL', name: 'Florida' },
-    { code: 'GA', name: 'Georgia' },
-    { code: 'HI', name: 'Hawaii' },
-    { code: 'ID', name: 'Idaho' },
-    { code: 'IL', name: 'Illinois' },
-    { code: 'IN', name: 'Indiana' },
-    { code: 'IA', name: 'Iowa' },
-    { code: 'KS', name: 'Kansas' },
-    { code: 'KY', name: 'Kentucky' },
-    { code: 'LA', name: 'Louisiana' },
-    { code: 'ME', name: 'Maine' },
-    { code: 'MD', name: 'Maryland' },
-    { code: 'MA', name: 'Massachusetts' },
-    { code: 'MI', name: 'Michigan' },
-    { code: 'MN', name: 'Minnesota' },
-    { code: 'MS', name: 'Mississippi' },
-    { code: 'MO', name: 'Missouri' },
-    { code: 'MT', name: 'Montana' },
-    { code: 'NE', name: 'Nebraska' },
-    { code: 'NV', name: 'Nevada' },
-    { code: 'NH', name: 'New Hampshire' },
-    { code: 'NJ', name: 'New Jersey' },
-    { code: 'NM', name: 'New Mexico' },
-    { code: 'NY', name: 'New York' },
-    { code: 'NC', name: 'North Carolina' },
-    { code: 'ND', name: 'North Dakota' },
-    { code: 'OH', name: 'Ohio' },
-    { code: 'OK', name: 'Oklahoma' },
-    { code: 'OR', name: 'Oregon' },
-    { code: 'PA', name: 'Pennsylvania' },
-    { code: 'RI', name: 'Rhode Island' },
-    { code: 'SC', name: 'South Carolina' },
-    { code: 'SD', name: 'South Dakota' },
-    { code: 'TN', name: 'Tennessee' },
-    { code: 'TX', name: 'Texas' },
-    { code: 'UT', name: 'Utah' },
-    { code: 'VT', name: 'Vermont' },
-    { code: 'VA', name: 'Virginia' },
-    { code: 'WA', name: 'Washington' },
-    { code: 'WV', name: 'West Virginia' },
-    { code: 'WI', name: 'Wisconsin' },
-    { code: 'WY', name: 'Wyoming' }
-  ];
+  // Paymob iframe
+  paymobIframeLoaded: boolean = false;
+  paymobIframeUrl: string | null = null;
   
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private cartService: CartRequestsService,
-    private oredrsHttpRequest: OrdersRequestsService,
+    private ordersHttpRequest: OrdersRequestsService,
     private websocketService: WebsocketService,
+    private paymobService: PaymobService,
+    private loginService: LoginService
   ) {}
   
   ngOnInit(): void {
@@ -100,17 +49,36 @@ export class PaymentComponent implements OnInit {
     this.websocketService.socket.onmessage = (event) => {
       this.response = event.data;
     };
+    
+    // Check if user is logged in
+    if (!this.loginService.isAuthenticated()) {
+      console.error('User not authenticated in payment component');
+      this.error = 'Please log in to proceed with payment';
+      // We'll let the auth guard handle the redirection
+    }
   }
   
   loadCheckoutData(): void {
     this.loading = true;
     this.error = null;
     
+    // First check if user is authenticated
+    if (!this.loginService.isAuthenticated()) {
+      this.error = 'You need to be logged in to access this page';
+      this.loading = false;
+      return;
+    }
+    
     this.cartService.getCart().subscribe({
       next: (cart: Cart) => {
         console.log('Cart loaded in payment component with populated book details:', cart);
         this.cart = cart;
         this.loading = false;
+        
+        // Make sure cart has items
+        if (!cart || !cart.items || cart.items.length === 0) {
+          this.error = 'Your cart is empty. Please add items before proceeding to payment.';
+        }
       },
       error: (err) => {
         this.error = 'Could not load cart data. Please try again.';
@@ -142,17 +110,7 @@ export class PaymentComponent implements OnInit {
       ]],
       
       // PayPal info
-      paypalEmail: ['', [Validators.email]],
-      
-      // Billing address
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$/)]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      email: ['', [Validators.required, Validators.email]]
+      paypalEmail: ['', [Validators.email]]
     });
     
     // Add conditional validators based on payment method
@@ -200,14 +158,6 @@ export class PaymentComponent implements OnInit {
   get expirationDate() { return this.paymentForm.get('expirationDate')!; }
   get cvv() { return this.paymentForm.get('cvv')!; }
   get paypalEmail() { return this.paymentForm.get('paypalEmail')!; }
-  get firstName() { return this.paymentForm.get('firstName')!; }
-  get lastName() { return this.paymentForm.get('lastName')!; }
-  get address() { return this.paymentForm.get('address')!; }
-  get city() { return this.paymentForm.get('city')!; }
-  get state() { return this.paymentForm.get('state')!; }
-  get zipCode() { return this.paymentForm.get('zipCode')!; }
-  get phone() { return this.paymentForm.get('phone')!; }
-  get email() { return this.paymentForm.get('email')!; }
   
   selectPaymentMethod(method: string): void {
     this.paymentForm.get('paymentMethod')?.setValue(method);
@@ -250,14 +200,73 @@ export class PaymentComponent implements OnInit {
     this.isSubmitting = true;
     this.error = null;
     
-    // Here you would call your payment processing API
-    // For now, we'll simulate a successful payment after a delay
-    setTimeout(() => {
+    if (!this.cart) {
+      this.error = 'No cart data available. Please try again.';
       this.isSubmitting = false;
-      
-      // After successful payment, create an order
-      this.createOrder();
-    }, 2000);
+      return;
+    }
+    
+    // Create default billing data since we removed the form
+    const defaultBillingData = {
+      firstName: 'Customer',
+      lastName: 'User',
+      email: 'customer@example.com',
+      phone: '1234567890',
+      address: '123 Main St',
+      city: 'Anytown',
+      state: 'CA',
+      zipCode: '12345',
+      integrationId: 3965743
+    };
+    
+    // Process payment using Paymob with default billing data
+    this.paymobService.processPayment(this.cart, {
+      ...this.paymentForm.value,
+      ...defaultBillingData
+    })
+      .subscribe({
+        next: (checkoutData) => {
+          console.log('Payment process initiated:', checkoutData);
+          
+          // Create the iframe URL for Paymob
+          this.paymobIframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${checkoutData.iframeId}?payment_token=${checkoutData.paymentToken}`;
+          
+          // Create iframe element and load it
+          this.loadPaymobIframe(this.paymobIframeUrl);
+          
+          // After successful payment initiation, create the order
+          this.createOrder();
+        },
+        error: (err) => {
+          console.error('Error processing payment:', err);
+          this.error = err.message || 'Payment processing failed. Please try again.';
+          this.isSubmitting = false;
+        }
+      });
+  }
+  
+  loadPaymobIframe(iframeUrl: string): void {
+    // Create iframe element
+    const iframe = document.createElement('iframe');
+    iframe.src = iframeUrl;
+    iframe.style.width = '100%';
+    iframe.style.height = '600px';
+    iframe.style.border = 'none';
+    iframe.style.overflow = 'hidden';
+    
+    // Add event listener for iframe load
+    iframe.onload = () => {
+      this.paymobIframeLoaded = true;
+      this.isSubmitting = false;
+    };
+    
+    // Add iframe to the DOM
+    const container = document.getElementById('paymob-iframe-container');
+    if (container) {
+      // Clear any existing content
+      container.innerHTML = '';
+      container.appendChild(iframe);
+    }
   }
   
   processPayment(): void {
@@ -265,9 +274,9 @@ export class PaymentComponent implements OnInit {
   }
   
   createOrder(): void {
-    this.oredrsHttpRequest.addOrder().subscribe(
+    this.ordersHttpRequest.addOrder().subscribe(
       response => {
-        console.log("Order added successfully :", response);
+        console.log("Order added successfully:", response);
       },
       error => {
         console.error("Error adding order:", error);
@@ -276,15 +285,6 @@ export class PaymentComponent implements OnInit {
     setTimeout(() => {
       this.sendMessage();
     }, 2000);
-
-    this.router.navigate(['/order-confirmation']);
-    // , {
-    //   queryParams: { 
-    //     orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
-    //     paymentId: 'PAY-' + Math.floor(Math.random() * 1000000) 
-    //   }
-    // });
-    
   }
   
   sendMessage() {

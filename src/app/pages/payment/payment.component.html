@@ -135,84 +135,7 @@
             </div>
           </div>
 
-          <!-- Billing Address Section -->
-          <div class="card mb-4">
-            <div class="card-header">
-              <h5>Billing Address</h5>
-            </div>
-            <div class="card-body">
-              <div class="row mb-3">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <label for="firstName" class="form-label">First Name</label>
-                  <input type="text" class="form-control" formControlName="firstName" id="firstName">
-                  @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
-                    <div class="text-danger mt-1">First name is required</div>
-                  }
-                </div>
-                <div class="col-md-6">
-                  <label for="lastName" class="form-label">Last Name</label>
-                  <input type="text" class="form-control" formControlName="lastName" id="lastName">
-                  @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
-                    <div class="text-danger mt-1">Last name is required</div>
-                  }
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-12">
-                  <label for="address" class="form-label">Address</label>
-                  <input type="text" class="form-control" formControlName="address" id="address">
-                  @if (address.invalid && (address.dirty || address.touched)) {
-                    <div class="text-danger mt-1">Address is required</div>
-                  }
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-4 mb-3 mb-md-0">
-                  <label for="city" class="form-label">City</label>
-                  <input type="text" class="form-control" formControlName="city" id="city">
-                  @if (city.invalid && (city.dirty || city.touched)) {
-                    <div class="text-danger mt-1">City is required</div>
-                  }
-                </div>
-                <div class="col-md-4 mb-3 mb-md-0">
-                  <label for="state" class="form-label">State</label>
-                  <select class="form-select" formControlName="state" id="state">
-                    <option value="">Select State</option>
-                    <option *ngFor="let state of states" [value]="state.code">{{ state.name }}</option>
-                  </select>
-                  @if (state.invalid && (state.dirty || state.touched)) {
-                    <div class="text-danger mt-1">State is required</div>
-                  }
-                </div>
-                <div class="col-md-4">
-                  <label for="zipCode" class="form-label">Zip Code</label>
-                  <input type="text" class="form-control" formControlName="zipCode" id="zipCode">
-                  @if (zipCode.invalid && (zipCode.dirty || zipCode.touched)) {
-                    <div class="text-danger mt-1">Valid zip code is required</div>
-                  }
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <label for="phone" class="form-label">Phone</label>
-                  <input type="tel" class="form-control" formControlName="phone" id="phone">
-                  @if (phone.invalid && (phone.dirty || phone.touched)) {
-                    <div class="text-danger mt-1">Valid phone number is required</div>
-                  }
-                </div>
-                <div class="col-md-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" formControlName="email" id="email">
-                  @if (email.invalid && (email.dirty || email.touched)) {
-                    <div class="text-danger mt-1">Valid email is required</div>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Billing Address Section has been removed -->
         </form>
       </div>
 
@@ -301,6 +224,25 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Add this div after the form section, before the summary section -->
+    <div id="paymob-iframe-container" class="mt-4" *ngIf="paymobIframeUrl && !error">
+      <!-- Paymob iframe will be loaded here dynamically -->
+      <div class="text-center p-4" *ngIf="!paymobIframeLoaded">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading payment gateway...</span>
+        </div>
+        <p class="mt-3">Loading secure payment gateway...</p>
+      </div>
+    </div>
+
+    <!-- Add a thank you message that shows after successful payment -->
+    <div class="alert alert-success" *ngIf="paymobIframeLoaded">
+      <h4 class="alert-heading">Thank you for your order!</h4>
+      <p>Your payment is being processed. Please complete the payment in the iframe above.</p>
+      <p>Once your payment is successful, you will be redirected to the order confirmation page.</p>
+      <p class="mb-0">Order total: ${{ getTotal().toFixed(2) }}</p>
     </div>
   }
 </div>
