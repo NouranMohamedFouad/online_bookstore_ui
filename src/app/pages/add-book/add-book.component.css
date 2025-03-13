@@ -1,35 +1,29 @@
 .form-container {
-  border: 1px solid rgba(217, 217, 217, 1);
+  border: 1px solid #ccc; /* Updated color */
   padding: 20px;
   border-radius: 10px;
-  background-color: #1c1615;
-  /* Dark brown from the gradient */
+  background-color: #e4e4e431;
   margin: 30px auto;
   width: 80%;
-  box-shadow: 0 10px 30px rgba(99, 66, 66, 0.4);
   margin-top: 50px;
   padding-top: 20px;
   font-weight: bold;
-  color: #f0b878;
-  /* Light beige from the gradient */
+  color: #555; /* Updated color */
 }
 
-button {
+.button {
   margin-top: 10px;
-  background: linear-gradient(270deg, #9b4f37 11.24%, #3a2620 99.99%);
-  /* Warm brown gradient */
-  color: white;
-  border: none;
+  border: 1px solid #ccc !important; /* Updated color */
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
-button:hover {
-  background: linear-gradient(270deg, #7b3c2b 11.24%, #2a1d18 99.99%);
-  /* Darker warm brown gradient */
+.button:hover {
+  background-color: #444; /* Updated color */
   transform: scale(1.05);
+  color: white;
 }
 
 .center-container {
@@ -41,8 +35,6 @@ button:hover {
 }
 
 a {
-  background: linear-gradient(45deg, #9b4f37, #f0b878);
-  /* Warm brown to beige gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -57,8 +49,6 @@ a::after {
   bottom: -2px;
   width: 100%;
   height: 2px;
-  background: linear-gradient(45deg, #9b4f37, #f0b878);
-  /* Warm brown to beige gradient */
 }
 
 .col-md-4 {
@@ -66,16 +56,11 @@ a::after {
 }
 
 h2 {
-  background: linear-gradient(45deg, #9b4f37, #f0b878);
-  /* Warm brown to beige gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: underline;
   position: relative;
-  text-shadow: 2px 2px 5px rgba(155, 79, 55, 0.5),
-    -2px -2px 5px rgba(240, 184, 120, 0.5);
-  /* Warm brown and beige shadow */
   font-weight: bold;
   font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
@@ -83,34 +68,30 @@ h2 {
 }
 
 input {
-  background-color: rgba(248, 247, 247, 0.068);
-  color: #f0b878;
-  /* Light beige text */
+  background-color: rgba(255, 255, 255, 0); 
+  color: #444; /* Updated color */
   font-size: medium;
   font-weight: 600;
-  border: 1px solid rgba(217, 217, 217, 0.5);
+  border: 1px solid #ccc; /* Updated color */
   padding: 8px;
   border-radius: 5px;
   width: 100%;
 }
 
 input:focus {
-  background-color: rgba(248, 247, 247, 0.068) !important;
-  color: #f0b878 !important;
-  /* Light beige text */
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: #444; /* Updated color */
   outline: none !important;
-  border: 1px solid #9b4f37;
-  /* Warm brown border on focus */
+  border: 1px solid #444; /* Updated color */
 }
 
 textarea,
 select {
-  background-color: rgba(248, 247, 247, 0.068);
-  color: #f0b878;
-  /* Light beige text */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #444; /* Updated color */
   font-size: medium;
   font-weight: 600;
-  border: 1px solid rgba(217, 217, 217, 0.5);
+  border: 1px solid #ccc; /* Updated color */
   padding: 8px;
   border-radius: 5px;
   width: 100%;
@@ -118,12 +99,10 @@ select {
 
 textarea:focus,
 select:focus {
-  background-color: rgba(248, 247, 247, 0.068) !important;
-  color: #f0b878 !important;
-  /* Light beige text */
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: #444; /* Updated color */
   outline: none !important;
-  border: 1px solid #9b4f37;
-  /* Warm brown border on focus */
+  border: 1px solid #444; /* Updated color */
 }
 
 select {
@@ -131,17 +110,13 @@ select {
 }
 
 option {
-  background-color: #1c1615;
-  /* Dark brown background for options */
-  color: #f0b878;
-  /* Light beige text */
+  background-color: #444; /* Updated color */
+  color: #ccc; /* Updated color */
 }
 
 select:focus {
   background-color: rgba(248, 247, 247, 0.068) !important;
-  color: #f0b878 !important;
-  /* Light beige text */
+  color: #444 !important; /* Updated color */
   outline: none !important;
-  border: 1px solid #9b4f37;
-  /* Warm brown border on focus */
+  border: 1px solid #444; /* Updated color */
 }

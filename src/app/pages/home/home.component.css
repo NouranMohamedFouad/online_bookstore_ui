@@ -16,15 +16,14 @@
 .carousel-item img {
   height: 80vh;
   object-fit: cover;
-  filter: brightness(0.7); /* Darkens image slightly */
+  filter: brightness(0.7); 
 }
 
-/* Dark Overlay on Slider Images */
 .carousel-item::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+  background: rgba(0, 0, 0, 0.4); 
   z-index: 1;
 }
 
@@ -35,7 +34,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 50%;
+  width: 20%;
 }
 
 .search-bar {
@@ -49,7 +48,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Hover effect on Search Bar */
 .search-bar:hover,
 .search-bar:focus {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
@@ -74,10 +72,9 @@
 
 .carousel-indicators .active {
   opacity: 1;
-  background-color: #ffb300; /* Adjusted to fit the palette */
+  background-color: #ffb300; 
 }
 
-/* Caption Styling */
 .carousel-caption {
   position: absolute;
   bottom: 10%;
@@ -100,7 +97,6 @@
   color: #ddd;
 }
 
-/* Admin Button Container */
 .admin-controls {
   display: flex;
   justify-content: center;
@@ -113,7 +109,6 @@
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Buttons */
 .admin-controls .btn {
   padding: 12px 20px;
   font-size: 16px;
@@ -122,28 +117,10 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Add Book Button */
-.add-book {
-  background: #ffb300; /* Adjusted to fit the palette */
-  color: white;
-  border: none;
-}
-
-.add-book:hover {
-  background: #df8d00; /* Adjusted to fit the palette */
-  transform: scale(1.05);
-}
-
-/* Delete All Books Button */
-.delete-all-books {
-  background: #bc4d10; /* Adjusted to fit the palette */
-  color: white;
-  border: none;
-}
-
-.delete-all-books:hover {
-  background: #a0400c; /* Adjusted to fit the palette */
-  transform: scale(1.05);
+.list-group-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
 .box {
@@ -158,7 +135,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Image Holder */
 .img-holder {
   position: relative;
 }
@@ -168,7 +144,6 @@
   object-fit: cover;
 }
 
-/* Overlay Effect */
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -181,7 +156,6 @@
   opacity: 1;
 }
 
-/* Badge (Category Label) */
 .card-badge {
   position: absolute;
   top: 10px;
@@ -190,11 +164,10 @@
   border-radius: 5px;
   font-size: 14px;
   font-weight: bold;
-  background: #c27b01; /* Adjusted to fit the palette */
+  background: #c27b01; 
   color: white;
 }
 
-/* Button Group */
 .button-group .btn {
   border-radius: 20px;
   padding: 8px 16px;
@@ -210,61 +183,148 @@
   opacity: 0.8;
 }
 
-/* Pagination Container */
 .pagination-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin-top: 30px;
-  padding: 15px;
+  gap: 12px;
 }
 
-/* Page Info */
-.page-info {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Pagination Buttons */
 .pagination-btn {
-  padding: 12px 18px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 25px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  width: 40px;
+  height: 40px; 
   display: flex;
   align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd; 
+  border-radius: 8px;
+  background-color: #fff; 
+  color: #333; 
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease; 
 }
 
-/* Previous Button */
-.pagination-btn.prev {
-  background: #6c757d;
-  color: white;
+.pagination-btn:hover:not(:disabled) {
+  background-color: #007bff; 
+  color: #fff; 
+  border-color: #007bff; 
+  transform: translateY(-2px); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
-.pagination-btn.prev:hover {
-  background: #5a6268;
-  transform: scale(1.05);
-}
-
-/* Next Button */
-.pagination-btn.next {
-  background: #ffb300; /* Adjusted to fit the palette */
-  color: white;
-}
-
-.pagination-btn.next:hover {
-  background: #df8d00; /* Adjusted to fit the palette */
-  transform: scale(1.05);
-}
-
-/* Disabled Button */
 .pagination-btn:disabled {
-  background: #ccc;
-  color: #666;
-  cursor: not-allowed;
+  opacity: 0.5; 
+  cursor: not-allowed; 
+  background-color: #f8f9fa;
+  border-color: #ddd; 
+  color: #999; 
+  transform: none; 
+  box-shadow: none; 
+}
+
+.page-info {
+  font-size: 16px; 
+  font-weight: 500;
+  color: #555; 
+  padding: 8px 12px;
+  background-color: #f8f9fa; 
+  border: 1px solid #ddd; 
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.list-group-item {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.view-details {
+  cursor: pointer;
+}
+
+.view-details:hover {
+  background-color: #f8f9fa; 
+}
+
+.view-details:hover .fa-arrow-right {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+}
+
+.arrow-icon {
+  display: inline-block;
+  animation: moveArrow 1s infinite; 
+}
+
+@keyframes moveArrow {
+  0% {
+    transform: translateX(0); 
+  }
+  50% {
+    transform: translateX(5px); 
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.pagination-btn:active {
+  transform: translateY(0); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced card hover effect */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.card-footer .btn {
+  margin-top: 10px;
+  border-radius: 20px;
+  padding: 8px 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-footer .btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+}
+
+.card-footer .btn-primary:hover {
+  background-color: #0056b3;
 }

@@ -1,7 +1,12 @@
 <div class="carousel-container">
-  <div class="search-container">
-    <input #searchInput type="text" class="search-bar" placeholder="Search books..."
-      (keydown.enter)="onSearch(searchInput.value)" />
+  <div class="search-container w-25 ">
+    <input
+      #searchInput
+      type="text"
+      class="search-bar"
+      placeholder="Search books..."
+      (keydown.enter)="onSearch(searchInput.value)"
+    />
   </div>
 
   <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -29,52 +34,58 @@
   </div>
 </div>
 
-<div class="container m-auto">
-  <div *ngIf="userRole === 'admin'" class="admin-controls">
-    <button class="btn btn-primary add-book" (click)="addBook()">➕ Add Book</button>
-    <button class="btn btn-danger delete-all-books" (click)="deleteAllBooks()">🗑 Delete All Books</button>
+<div class="container m-auto p-3 bg-light">
+  <div *ngIf="userRole === 'admin'" class="d-flex justify-content-center mt-3 mb-4 gap-3">
+    <ul class="list-group list-group-horizontal text-center">
+      <li class="list-group-item border-0 p-2 add-book text-black-50 me-5" (click)="addBook()">
+        Add Book
+      </li>
+      <li class="list-group-item border-0 p-2 delete-all-books text-black-50 me-3" (click)="deleteAllBooks()">
+        Delete All Books
+      </li>
+    </ul>
   </div>
+  
+
   <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-12 mb-4 g-5" *ngFor="let book of books">
-      <div class="card box shadow-lg">
-        <div class="img-holder position-relative">
-          <img [src]="book.image" [alt]="book.title" class="card-img-top img-fluid" />
-
-          <div class="card-overlay"></div>
-
-          <div class="card-badge badge text-white">{{ book.category }}</div>
-        </div>
-
-        <div class="card-body text-center">
+      <div class="card h-100 shadow-sm" style="width: 100%;">
+        <img [src]="book.image" [alt]="book.title" class="card-img-top"/>
+        <div class="card-body">
           <h5 class="card-title">{{ book.title }}</h5>
-          <p class="card-author">Author: {{ book.author }}</p>
-          <p class="card-price">Price: ${{ book.price }}</p>
-
-          <div class="button-group d-flex justify-content-center gap-2 mt-3">
-            <button *ngIf="userRole === 'admin'" class="btn btn-warning update-book" (click)="updateBook(book.bookId)">
-              Update
-            </button>
-            <button class="btn btn-primary view-details" (click)="viewBookDetails(book.bookId)">
-              View
-            </button>
-            <button *ngIf="userRole === 'admin'" class="btn btn-danger delete-book" (click)="deleteBook(book.bookId)">
-              Delete
-            </button>
-          </div>
         </div>
+        <ul class="list-group list-group-flush mt-1">
+          <li class="list-group-item text-black-50 view-details" (click)="viewBookDetails(book.bookId)">
+            View Details <i class="fas fa-arrow-right ms-2 arrow-icon"></i>
+          </li>
+          <li *ngIf="userRole === 'admin'" class="list-group-item text-warning update-book" (click)="updateBook(book.bookId)">
+            Update
+          </li>
+         
+          <li *ngIf="userRole === 'admin'" class="list-group-item text-danger delete-book" (click)="deleteBook(book.bookId)">
+            Delete
+          </li>
+        </ul>
       </div>
+      
     </div>
   </div>
-  <div class="pagination-container">
-    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="btn pagination-btn prev">
-      « Previous
+
+  <div class="pagination-container d-flex justify-content-center align-items-center mt-4">
+    <button
+      (click)="onPageChange(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="btn pagination-btn prev">
+      <i class="fas fa-chevron-left"></i> <!-- Font Awesome icon -->
     </button>
-
-    <span class="page-info">Page {{ currentPage }} of {{ totalPages | ceil }}</span>
-
-    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages"
+  
+    <span class="page-info mx-3">{{ currentPage }} of {{ totalPages | ceil }}</span>
+  
+    <button
+      (click)="onPageChange(currentPage + 1)"
+      [disabled]="currentPage >= totalPages"
       class="btn pagination-btn next">
-      Next »
+      <i class="fas fa-chevron-right"></i> <!-- Font Awesome icon -->
     </button>
   </div>
 </div>
