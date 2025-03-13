@@ -68,7 +68,7 @@ textarea {
 input:focus,
 textarea:focus {
   background-color: rgba(255, 255, 255, 0.1); /* Transparent white background */
-  color: #fff; /* White text */
+  color: #555; /* White text */
   outline: none;
   border-color: #444; /* Blue border on focus */
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Subtle blue shadow */

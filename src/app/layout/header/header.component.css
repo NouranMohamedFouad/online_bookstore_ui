@@ -1,21 +1,22 @@
 .btn,
 span,
 a {
-  color: white;
+  color: #444;
 }
 .active-link {
   color: rgb(255, 99, 185) !important;
   font-weight: 600;
 }
 .navbar {
-  padding: 10px;
-  background-image: linear-gradient(to right , #000000, #b3b1b1 ,#030303);
+ 
+  background-color: #ccc;
   border-radius: 0px 0px 10px 10px;
   box-shadow: 0px 2px 7px rgba(167, 172, 185, 0.07),
   1px 9px 27px rgba(167, 172, 185, 0.14),
   2px 21px 60px rgba(167, 172, 185, 0.21),
   3px 37px 107px rgba(167, 172, 185, 0.28);
   color:#201E2C;
+  height: 85px;
 
 
 }
@@ -23,14 +24,14 @@ span {
   background-color: rgba(255, 255, 255, 0.329);
   height: 50%;
   width: 20px;
-  border-radius: 60px;
+
   padding: 3px;
 }
 
 .navbar-brand {
   font-weight: 600;
   font-size: 1.5rem;
-  color: white;
+  color: black;
 }
 
 .btn {
@@ -49,51 +50,68 @@ span {
 
 .user-greeting {
   font-weight: 500;
-  white-space: nowrap;
+  
   font-size: 1.2rem;
   color: rgb(22, 22, 22);
-  text-shadow: #201E2C;
-  padding:5px;
-  border:2px solid #6e6d6d6b;
+ 
+  padding:8px;
+
 }
 
 svg path {
-  fill: white;
+  fill: #444;
 }
-.offcanvas{
-  background-image: linear-gradient(to right, #222222, #111111);
-  border-radius: 20px 0px 20px 0px;
-  border:none;
-  color: aliceblue;
-  box-shadow: -41px 1px 44px rgba(167, 172, 185, 0.08),
-  -165px 4px 174px rgba(167, 172, 185, 0.17),
-  -371px 10px 392px rgba(167, 172, 185, 0.25);
-
+/* Offcanvas Custom Styles */
+.offcanvas {
+  background-color: #ccc; /* Dark background */
+  color: #F3F3F3; /* Light text */
 }
 
-.offcanvas-body a{
-  font-weight: 900;
-
+.offcanvas-header {
+  border-bottom: 1px solid #555; /* Accent color for the header */
 }
 
-
-.btn-close {
-  filter: invert(1);
-  box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.5);
-
+.offcanvas-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #444; /* Accent color */
 }
 
-.navbar-brand img {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.offcanvas-body {
+  padding: 10px;
 }
 
-.navbar-brand img:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+.offcanvas-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
+.offcanvas-item:hover {
+  background-color: rgba(74, 144, 226, 0.1); 
+}
 
+.offcanvas-item svg {
+  margin-right: 15px;
+  transition: transform 0.3s ease;
+}
 
+.offcanvas-item:hover svg {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.btn-offcanvas {
+  background: none;
+  border: none;
+  color: #F3F3F3;
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 
 
@@ -103,6 +121,7 @@ svg path {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  border: 5px rgb(37, 34, 34) solid;
 }
 
 /* Make sure all items in the header align properly */

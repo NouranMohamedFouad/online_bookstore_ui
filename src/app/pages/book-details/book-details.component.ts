@@ -17,12 +17,12 @@ import { BooksRequestsService } from '../../services/requests/books/books-reques
   standalone: true
 })
 export class BookDetailsComponent implements OnInit {
-  book!: Book; // Single book
+  book: Book | null = null; // Initialize as null
   apiUrl = ''; // API URL
 
-  isLoading = false;
-  errorMessage: string | null = null;
-  addingToCart = false;
+  isLoading = false; // Loading state
+  errorMessage: string | null = null; // Error message
+  addingToCart = false; // Adding to cart state
   processingBookId: string | null = null; // Track which book is being added
 
   constructor(
@@ -43,14 +43,25 @@ export class BookDetailsComponent implements OnInit {
       console.log(this.apiUrl);
     } else {
       console.error('Book ID is missing from the route.');
+      this.errorMessage = 'Book ID is missing from the route.';
     }
   }
 
   fetchBooks(bookId: number): void {
-   this.bookService.getBookById(bookId).subscribe({
-     next: (book: Book) => this.book = book,
-     error: (err) => console.error('Error fetching book:', err)
-   });
+    this.isLoading = true; // Set loading to true
+    this.errorMessage = null; // Reset error message
+
+    this.bookService.getBookById(bookId).subscribe({
+      next: (book: Book) => {
+        this.book = book; // Set book data
+        this.isLoading = false; // Set loading to false
+      },
+      error: (err) => {
+        console.error('Error fetching book:', err);
+        this.errorMessage = 'Failed to fetch book details. Please try again later.'; // Set error message
+        this.isLoading = false; // Set loading to false
+      }
+    });
   }
 
   navigateToReviews(bookId: number): void {
