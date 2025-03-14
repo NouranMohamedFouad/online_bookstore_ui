@@ -90,7 +90,7 @@ export class BookDetailsComponent implements OnInit {
   addToCart(bookId: string): void {
     if (!this.loginService.isAuthenticated()) {
       console.log('User not authenticated, redirecting to login');
-      this.router.navigate(['/login'], { 
+      this.router.navigate(['/auth/login'], { 
         queryParams: { 
           returnUrl: this.router.url,
           errorMsg: 'Please log in to add items to your cart' 
@@ -115,7 +115,7 @@ export class BookDetailsComponent implements OnInit {
         console.error('Error adding to cart:', err);
 
         if (err.status === 401) {
-          this.router.navigate(['/login'], { 
+          this.router.navigate(['/auth/login'], { 
             queryParams: { 
               returnUrl: this.router.url,
               errorMsg: 'Your session has expired. Please log in again.' 

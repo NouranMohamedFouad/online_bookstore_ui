@@ -153,7 +153,7 @@ export class PaymentComponent implements OnInit {
     ); 
     setTimeout(() => {
       this.sendMessage();
-      this.router.navigate(['/order-confirmation']);
+      this.router.navigate(['/shopping/order-confirmation']);
 
     }, 2000);
 
@@ -194,7 +194,7 @@ export class PaymentComponent implements OnInit {
   }
   
   goBack(): void {
-    this.router.navigate(['/cart']);
+    this.router.navigate(['/shopping/cart']);
   }
   
   // Calculate tax (for demo purposes - 8%)

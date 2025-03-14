@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
     // Check if user is authenticated before loading cart
     if (!this.loginService.isAuthenticated()) {
       console.error('User is not authenticated, redirecting to login');
-      this.router.navigate(['/login'], {
+      this.router.navigate(['/auth/login'], {
         queryParams: {
           returnUrl: '/cart',
           errorMsg: 'Please log in to view your cart'
@@ -94,7 +94,7 @@ export class CartComponent implements OnInit {
         catchError(err => {
           console.error('Error in cart component loading cart:', err);
           if (err.status === 401 || err.status === 403) {
-            this.router.navigate(['/login'], {
+            this.router.navigate(['/auth/login'], {
               queryParams: {
                 returnUrl: '/cart',
                 errorMsg: err.status === 401
@@ -283,7 +283,7 @@ export class CartComponent implements OnInit {
 
   proceedToCheckout(): void {
     // Navigate to payment page
-    this.router.navigate(['/payment']);
+    this.router.navigate(['/shopping/payment']);
   }
 
   checkout(): void {
