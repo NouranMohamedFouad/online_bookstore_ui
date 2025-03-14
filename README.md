@@ -1,21 +1,23 @@
-# LitVerse Online Bookstore - Frontend
+# LitVerse Online Bookstore - Frontend.
 
 This is the frontend application for the LitVerse Online Bookstore, built with Angular 19. It provides a modern, responsive UI for browsing books, managing shopping carts, processing orders, and handling user authentication.
 
 ## Table of Contents
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Running the Application](#running-the-application)
-  - [Building for Production](#building-for-production)
-- [Authentication](#authentication)
-- [Styling](#styling)
-- [Deployment](#deployment)
-- [API Integration](#api-integration)
+- [LitVerse Online Bookstore - Frontend.](#litverse-online-bookstore---frontend)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Project Structure](#project-structure)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+    - [Running the Application](#running-the-application)
+    - [Building for Production](#building-for-production)
+  - [Authentication](#authentication)
+  - [Styling](#styling)
+  - [Deployment](#deployment)
+  - [API Integration](#api-integration)
 
 ## Features
 
