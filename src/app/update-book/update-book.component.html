@@ -22,7 +22,10 @@
   
       <div class="mb-3">
         <label for="description" class="form-label">Description:</label>
-        <textarea id="description" formControlName="description"></textarea>
+        <textarea class="form-control" id="description" formControlName="description"></textarea>
+        <div *ngIf="updateBookForm.get('description')?.invalid && updateBookForm.get('description')?.touched">
+          Description is required.
+        </div>
       </div>
   
       <div class="mb-3">
