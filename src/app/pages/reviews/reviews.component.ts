@@ -70,7 +70,7 @@ export class ReviewsComponent implements OnInit {
   fetchReviews(bookId: number): void {
     console.log('Fetching reviews for bookId:', bookId);
 
-    this.http.get<{ reviews: any[] }>(`https://hello123onlinebookstore.pp.ua/reviews?bookId=${bookId}`).subscribe({
+    this.http.get<{ reviews: any[] }>(`https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net/reviews?bookId=${bookId}`).subscribe({
       next: (response) => {
         console.log('Fetched Reviews:', response);
         this.reviews = response.reviews || [];
@@ -95,7 +95,7 @@ export class ReviewsComponent implements OnInit {
       bookId: this.book.bookId, // Include bookId
     };
 
-    this.http.post(`https://hello123onlinebookstore.pp.ua/reviews?bookId=${this.book.bookId}`, newReview).subscribe({
+    this.http.post(`https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net/reviews?bookId=${this.book.bookId}`, newReview).subscribe({
       next: () => {
         console.log('Review added successfully');
         this.resetAddForm(); // Reset the add review form
@@ -129,7 +129,7 @@ export class ReviewsComponent implements OnInit {
 
     console.log('Updated Review Data:', updatedReview); // Log the updated data
 
-    this.http.patch(`https://hello123onlinebookstore.pp.ua/reviews/${this.editingReview.reviewId}`, updatedReview).subscribe({
+    this.http.patch(`https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net/reviews/${this.editingReview.reviewId}`, updatedReview).subscribe({
       next: () => {
         console.log('Review updated successfully');
         this.cancelEditing(); 
@@ -142,7 +142,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(reviewId: string): void {
-    this.http.delete(`https://hello123onlinebookstore.pp.ua/reviews/${reviewId}`).subscribe({
+    this.http.delete(`https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net/reviews/${reviewId}`).subscribe({
       next: () => {
         console.log('Review deleted successfully');
         this.fetchReviews(this.book.bookId); 

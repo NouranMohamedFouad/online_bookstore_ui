@@ -15,7 +15,7 @@ interface JwtPayload {
   providedIn: 'root'
 })
 export class CartRequestsService {
-  private baseUrl = 'https://hello123onlinebookstore.pp.ua';
+  private baseUrl = 'https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net';
 
   constructor(
     private http: HttpClient,
