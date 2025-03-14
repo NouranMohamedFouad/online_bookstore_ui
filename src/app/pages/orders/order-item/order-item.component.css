@@ -3,44 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
 
-.child1 {
-  width: 10%;
-  height: 5%;
-}
-
-.child2 {
-  width: 88%;
-}
-
-.data {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
 }
 
 .left {
   display: flex;
   flex-direction: column;
-}
-
-.quantity {
-  font-size:24px;
-  color: rgb(199, 196, 196);
-  margin-top: 4px;
-}
-
-.right {
-  font-weight: bold;
-  text-align: right;
-  flex-shrink: 0; 
-}
-
-.book {
-  margin-top: 2%;
-  margin-bottom: 2%;
 }
 
 hr {
@@ -59,52 +27,106 @@ hr {
 }
 
 
+/**************************************************************/
+
+
+.book {
+  margin: 2% 0;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease-in-out;
+  
+}
+
+.book:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.child1 {
+  width: 12%;
+  height: 5%;
+
+}
+
+.child2 {
+  width: 85%;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.quantity {
+  font-size: 24px;
+  color: #f8f9fa;
+  margin-top: 4px;
+}
+
+.right {
+  font-weight: bold;
+  text-align: right;
+  flex-shrink: 0;
+}
+
 
 .card-option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    width: 120px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin:0 auto;
-  }
-  
-  .card-option span {
-    margin-top: 8px;
-    font-size: 0.9rem;
-  }
-  
-  .card-option:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    transform: translateY(-3px);
-  }
-  
-  .card-option.selected {
-    background: linear-gradient(270deg, rgba(214, 31, 111, 0.2) 0%, rgba(133, 11, 160, 0.1) 100%);
-    border: 1px solid #313131;
-    box-shadow: 0 0 15px rgba(24, 24, 24, 0.3);
-  }
-  
-  .btn {
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-  
-  .btn-primary {
-    background: linear-gradient(270deg, #f1f0f0 , rgba(233, 232, 232, 0.6) );
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    color:#000000dc;
-  }
-  
-  .btn-primary:hover {
-    background: linear-gradient(270deg, #adadad 30%, rgba(117, 117, 117, 0.8) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.521);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  width: 120px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin:0 auto;
+}
+
+
+.card-option:hover {
+  background-color: rgba(92, 90, 90, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.card-option span {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.card-option:hover {
+  background-color: rgba(139, 137, 137, 0.795);
+  transform: translateY(-3px);
+}
+
+.card-option.selected {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.555) 0%, rgba(0, 0, 0, 0.363) 100%);
+  border: 1px solid #000000;
+  box-shadow: 0 0 15px rgba(24, 24, 24, 0.3);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(270deg, #f1f0f0 , rgba(233, 232, 232, 0.6) );
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color:#000000dc;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(270deg, #adadad 30%, rgba(117, 117, 117, 0.8) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}

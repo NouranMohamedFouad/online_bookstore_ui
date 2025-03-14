@@ -19,17 +19,6 @@ h2 {
   letter-spacing: 1px;
 }
 
-h2:after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(to right, #a78bfa, #60a5fa);
-  border-radius: 2px;
-}
-
 /* Card styling */
 .card {
   background-color: white;

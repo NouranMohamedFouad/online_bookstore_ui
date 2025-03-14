@@ -23,7 +23,7 @@ export class OrderHistoryComponent {
     private httpRequestsService:HttpRequestsService
   ){}
 
-  orders!:Order[];
+  orders:Order[]=[];
   response = '';
   storedUser!:User;
 

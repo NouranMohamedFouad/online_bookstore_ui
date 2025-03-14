@@ -46,6 +46,11 @@
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   font-size: 16px;
   transition: all 0.3s ease-in-out;
+  opacity:0.5;
+  margin-top: 12%;
+}
+.search-bar:hover{
+  opacity:0.8;
 }
 
 .search-bar:hover,

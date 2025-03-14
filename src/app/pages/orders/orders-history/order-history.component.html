@@ -1,4 +1,12 @@
-@for(order of orders; track order.orderId)
+
+<h2 class="main-title text-center mb-5 position-relative">
+  Orders History
+  <span class="title-underline"></span> 
+</h2>  
+
+
+
+@for(order of orders.slice().reverse(); track order.orderId)
 {
   <div class="card mb-3 wow animate__animated animate__fadeInDown">
     <div class="order">
@@ -20,5 +28,18 @@
     </div>
   </div>
 
+
+}
+@empty {
+    <div class="center-container my-5 animate-slide-up">
+      <div class="card p-5 text-center">
+        <i class="bi bi-cart-x" style="font-size: 3rem; color: #383838;"></i>
+        <h2 class="mt-4">Your orders history is empty</h2>
+        <p class="mb-4">Looks like you haven't placed any orders yet.</p>
+        <button class="btn btn-dark w-25 m-auto" routerLink="/">
+          <i class="bi bi-book me-2"></i> Continue Shopping
+        </button>
+      </div>
+    </div>
 
 }

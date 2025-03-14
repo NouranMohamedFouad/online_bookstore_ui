@@ -5,7 +5,6 @@
   justify-content: center;
   min-height: 100vh;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(to right, #a78bfa, #60a5fa); /* Purple to blue gradient */
   overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
 
@@ -175,7 +174,7 @@ h2::after {
   left: 0;
   width: 0;
   height: 3px;
-  background-color: #8b5cf6;
+  background-color: #171718;
   animation: slideInRight 1.2s ease-out forwards;
   animation-delay: 1.2s;
   animation-fill-mode: forwards;
@@ -291,7 +290,7 @@ h2::after {
 
 .submit-button {
   width: 100%;
-  background-color: #8b5cf6; /* Purple */
+  background-color: #131313; /* Purple */
   color: white;
   padding: 1rem 0; /* Increased from 0.5rem 0 */
   border-radius: 0.75rem; /* Increased from 0.5rem */
@@ -328,7 +327,7 @@ h2::after {
 }
 
 .submit-button:hover {
-  background-color: #7c3aed; /* Darker purple */
+  background-color: #838385; /* Darker purple */
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }

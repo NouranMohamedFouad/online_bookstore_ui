@@ -1,23 +1,4 @@
-<!-- <div class="book parent">
-    <div class="child1">
-      <img [src]="orderItem.bookDetails.image" [alt]="orderItem.bookDetails.title " class="img-fluid rounded bookImg">
-    </div>
-    <div class="child2">
-      <div class="data">
-        <div>
-          <h4>{{ orderItem.bookDetails.title }}</h4>
-          <p>Quantity:{{ orderItem.quantity }}</p>
-        </div>
-        <div>
-          <h5>Price: ${{ orderItem.bookDetails.price }}</h5>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr> -->
-
   <div class="book parent">
-    <!-- Book Image -->
     <div class="child1">
       <img [src]="orderItem.bookDetails.image" [alt]="orderItem.bookDetails.title" class="img-fluid rounded bookImg">
     </div>
@@ -36,7 +17,6 @@
       </div>
     </div>
   </div>
-  <hr>
   
   @if(userRole == 'admin')
   {
@@ -66,9 +46,11 @@
       <button class="btn btn-primary w-40 mt-3" (click)="updateStatus(selectedStatus)" [disabled]="disabled">
         <i class="fas fa-edit"></i> Update
       </button>
-    </div>
-    
+    </div> 
   }
+  <hr>
+
+
 
 
  

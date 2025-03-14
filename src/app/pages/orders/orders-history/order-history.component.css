@@ -1,53 +1,100 @@
-.card{
-  background: linear-gradient(to bottom, #000000,#2e2e2ec0, #000000b6);
-  color: beige;
-  border: none;
-  border-radius: 10px;
+.card {
+  background: linear-gradient(to bottom, #121212, #2e2e2e);
+  color: #f8f9fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   width: 80%;
-  margin: 0 auto;
-  margin-top: 5%;
-  padding: 1%;
-  box-shadow: 0px 2px 4px rgba(5, 5, 5, 0.02),
-  0px 7px 18px rgba(8, 8, 8, 0.03),
-  0px 16px 40px rgba(8, 0, 123, 0.05),
-  0px 28px 70px rgba(8, 0, 123, 0.06),
-  0px 44px 110px rgba(8, 0, 123, 0.08);
-
-
+  margin: 5% auto;
+  padding: 1.5%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out;
 }
 
-.card-header{
-  background-color: #b4b2b2cb;
-  margin-bottom: 5px;
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
+  border-radius: 8px;
 }
+
 .order-info {
   display: flex;
   align-items: center;
-  background: #fffefeb2;
-  border-radius: 15px;
-  padding: 2px 8px;
-  display: inline;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 5px 10px;
 }
 
 .order-label {
-  padding: 5px 10px;
   font-weight: bold;
-  color: black;
+  color: #ffffff;
 }
-
 
 .order-id {
-  color: #007bff;
+  color: #00bfff;
   font-weight: bold;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.order-date , .order-price{
-  color: rgb(43, 43, 43);
+.order-id:hover {
+  color: #1e90ff;
+}
+
+.order-date, .order-price {
+  color: #e0e0e0;
   font-size: 16px;
   font-weight: bold;
-
 }
-/* ***************************************************************** */
+
+
+/* Main Title Styling */
+.main-title {
+  font-size: 2.5rem; /* Large font size */
+  font-weight: bold;
+  color: #333; /* Dark text color */
+  text-transform: uppercase; /* Uppercase text */
+  position: relative;
+  display: inline-block; 
+  text-align: center;/* Ensure the underline fits the text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top:3%;
+}
+
+/* Underline Styling */
+.title-underline {
+  position: absolute;
+  bottom: -10px; /* Position below the text */
+  left: 50%; /* Center the underline */
+  transform: translateX(-50%); /* Center the underline */
+  width: 30px; /* Initial width of the underline */
+  height: 4px; /* Thickness of the underline */
+  background: linear-gradient(90deg, #444, #ccc); /* Gradient color */
+  border-radius: 2px; /* Rounded corners */
+  animation: underline-grow 2s infinite alternate; /* Animation */
+}
+
+
+/* Underline Animation */
+@keyframes underline-grow {
+  0% {
+    width: 0px; /* Start with a small width */
+  }
+  100% {
+    width: 20%; /* Expand to full width */
+  }
+}
+
+/* Hover Effect */
+.main-title:hover .title-underline {
+  background: linear-gradient(90deg, #ccc, #fff); /* Reverse gradient on hover */
+  animation: underline-grow 1s infinite alternate; /* Faster animation on hover */
+}
