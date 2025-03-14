@@ -1,101 +1,117 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { BookDetailsComponent } from './pages/book-details/book-details.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { LoginComponent } from './auth/login/login.component';
-import { CartComponent } from './pages/cart/cart.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
-import { ReviewsComponent } from './pages/reviews/reviews.component';
-import { PaymentComponent } from './pages/payment/payment.component';
-import { OrderHistoryComponent } from './pages/orders/orders-history/order-history.component';
-import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { AddBookComponent } from './pages/add-book/add-book.component';
-import { UpdateBookComponent } from './update-book/update-book.component';
 import { authGuard } from './guards/auth.guard';
-import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation.component';
 import { isAdminGuard } from './guards/is-admin/is-admin.guard';
 import { isLogedinGuard } from './guards/is-logedin/is-logedin.guard';
 
 export const routes: Routes = [
+    // Auth routes
     {
-        path: '',
-        component: HomeComponent,
-        title: 'Books Home Page'
+        path: 'auth',
+        children: [
+            {
+                path: 'login',
+                loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent),
+                title: 'Login'
+            },
+            {
+                path: 'register',
+                loadComponent: () => import('./auth/register/register.component').then(m => m.RegisterComponent),
+                title: 'Register'
+            }
+        ]
     },
+
+    // Book management routes
     {
-        path: 'update-book/:id',
-        component: UpdateBookComponent,
-        title: 'Update Book',
-        canActivate: [isAdminGuard]
+        path: 'books',
+        children: [
+            {
+                path: 'add',
+                loadComponent: () => import('./pages/add-book/add-book.component').then(m => m.AddBookComponent),
+                canActivate: [isAdminGuard],
+                title: 'Add Book'
+            },
+            {
+                path: 'update/:id',
+                loadComponent: () => import('./update-book/update-book.component').then(m => m.UpdateBookComponent),
+                canActivate: [isAdminGuard],
+                title: 'Update Book'
+            },
+            {
+                path: ':id/reviews',
+                loadComponent: () => import('./pages/reviews/reviews.component').then(m => m.ReviewsComponent),
+                canActivate: [isLogedinGuard]
+            },
+            {
+                path: ':bookId',
+                loadComponent: () => import('./pages/reviews/reviews.component').then(m => m.ReviewsComponent)
+            }
+        ]
     },
-    {
-        path: 'add-book',
-        component: AddBookComponent,
-        title: 'Add Book',
-        canActivate: [isAdminGuard]
-    },
+
+    // Book details route
     {
         path: 'book-details/:bookId',
-        component: BookDetailsComponent,
-        title: 'BookDetails'
+        loadComponent: () => import('./pages/book-details/book-details.component').then(m => m.BookDetailsComponent),
+        title: 'Book Details'
     },
-    {
-        path: 'books/:id/reviews',
-        component: ReviewsComponent,
-        canActivate: [isLogedinGuard]
-    },
-    {
-        path: 'register',
-        component: RegisterComponent,
-        title: 'Register'
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-        title: 'Login'
-    },
-    {
-        path: 'user-profile',
-        component: UserProfileComponent,
-        title: 'User Profile',
-        canActivate: [isLogedinGuard]
-    },
-    {
-        path: 'cart',
-        component: CartComponent,
-        title: 'Cart',
-        canActivate: [authGuard]
-    },
-    {
-        path: 'payment',
-        component: PaymentComponent,
-        title: 'Payment',
-        canActivate: [authGuard]
-    },
+
+    // Reviews route
     {
         path: 'reviews/:bookId',
-        component: ReviewsComponent,
-        title: 'Review',
-        canActivate: [isLogedinGuard]
+        loadComponent: () => import('./pages/reviews/reviews.component').then(m => m.ReviewsComponent),
+        canActivate: [isLogedinGuard],
+        title: 'Review'
+    },
 
-    },
+    // User profile route
     {
-        path: 'books/:bookId',
-        component: ReviewsComponent
+        path: 'user-profile',
+        loadComponent: () => import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent),
+        canActivate: [isLogedinGuard],
+        title: 'User Profile'
     },
-    {
-        path: 'orders',
-        component: OrderHistoryComponent,
-        title: 'Orders History',
-        canActivate: [isLogedinGuard]
 
-    },
+    // Shopping related routes
     {
-        path: 'order-confirmation',
-        component: OrderConfirmationComponent,
-        title: 'Order Confirmation',
-        canActivate: [isLogedinGuard]
+        path: 'shopping',
+        children: [
+            {
+                path: 'cart',
+                loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent),
+                canActivate: [authGuard],
+                title: 'Cart'
+            },
+            {
+                path: 'payment',
+                loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent),
+                canActivate: [authGuard],
+                title: 'Payment'
+            },
+            {
+                path: 'orders',
+                loadComponent: () => import('./pages/orders/orders-history/order-history.component').then(m => m.OrderHistoryComponent),
+                canActivate: [isLogedinGuard],
+                title: 'Orders History'
+            },
+            {
+                path: 'order-confirmation',
+                loadComponent: () => import('./pages/order-confirmation/order-confirmation.component').then(m => m.OrderConfirmationComponent),
+                canActivate: [isLogedinGuard],
+                title: 'Order Confirmation'
+            }
+        ]
     },
+
+    // Home page
+    {
+        path: '',
+        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+        title: 'Books Home Page'
+    },
+
+    // Not found page
     {
         path: '**',
         component: NotfoundComponent,

@@ -15,7 +15,7 @@ interface MockWebSocket {
 })
 export class WebsocketService {
   public socket!: WebSocket | MockWebSocket;
-  private readonly serverUrl = 'wss://2f5b52c0e356bf8c8225d94776a10676.serveo.net';
+  private readonly serverUrl = 'wss://4d159b85bafde32829655fa3b417cf80.serveo.net';
   private _connected: boolean = false;
 
   constructor() {
