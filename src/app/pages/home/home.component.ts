@@ -77,11 +77,11 @@ export class HomeComponent implements OnInit {
   }
 
   addBook() {
-    this.router.navigate(['/add-book']);
+    this.router.navigate(['/books/add']);
   }
 
   updateBook(id: number) {
-    this.router.navigate(['/update-book', id]);
+    this.router.navigate(['/books/update', id]);
   }
 
   deleteAllBooks() {
