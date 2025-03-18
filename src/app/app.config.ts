@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, NgZone } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
   provideHttpClient,
@@ -18,5 +18,10 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
+    // Explicitly provide NgZone to ensure it uses the global Zone
+    {
+      provide: NgZone,
+      useFactory: () => new NgZone({ enableLongStackTrace: false })
+    }
   ],
 };

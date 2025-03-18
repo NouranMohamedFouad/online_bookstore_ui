@@ -3,7 +3,15 @@
 <head>
   <meta charset="utf-8">
   <!-- Load zone.js externally - this must be loaded first -->
-  <script src="https://cdn.jsdelivr.net/npm/zone.js@0.15.0/dist/zone.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/zone.js@0.15.0/dist/zone.min.js" crossorigin="anonymous"></script>
+  <script>
+    // Ensure Zone is properly initialized
+    if (window.Zone) {
+      console.log('Zone.js loaded successfully');
+    } else {
+      console.error('Zone.js failed to load properly');
+    }
+  </script>
   <title>BookStoreMean</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
