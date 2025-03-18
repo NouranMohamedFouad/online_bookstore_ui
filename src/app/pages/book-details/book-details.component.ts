@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Book } from '../../interfaces/book';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartRequestsService } from '../../services/requests/cart/cart-requests.service';
 import { LoginService } from '../../auth/login/login.service';
@@ -13,7 +13,7 @@ import { BooksRequestsService } from '../../services/requests/books/books-reques
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.css'],
-  imports: [NgIf],
+  imports: [CommonModule],
   standalone: true
 })
 export class BookDetailsComponent implements OnInit {
