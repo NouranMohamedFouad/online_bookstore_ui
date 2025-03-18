@@ -38,7 +38,7 @@ export class BookDetailsComponent implements OnInit {
     const bookId = Number(this.route.snapshot.paramMap.get('bookId'));
     console.log('Book ID from route:', bookId); // Debugging
     if (bookId) {
-      this.apiUrl = `api.testdomainnamefortestingmydevtesting.mom/books?bookId=${bookId}`; // Set apiUrl dynamically
+      this.apiUrl = `https://api.testdomainnamefortestingmydevtesting.mom/books?bookId=${bookId}`; // Set apiUrl dynamically
       this.fetchBooks(bookId);
       console.log(this.apiUrl);
     } else {

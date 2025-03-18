@@ -8,7 +8,7 @@ import { HttpRequestsService } from '../http-requests.service';
 })
 export class OrdersRequestsService {
 
-  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
+  private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom';
 
   constructor(
     private http: HttpClient,

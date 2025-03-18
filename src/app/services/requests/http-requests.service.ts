@@ -7,7 +7,7 @@ import { CryptoHelper } from '../../helper/crypto-helper';
   providedIn: 'root'
 })
 export class HttpRequestsService {
-  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
+  private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom';
 
   constructor(private http: HttpClient) { }
 

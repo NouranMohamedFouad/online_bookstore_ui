@@ -9,7 +9,7 @@ import { CryptoHelper } from '../../helper/crypto-helper';
   providedIn: 'root',
 })
 export class LoginService {
-  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
+  private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom';
   private userSubject = new BehaviorSubject<User | null>(null);
 
   // Observable stream of the authenticated user

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BooksRequestsService {
-  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
+  private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom';
 
   constructor(private http: HttpClient) { }
 

@@ -15,7 +15,7 @@ interface JwtPayload {
   providedIn: 'root'
 })
 export class CartRequestsService {
-  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
+  private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom';
 
   constructor(
     private http: HttpClient,

@@ -1,1 +1,1 @@
-private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom'; 
+private baseUrl = 'https://api.testdomainnamefortestingmydevtesting.mom'; 
