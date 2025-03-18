@@ -7,7 +7,7 @@ import { CryptoHelper } from '../../helper/crypto-helper';
   providedIn: 'root'
 })
 export class HttpRequestsService {
-  private baseUrl = 'https://4fb48a73561160ae9baeeba2bb5a7a82.serveo.net';
+  private baseUrl = 'api.testdomainnamefortestingmydevtesting.mom';
 
   constructor(private http: HttpClient) { }
 

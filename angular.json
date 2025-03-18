@@ -91,7 +91,7 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "externalDependencies": ["zone.js"],
+            "externalDependencies": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
